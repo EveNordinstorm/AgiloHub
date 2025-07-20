@@ -1,7 +1,23 @@
-import { Text, View } from "react-native";
+import { useFonts } from "expo-font";
+import { Text as RNText, TextProps, TextStyle, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
+
+const defaultFont = "MontserratAlternates-Regular";
+
+const Text = (props: TextProps) => {
+  return (
+    <RNText
+      {...props}
+      style={[{ fontFamily: defaultFont }, props.style as TextStyle]}
+    />
+  );
+};
+
+Object.assign(Text, RNText);
+// @ts-ignore
+global.Text = Text;
 
 const DashboardScreen = () => (
   <View>
@@ -30,6 +46,16 @@ const ChatsScreen = () => (
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "MontserratAlternates-Regular": require("./assets/fonts/MontserratAlternates-Regular.ttf"),
+    "MontserratAlternates-Bold": require("./assets/fonts/MontserratAlternates-Bold.ttf"),
+    "MontserratAlternates-SemiBold": require("./assets/fonts/MontserratAlternates-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -56,6 +82,12 @@ export default function App() {
             return iconName ? (
               <FontAwesome name={iconName} size={24} color={color} />
             ) : null;
+          },
+          tabBarLabelStyle: {
+            fontFamily: "MontserratAlternates-SemiBold",
+          },
+          headerTitleStyle: {
+            fontFamily: "MontserratAlternates-Bold",
           },
         })}
       >
