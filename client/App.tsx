@@ -1,8 +1,14 @@
 import { useFonts } from "expo-font";
-import { Text as RNText, TextProps, TextStyle, View } from "react-native";
+import { Text as RNText, TextProps, TextStyle } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
+import PointsDisplay from "./components/PointsDisplay";
+import SettingsButton from "./components/SettingsButton";
+import DashboardScreen from "./screens/DashboardScreen";
+import ProjectsScreen from "./screens/ProjectScreen";
+import TasksScreen from "./screens/TasksScreen";
+import ChatsScreen from "./screens/ChatsScreen";
 
 const defaultFont = "MontserratAlternates-Regular";
 
@@ -18,30 +24,6 @@ const Text = (props: TextProps) => {
 Object.assign(Text, RNText);
 // @ts-ignore
 global.Text = Text;
-
-const DashboardScreen = () => (
-  <View>
-    <Text>Dashboard</Text>
-  </View>
-);
-
-const ProjectsScreen = () => (
-  <View>
-    <Text>Projects</Text>
-  </View>
-);
-
-const TasksScreen = () => (
-  <View>
-    <Text>Tasks</Text>
-  </View>
-);
-
-const ChatsScreen = () => (
-  <View>
-    <Text>Chats</Text>
-  </View>
-);
 
 const Tab = createBottomTabNavigator();
 
@@ -68,7 +50,6 @@ export default function App() {
               | "comments"
               | undefined;
 
-            // Assign icon names based on the route
             if (route.name === "Dashboard") {
               iconName = "dashboard";
             } else if (route.name === "Projects") {
@@ -86,9 +67,13 @@ export default function App() {
           tabBarLabelStyle: {
             fontFamily: "MontserratAlternates-SemiBold",
           },
-          headerTitleStyle: {
-            fontFamily: "MontserratAlternates-Bold",
+          headerStyle: {
+            shadowOpacity: 0,
+            elevation: 0,
           },
+          headerLeft: () => <PointsDisplay />,
+          headerRight: () => <SettingsButton />,
+          headerTitle: "",
         })}
       >
         <Tab.Screen name="Dashboard" component={DashboardScreen} />
