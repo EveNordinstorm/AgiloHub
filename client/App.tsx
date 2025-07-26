@@ -1,3 +1,4 @@
+import "./global.css";
 import { useFonts } from "expo-font";
 import { Text as RNText, TextProps, TextStyle } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
