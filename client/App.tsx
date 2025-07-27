@@ -13,6 +13,11 @@ import ChatsScreen from "./screens/ChatsScreen";
 
 const defaultFont = "MontserratAlternates-Regular";
 
+const HEADER_BG = "#171623";
+const TAB_BG = "#0047AB";
+const TAB_ACTIVE = "#F8E23B";
+const TAB_INACTIVE = "#FFFFFF";
+
 const Text = (props: TextProps) => {
   return (
     <RNText
@@ -65,12 +70,26 @@ export default function App() {
               <FontAwesome name={iconName} size={24} color={color} />
             ) : null;
           },
+          tabBarStyle: {
+            backgroundColor: TAB_BG,
+            borderTopWidth: 0,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          tabBarActiveTintColor: TAB_ACTIVE,
+          tabBarInactiveTintColor: TAB_INACTIVE,
           tabBarLabelStyle: {
             fontFamily: "MontserratAlternates-SemiBold",
           },
+
           headerStyle: {
+            backgroundColor: HEADER_BG,
             shadowOpacity: 0,
             elevation: 0,
+          },
+          headerTitleStyle: {
+            fontFamily: "MontserratAlternates-Bold",
+            color: "#fff",
           },
           headerLeft: () => <PointsDisplay />,
           headerRight: () => <SettingsButton />,
