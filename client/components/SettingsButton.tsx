@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 export default function SettingsButton() {
   return (
     <View>
-      <FontAwesome name="cog" size={20} color="black" />
+      <FontAwesome className="mr-5" name="cog" size={24} color="white" />
     </View>
   );
 }
