@@ -14,6 +14,15 @@ import DashboardScreen from "./screens/DashboardScreen";
 import ProjectsScreen from "./screens/ProjectScreen";
 import TasksScreen from "./screens/TasksScreen";
 import ChatsScreen from "./screens/ChatsScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+
+export type RootStackParamList = {
+  Splash: undefined;
+  Login: undefined;
+  Register: undefined;
+  MainTabs: undefined;
+  Settings: undefined;
+};
 
 const defaultFont = "MontserratAlternates-Regular";
 
@@ -36,7 +45,7 @@ Object.assign(Text, RNText);
 global.Text = Text;
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainTabs() {
   const [fontsLoaded] = useFonts({
@@ -124,6 +133,7 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
