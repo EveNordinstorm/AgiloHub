@@ -2,6 +2,7 @@ import { ScrollView, View, Text } from "react-native";
 import { AgiloHubIcon } from "../components/AgiloHubIcon";
 import { FreeStar } from "../components/TierStars/FreeStar";
 import StreakWeek from "../components/Dashboard/StreakWeek";
+import YourMonth from "../components/Dashboard/YourMonth";
 
 export default function DashboardScreen() {
   return (
@@ -25,6 +26,8 @@ export default function DashboardScreen() {
       </View>
 
       <StreakWeek />
+
+      <YourMonth />
     </ScrollView>
   );
 }
