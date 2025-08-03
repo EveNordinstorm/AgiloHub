@@ -66,22 +66,22 @@ export default function ShortCutCards() {
     {
       icon: "chess-board",
       title: "Agile Overview",
-      onPress: () => navigation.navigate("Settings"),
+      onPress: () => navigation.navigate("AgileGuide"),
     },
     {
       icon: "chess-queen",
       title: "Project Ideas",
-      onPress: () => navigation.navigate("Settings"),
+      onPress: () => navigation.navigate("Projects"),
     },
     {
       icon: "chess-pawn",
       title: "Task Ideas",
-      onPress: () => navigation.navigate("Settings"),
+      onPress: () => navigation.navigate("Tasks"),
     },
     {
       icon: "chess",
       title: "Add People",
-      onPress: () => navigation.navigate("Settings"),
+      onPress: () => navigation.navigate("Members"),
     },
   ];
 

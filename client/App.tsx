@@ -15,6 +15,8 @@ import ProjectsScreen from "./screens/ProjectScreen";
 import TasksScreen from "./screens/TasksScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import AgileGuideScreen from "./screens/AgileGuide";
+import MembersScreen from "./screens/Members";
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -22,6 +24,12 @@ export type RootStackParamList = {
   Register: undefined;
   MainTabs: undefined;
   Settings: undefined;
+  Dashboard: undefined;
+  Projects: undefined;
+  Tasks: undefined;
+  Chats: undefined;
+  AgileGuide: undefined;
+  Members: undefined;
 };
 
 const defaultFont = "MontserratAlternates-Regular";
@@ -147,6 +155,8 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
+        <Stack.Screen name="Members" component={MembersScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
