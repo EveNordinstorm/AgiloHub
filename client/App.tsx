@@ -1,7 +1,7 @@
 import "./global.css";
 import { useFonts } from "expo-font";
 import { Text as RNText, TextProps, TextStyle } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
@@ -15,6 +15,8 @@ import ProjectsScreen from "./screens/ProjectScreen";
 import TasksScreen from "./screens/TasksScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import AgileGuideScreen from "./screens/AgileGuide";
+import MembersScreen from "./screens/Members";
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -22,6 +24,12 @@ export type RootStackParamList = {
   Register: undefined;
   MainTabs: undefined;
   Settings: undefined;
+  Dashboard: undefined;
+  Projects: undefined;
+  Tasks: undefined;
+  Chats: undefined;
+  AgileGuide: undefined;
+  Members: undefined;
 };
 
 const defaultFont = "MontserratAlternates-Regular";
@@ -30,6 +38,14 @@ const HEADER_BG = "#171623";
 const TAB_BG = "#0047AB";
 const TAB_ACTIVE = "#F8E23B";
 const TAB_INACTIVE = "#FFFFFF";
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "#171623",
+  },
+};
 
 const Text = (props: TextProps) => {
   return (
@@ -127,13 +143,20 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "#171623" },
+        }}
+      >
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
+        <Stack.Screen name="Members" component={MembersScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
