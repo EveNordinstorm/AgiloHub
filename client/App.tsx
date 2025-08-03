@@ -1,7 +1,7 @@
 import "./global.css";
 import { useFonts } from "expo-font";
 import { Text as RNText, TextProps, TextStyle } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
@@ -30,6 +30,14 @@ const HEADER_BG = "#171623";
 const TAB_BG = "#0047AB";
 const TAB_ACTIVE = "#F8E23B";
 const TAB_INACTIVE = "#FFFFFF";
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "#171623",
+  },
+};
 
 const Text = (props: TextProps) => {
   return (
@@ -127,8 +135,13 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "#171623" },
+        }}
+      >
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
