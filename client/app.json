@@ -4,11 +4,11 @@
     "slug": "client",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/AgiloHub-app-icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/AgiloHub-app-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#171623"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/AgiloHub-app-icon.png",
         "backgroundColor": "#171623"
       },
       "edgeToEdgeEnabled": true
