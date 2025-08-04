@@ -46,7 +46,7 @@ export function ShortCutCardItem({ icon, title, onPress }: CardItemProps) {
           colors={["#34324F", "#726DB3"]}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
-          className="flex items-center justify-center p-10"
+          className="flex items-center justify-center p-2"
           style={{ aspectRatio: 1 }}
         >
           <FontAwesome5 name={icon} size={36} color="#FFF" />
@@ -65,22 +65,22 @@ export default function ShortCutCards() {
   const cards: CardItemProps[] = [
     {
       icon: "chess-board",
-      title: "Agile Overview",
+      title: "Agile\nOverview",
       onPress: () => navigation.navigate("AgileGuide"),
     },
     {
       icon: "chess-queen",
-      title: "Project Ideas",
+      title: "Project\nIdeas",
       onPress: () => navigation.navigate("Projects"),
     },
     {
       icon: "chess-pawn",
-      title: "Task Ideas",
+      title: "Task\nIdeas",
       onPress: () => navigation.navigate("Tasks"),
     },
     {
       icon: "chess",
-      title: "Add People",
+      title: "Add\nPeople",
       onPress: () => navigation.navigate("Members"),
     },
   ];
