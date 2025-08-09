@@ -1,9 +1,8 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: [
-      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
-      "nativewind/babel",
+    presets: ["nativewind/babel", "babel-preset-expo"],
+    plugins: [
       [
         "@tamagui/babel-plugin",
         {

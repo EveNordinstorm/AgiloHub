@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^7.3.23",
     "@reduxjs/toolkit": "^2.8.2",
     "@tamagui/accordion": "^1.132.16",
+    "@tamagui/babel-plugin": "^1.132.16",
     "@tamagui/config": "^1.132.16",
     "@tamagui/core": "^1.132.16",
     "@tamagui/stacks": "^1.132.16",
