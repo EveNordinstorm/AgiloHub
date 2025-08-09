@@ -4,6 +4,8 @@ import { Text as RNText, TextProps, TextStyle } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { TamaguiProvider } from "tamagui";
+import tamaguiConfig from "./tamagui.config";
 import { FontAwesome } from "@expo/vector-icons";
 import PointsDisplay from "./components/PointsDisplay";
 import SettingsButton from "./components/SettingsButton";
@@ -143,21 +145,23 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: "#171623" },
-        }}
-      >
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="MainTabs" component={MainTabs} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
-        <Stack.Screen name="Members" component={MembersScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <TamaguiProvider config={tamaguiConfig}>
+      <NavigationContainer theme={MyTheme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: "#171623" },
+          }}
+        >
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="MainTabs" component={MainTabs} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
+          <Stack.Screen name="Members" component={MembersScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </TamaguiProvider>
   );
 }
