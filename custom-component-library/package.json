@@ -1,0 +1,19 @@
+{
+  "name": "custom-component-library",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "react-native": "^0.80.2",
+    "react-redux": "^9.2.0"
+  }
+}

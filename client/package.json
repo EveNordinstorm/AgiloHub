@@ -22,6 +22,7 @@
     "@tamagui/text": "^1.132.16",
     "@tamagui/themes": "^1.132.16",
     "axios": "^1.10.0",
+    "custom-component-library": "file:../custom-component-library",
     "expo": "^53.0.20",
     "expo-font": "~13.3.2",
     "expo-linear-gradient": "^14.1.5",
