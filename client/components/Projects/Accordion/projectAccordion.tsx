@@ -3,6 +3,8 @@ import { Text, View, LayoutAnimation } from "react-native";
 import { FontAwesome5, FontAwesome, Feather } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
 import { ProjectOverview } from "./projectOverview";
+import { TechnologyStack } from "./technologyStack";
+import { Methodology } from "./methodology";
 
 type Section = {
   title: string;
@@ -17,19 +19,29 @@ const SECTIONS: Section[] = [
     content: (
       <ProjectOverview
         title="SaaS Website"
-        description="Marketing website for a mobile app"
+        description="A marketing website, utilising SEO to promote a mobile app"
       />
     ),
   },
   {
     title: "Technology Stack",
     icon: <FontAwesome5 name="buffer" color="white" size={20} />,
-    content: "Section to go here.",
+    content: (
+      <TechnologyStack
+        techStack={["React Native", "TypeScript", "Node.js", "PostgreSQL"]}
+      />
+    ),
   },
   {
     title: "Methodology",
     icon: <FontAwesome5 name="chess-board" color="white" size={20} />,
-    content: "Section to go here.",
+    content: (
+      <Methodology
+        methodology="LEAN"
+        definition="A principles-based approach focused on maximizing value and eliminating waste — build only what’s needed, validate quickly, improve continuously."
+        context="We are going with this methodology as the project requires a quick turnaround to meet funding. Additionally, our team is compact so focus is a priority."
+      />
+    ),
   },
   {
     title: "Timeline",

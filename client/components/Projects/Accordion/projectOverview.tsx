@@ -7,11 +7,12 @@ type CardItemProps = {
 
 export function ProjectOverview({ title, description }: CardItemProps) {
   return (
-    <View>
-      <Text className="text-white font-montserrat-bold text-lg mb-1">
-        {title}
-      </Text>
-      <Text className="text-white font-montserrat-semibold text-base">
+    <View className="w-full">
+      <View className="bg-primaryBlue p-3 mb-2">
+        <Text className="text-white font-montserrat-bold text-xl">{title}</Text>
+      </View>
+
+      <Text className="text-white font-montserrat-semibold text-base p-2">
         {description}
       </Text>
     </View>

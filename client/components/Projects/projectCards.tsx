@@ -62,7 +62,7 @@ export function ProjectCardItem({
             <View className="flex-row flex-wrap">
               {techStack.map((item, index) => (
                 <View key={`${item}-${index}`} className="mr-2 mb-2">
-                  <Text className="text-white text-lg font-montserrat-semibold">
+                  <Text className="text-white text-lg font-montserrat-semibold bg-darkBlue rounded-full px-3 py-1">
                     {item}
                   </Text>
                 </View>
@@ -85,25 +85,25 @@ export default function ProjectCards() {
     {
       title: "SaaS Website",
       methodology: "LEAN",
-      techStack: ["React, TypeScript, Next.js, Node.js, PostgreSQL"],
+      techStack: ["React", "TypeScript", "Next.js", "Node.js", "PostgreSQL"],
       onPress: () => navigation.navigate("ProjectDetails"),
     },
     {
       title: "React Native App",
       methodology: "Scrum",
-      techStack: ["React Native, TypeScript, Node.js, PostgreSQL"],
+      techStack: ["React Native", "TypeScript", "Node.js", "PostgreSQL"],
       onPress: () => navigation.navigate("ProjectDetails"),
     },
     {
       title: "eCommerce Store",
       methodology: "Kanban",
-      techStack: ["Angular, Express, Node.js, MongoDB"],
+      techStack: ["Angular", "Express", "Node.js", "MongoDB"],
       onPress: () => navigation.navigate("ProjectDetails"),
     },
     {
       title: "Social Media Site",
       methodology: "Scrumban",
-      techStack: ["Vue, .NET Core, Express, SQL"],
+      techStack: ["Vue", ".NET Core", "Express", "SQL"],
       onPress: () => navigation.navigate("ProjectDetails"),
     },
   ];
