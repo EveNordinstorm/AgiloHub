@@ -4,7 +4,7 @@ import { Text as RNText, TextProps, TextStyle } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import PointsDisplay from "./components/PointsDisplay";
 import SettingsButton from "./components/SettingsButton";
 import SplashScreen from "./screens/Splashscreen";
@@ -81,16 +81,16 @@ function MainTabs() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           let iconName:
-            | "dashboard"
-            | "clipboard"
+            | "compass"
+            | "clipboard-list"
             | "list-ul"
             | "comments"
             | undefined;
 
           if (route.name === "Dashboard") {
-            iconName = "dashboard";
+            iconName = "compass";
           } else if (route.name === "Projects") {
-            iconName = "clipboard";
+            iconName = "clipboard-list";
           } else if (route.name === "Tasks") {
             iconName = "list-ul";
           } else if (route.name === "Chats") {
@@ -98,7 +98,7 @@ function MainTabs() {
           }
 
           return iconName ? (
-            <FontAwesome name={iconName} size={24} color={color} />
+            <FontAwesome5 name={iconName} size={24} color={color} />
           ) : null;
         },
         tabBarStyle: {

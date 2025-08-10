@@ -23,7 +23,7 @@ const SECTIONS: Section[] = [
   },
   {
     title: "Technology Stack",
-    icon: <FontAwesome5 name="clone" color="white" size={20} />,
+    icon: <FontAwesome5 name="buffer" color="white" size={20} />,
     content: "Section to go here.",
   },
   {
