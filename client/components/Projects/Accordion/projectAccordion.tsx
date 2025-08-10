@@ -5,6 +5,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import { ProjectOverview } from "./projectOverview";
 import { TechnologyStack } from "./technologyStack";
 import { Methodology } from "./methodology";
+import { Timeline } from "./timeline";
 
 type Section = {
   title: string;
@@ -46,7 +47,13 @@ const SECTIONS: Section[] = [
   {
     title: "Timeline",
     icon: <FontAwesome5 name="clock" color="white" size={20} />,
-    content: "Section to go here.",
+    content: (
+      <Timeline
+        stage={1}
+        stageDescription="Planning content and solidifying technology stack."
+        icon={<FontAwesome name="arrow-circle-right" size={24} color="#fff" />}
+      />
+    ),
   },
   {
     title: "Members",
