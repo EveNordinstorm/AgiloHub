@@ -45,6 +45,7 @@
     "@tamagui/metro-plugin": "^1.132.16",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.0.10",
+    "@types/react-native": "^0.72.8",
     "jest": "^30.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

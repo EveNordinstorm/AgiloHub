@@ -11,9 +11,12 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "@reduxjs/toolkit": "^2.8.2",
-    "react-native": "^0.80.2",
-    "react-redux": "^9.2.0"
+  "peerDependencies": {
+    "react": "19.0.0",
+    "react-native": "0.80.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.9",
+    "@types/react-native": "^0.73.0"
   }
 }

@@ -4,8 +4,8 @@ import { Text as RNText, TextProps, TextStyle } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TamaguiProvider } from "tamagui";
-import tamaguiConfig from "./tamagui.config";
+import { Provider } from "react-redux";
+import { store } from "../custom-component-library/store/store";
 import { FontAwesome } from "@expo/vector-icons";
 import PointsDisplay from "./components/PointsDisplay";
 import SettingsButton from "./components/SettingsButton";
@@ -145,7 +145,7 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <TamaguiProvider config={tamaguiConfig}>
+    <Provider store={store}>
       <NavigationContainer theme={MyTheme}>
         <Stack.Navigator
           screenOptions={{
@@ -162,6 +162,6 @@ export default function App() {
           <Stack.Screen name="Members" component={MembersScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </TamaguiProvider>
+    </Provider>
   );
 }

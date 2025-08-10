@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "types": ["nativewind/types", "react", "react-native"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "nativewind"
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

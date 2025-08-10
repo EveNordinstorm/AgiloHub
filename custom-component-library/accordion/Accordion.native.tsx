@@ -1,4 +1,3 @@
-import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { toggle, AccordionItem } from "./AccordionSlice";
