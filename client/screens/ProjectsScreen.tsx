@@ -1,15 +1,30 @@
 import { ScrollView, View, Text } from "react-native";
-import ProjectAccordion from "../components/Projects/projectAccordion";
+import ProjectCards from "../components/Projects/projectCards";
+import { CustomButton } from "../components/CustomButton";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export default function ProjectsScreen() {
+type Props = NativeStackScreenProps<any>;
+
+export default function ProjectsScreen({ navigation }: Props) {
   return (
-    <ScrollView className="mx-5">
+    <View className="mx-5 mb-[110px]">
       <View className="flex-row justify-center">
-        <Text className="font-montserrat-bold text-white text-3xl">
+        <Text className="font-montserrat-bold text-white text-3xl mb-3">
           Projects
         </Text>
       </View>
-      <ProjectAccordion />
-    </ScrollView>
+      <View className="mx-10 mb-7">
+        <CustomButton
+          text="Create New Project"
+          bgColor="bg-yellow"
+          textColor="text-black"
+          onPress={() => navigation.navigate("Projects")}
+        />
+      </View>
+
+      <ScrollView>
+        <ProjectCards />
+      </ScrollView>
+    </View>
   );
 }

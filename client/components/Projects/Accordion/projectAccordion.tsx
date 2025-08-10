@@ -1,32 +1,26 @@
 import { useState } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-} from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { Text, View, LayoutAnimation } from "react-native";
+import { FontAwesome5, FontAwesome, Feather } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
-
-// Enable LayoutAnimation on Android
-// if (
-//   Platform.OS === "android" &&
-//   UIManager.setLayoutAnimationEnabledExperimental
-// ) {
-//   UIManager.setLayoutAnimationEnabledExperimental(true);
-// }
+import { ProjectOverview } from "./projectOverview";
 
 type Section = {
   title: string;
   icon?: React.ReactNode;
-  content: string;
+  content: React.ReactNode;
 };
 
 const SECTIONS: Section[] = [
+  {
+    title: "Project Overview",
+    icon: <FontAwesome5 name="project-diagram" color="white" size={20} />,
+    content: (
+      <ProjectOverview
+        title="SaaS Website"
+        description="Marketing website for a mobile app"
+      />
+    ),
+  },
   {
     title: "Technology Stack",
     icon: <FontAwesome5 name="clone" color="white" size={20} />,

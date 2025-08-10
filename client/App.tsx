@@ -12,6 +12,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import ProjectsScreen from "./screens/ProjectsScreen";
+import ProjectDetailsScreen from "./screens/ProjectDetails";
 import TasksScreen from "./screens/TasksScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Dashboard: undefined;
   Projects: undefined;
+  ProjectDetails: undefined;
   Tasks: undefined;
   Chats: undefined;
   AgileGuide: undefined;
@@ -155,6 +157,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
         <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
         <Stack.Screen name="Members" component={MembersScreen} />
       </Stack.Navigator>
