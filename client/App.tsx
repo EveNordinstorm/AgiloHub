@@ -11,7 +11,7 @@ import SplashScreen from "./screens/Splashscreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import DashboardScreen from "./screens/DashboardScreen";
-import ProjectsScreen from "./screens/ProjectScreen";
+import ProjectsScreen from "./screens/ProjectsScreen";
 import TasksScreen from "./screens/TasksScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
