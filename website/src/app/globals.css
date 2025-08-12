@@ -5,6 +5,11 @@
 
 @theme inline {
   --font-sans: var(--font-montserrat-alternates);
+  --color-dark-blue: #171623;
+  --color-primary-blue: #0047ab;
+  --color-dark-purple: #34324f;
+  --color-primary-purple: #726db3;
+  --color-yellow: #f8e23b;
 }
 
 /* @theme inline {
