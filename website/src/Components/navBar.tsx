@@ -12,7 +12,10 @@ import {
 
 export function NavBar() {
   return (
-    <NavigationMenu>
+    <NavigationMenu
+      className="bg-primary-blue text-white font-semibold"
+      viewport={false}
+    >
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
@@ -28,7 +31,7 @@ export function NavBar() {
 
         <NavigationMenuItem>
           <NavigationMenuTrigger>Store</NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="bg-primary-blue">
             <NavigationMenuLink asChild>
               <Link href="/store">Subscription Tiers</Link>
             </NavigationMenuLink>
@@ -43,7 +46,7 @@ export function NavBar() {
 
         <NavigationMenuItem>
           <NavigationMenuTrigger>Account</NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="bg-primary-blue">
             <NavigationMenuLink asChild>
               <Link href="/account">Account</Link>
             </NavigationMenuLink>
