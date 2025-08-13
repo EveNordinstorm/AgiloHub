@@ -9,13 +9,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { AgiloHubIcon } from "./AgiloHubIcon";
 
 export function NavBar() {
   return (
-    <NavigationMenu
-      className="bg-primary-blue text-white font-semibold"
-      viewport={false}
-    >
+    <NavigationMenu className="bg-primary-blue text-white font-semibold md:text-lg py-1">
+      <Link href="/" className="absolute left-4">
+        <AgiloHubIcon className="text-white h-10 my-2 hover:cursor-pointer" />
+      </Link>
+
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
@@ -31,14 +33,23 @@ export function NavBar() {
 
         <NavigationMenuItem>
           <NavigationMenuTrigger>Store</NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-primary-blue">
-            <NavigationMenuLink asChild>
+          <NavigationMenuContent>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/store">Subscription Tiers</Link>
             </NavigationMenuLink>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/store">Products</Link>
             </NavigationMenuLink>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/store">Customer Service</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
@@ -46,20 +57,35 @@ export function NavBar() {
 
         <NavigationMenuItem>
           <NavigationMenuTrigger>Account</NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-primary-blue">
-            <NavigationMenuLink asChild>
+          <NavigationMenuContent>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/account">Account</Link>
             </NavigationMenuLink>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/account">Projects</Link>
             </NavigationMenuLink>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/account">Tasks</Link>
             </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <Link href="/account">Manage Membership</Link>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
+              <Link href="/account">Membership</Link>
             </NavigationMenuLink>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink
+              asChild
+              className="bg-primary-blue hover:bg-dark-blue/20 transition-colors ease-in-out"
+            >
               <Link href="/account">My Points</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
