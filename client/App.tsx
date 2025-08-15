@@ -4,14 +4,15 @@ import { Text as RNText, TextProps, TextStyle } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import PointsDisplay from "./components/PointsDisplay";
 import SettingsButton from "./components/SettingsButton";
 import SplashScreen from "./screens/Splashscreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import DashboardScreen from "./screens/DashboardScreen";
-import ProjectsScreen from "./screens/ProjectScreen";
+import ProjectsScreen from "./screens/ProjectsScreen";
+import ProjectDetailsScreen from "./screens/ProjectDetails";
 import TasksScreen from "./screens/TasksScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Dashboard: undefined;
   Projects: undefined;
+  ProjectDetails: undefined;
   Tasks: undefined;
   Chats: undefined;
   AgileGuide: undefined;
@@ -79,16 +81,16 @@ function MainTabs() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
           let iconName:
-            | "dashboard"
-            | "clipboard"
+            | "compass"
+            | "clipboard-list"
             | "list-ul"
             | "comments"
             | undefined;
 
           if (route.name === "Dashboard") {
-            iconName = "dashboard";
+            iconName = "compass";
           } else if (route.name === "Projects") {
-            iconName = "clipboard";
+            iconName = "clipboard-list";
           } else if (route.name === "Tasks") {
             iconName = "list-ul";
           } else if (route.name === "Chats") {
@@ -96,7 +98,7 @@ function MainTabs() {
           }
 
           return iconName ? (
-            <FontAwesome name={iconName} size={24} color={color} />
+            <FontAwesome5 name={iconName} size={24} color={color} />
           ) : null;
         },
         tabBarStyle: {
@@ -155,6 +157,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
         <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
         <Stack.Screen name="Members" component={MembersScreen} />
       </Stack.Navigator>

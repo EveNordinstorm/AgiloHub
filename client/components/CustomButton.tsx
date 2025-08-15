@@ -5,6 +5,7 @@ interface CustomButtonProps {
   text: string;
   bgColor?: string;
   textColor?: string;
+  textSize?: string;
 }
 
 export const CustomButton = ({
@@ -12,13 +13,16 @@ export const CustomButton = ({
   text,
   bgColor = "bg-primaryBlue",
   textColor = "text-white",
+  textSize = "text-xl",
 }: CustomButtonProps) => {
   return (
     <Pressable
       className={`px-4 py-3 rounded-full ${bgColor}`}
       onPress={onPress}
     >
-      <Text className={`text-xl text-center font-montserrat-bold ${textColor}`}>
+      <Text
+        className={`text-center font-montserrat-bold ${textColor} ${textSize}`}
+      >
         {text}
       </Text>
     </Pressable>
