@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/common/*": ["common/src/*"]
+    },
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["server/src", "common/src", "client/src", "website/src"]
+}
