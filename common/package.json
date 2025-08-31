@@ -10,9 +10,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.11.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "react-redux": "^9.2.0",
     "zod": "^4.0.17"
   },
   "devDependencies": {
