@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat_Alternates } from "next/font/google";
 import "./globals.css";
-import { NavBar } from "@/components/navBar";
+import { NavBar } from "@/components/NavBar/navBar";
 
 const montserratAlternates = Montserrat_Alternates({
   variable: "--font-montserrat-alternates",
@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" className={`${montserratAlternates.variable} antialiased`}>
       <body className="font-sans">
         <NavBar />
-        <main>{children}</main>
+        <main className="pt-16">{children}</main>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { AgiloHubLogo } from "@/components/AgiloHubLogo";
+import { AgiloHubLogo } from "@/components/Logos/AgiloHubLogo";
 import { motion } from "motion/react";
 
 export default function Home() {
