@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,23 +13,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { RegisterSchema, RegisterFormValues } from "common/src/validation/auth";
+import { registerUser } from "common/src/redux/slices/authSlice";
+import { useAppDispatch } from "common/src/hooks/hooks";
 
-const RegisterSchema = z.object({
-  firstName: z.string().min(1, {
-    message: "Username must be at least 1 character.",
-  }),
-  lastName: z.string().min(1, {
-    message: "Username must be at least 1 character.",
-  }),
-  email: z.string().min(1, {
-    message: "Username must be at least 1 character.",
-  }),
-  password: z.string().min(4, {
-    message: "Password must be at least 4 characters.",
-  }),
-});
-
-export function RegisterForm() {
+export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -35,17 +26,26 @@ export function RegisterForm() {
       lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
-  function onSubmit(data: z.infer<typeof RegisterSchema>) {
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+
+  const dispatch = useAppDispatch();
+
+  const togglePassword = () => setShowPassword(!showPassword);
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      await dispatch(registerUser(data)).unwrap();
+      toast.success("Account created");
+      onSuccess?.(); // closes dialog
+    } catch (err) {
+      if (typeof err === "string") toast.error(err);
+      else if (err instanceof Error) toast.error(err.message);
+      else toast.error("Registration failed");
+    }
+  };
+
   return (
     <Form {...form}>
       <form
@@ -105,14 +105,61 @@ export function RegisterForm() {
             <>
               <FormItem>
                 <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="Create password" {...field} />
+                <FormControl className="relative">
+                  <div>
+                    <Input
+                      placeholder="Create password"
+                      {...field}
+                      type={showPassword ? "text" : "password"}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePassword}
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             </>
           )}
         />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl className="relative">
+                  <div>
+                    <Input
+                      placeholder="Confirm password"
+                      {...field}
+                      type={showPassword ? "text" : "password"}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePassword}
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
+        <button
+          type="submit"
+          className="w-full bg-yellow py-2 rounded text-black font-bold hover:cursor-pointer hover:bg-yellow/80"
+        >
+          Create Account
+        </button>
       </form>
     </Form>
   );

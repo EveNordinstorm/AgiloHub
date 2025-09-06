@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/common/*": ["common/src/*"]
+      "@common/*": ["common/src/*"]
     },
     "moduleResolution": "node",
     "esModuleInterop": true

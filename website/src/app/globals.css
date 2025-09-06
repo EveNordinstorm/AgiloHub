@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-montserrat-alternates);
+  --font-sans: var(--font-sans);
   --color-dark-blue: #171623;
   --color-primary-blue: #0047ab;
   --color-dark-purple: #34324f;
