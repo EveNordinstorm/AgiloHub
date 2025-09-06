@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -14,7 +15,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -23,12 +23,17 @@ import { AgiloHubIcon } from "../Logos/AgiloHubIcon";
 import { RegisterForm } from "./registerForm";
 import { LoginForm } from "./loginForm";
 import { useAppSelector } from "common/src/hooks/hooks";
+import { useAppDispatch } from "common/src/hooks/hooks";
 import { RootState } from "common/src/redux/store";
+import { logout } from "common/redux/slices/authSlice";
 
 export function NavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const user = useAppSelector((state: RootState) => state.auth.user);
 
@@ -85,6 +90,19 @@ export function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link href="/account">Tasks</Link>
                   </NavigationMenuLink>
+                  {user && (
+                    <NavigationMenuLink asChild>
+                      <button
+                        onClick={() => {
+                          dispatch(logout());
+                          router.push("/");
+                        }}
+                        className="bg-black text-white hover:bg-black/70 px-3 py-1 rounded"
+                      >
+                        Log Out
+                      </button>
+                    </NavigationMenuLink>
+                  )}
                 </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
@@ -134,6 +152,19 @@ export function NavBar() {
                     <NavigationMenuLink asChild>
                       <Link href="/account">Tasks</Link>
                     </NavigationMenuLink>
+                    {user && (
+                      <NavigationMenuLink asChild>
+                        <button
+                          onClick={() => {
+                            dispatch(logout());
+                            router.push("/");
+                          }}
+                          className="bg-black text-white hover:bg-black/70 px-3 py-1 rounded"
+                        >
+                          Log Out
+                        </button>
+                      </NavigationMenuLink>
+                    )}
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
