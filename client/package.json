@@ -28,6 +28,7 @@
     "react-hook-form": "^7.62.0",
     "react-native": "0.79.5",
     "react-native-collapsible": "^1.6.2",
+    "react-native-css-interop": "^0.1.22",
     "react-native-dotenv": "^3.4.11",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "^5.4.0",
@@ -47,6 +48,9 @@
   },
   "peerDependencies": {
     "zod": "^4.0.17"
+  },
+  "optionalDependencies": {
+    "react-native-css-interop": "^0.1.22"
   },
   "private": true
 }
