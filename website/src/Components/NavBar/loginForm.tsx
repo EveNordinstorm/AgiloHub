@@ -21,6 +21,7 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const dispatch = useAppDispatch();
 
   const form = useForm<LoginFormValues>({
+    // @ts-expect-error Zod 4 + RHF v7 type mismatch
     resolver: zodResolver(LoginSchema),
     defaultValues: { email: "", password: "" },
   });

@@ -15,6 +15,17 @@ module.exports = function (api) {
           allowUndefined: true,
         },
       ],
+      [
+        "module-resolver",
+        {
+          root: ["./src"],
+          alias: {
+            common: "../common",
+          },
+        },
+      ],
     ],
+    // Make sure Babel transpiles common
+    exclude: /node_modules\/(?!common)/,
   };
 };

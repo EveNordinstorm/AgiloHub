@@ -4,10 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { CustomButton } from "../components/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  registerSchema,
-  RegisterFormData,
-} from "../../common/src/validation/auth";
+import { RegisterSchema, RegisterFormValues } from "common/src/validation/auth";
 
 type Props = NativeStackScreenProps<any>;
 
@@ -16,11 +13,12 @@ export default function RegisterScreen({ navigation }: Props) {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<RegisterFormValues>({
+    // @ts-expect-error Zod 4 + RHF v7 type mismatch
+    resolver: zodResolver(RegisterSchema),
   });
 
-  const onSubmit = (data: RegisterFormData) => {
+  const onSubmit = (data: RegisterFormValues) => {
     console.log("Form data:", data);
     // TODO: Call register endoint
     navigation.replace("MainTabs");

@@ -3,7 +3,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { toast } from "sonner";
 import {
   Form,
@@ -19,7 +18,9 @@ import { useAppDispatch } from "common/src/hooks/hooks";
 
 export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
   const [showPassword, setShowPassword] = useState(false);
-  const form = useForm<z.infer<typeof RegisterSchema>>({
+
+  const form = useForm<RegisterFormValues>({
+    // @ts-expect-error Zod 4 + RHF v7 type mismatch
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       firstName: "",
