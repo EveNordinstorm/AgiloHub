@@ -2,10 +2,19 @@ import { View, Text } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import { CustomButton } from "../components/CustomButton";
+import { useAppDispatch } from "common/src/hooks/hooks";
+import { logout } from "common/src/redux/slices/authSlice";
 
 type Props = NativeStackScreenProps<any>;
 
 export default function SettingsScreen({ navigation }: Props) {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigation.replace("Welcome");
+  };
+
   return (
     <View className="w-full h-full bg-darkBlue py-14 px-5">
       <View className="flex-row items-center mb-10">
@@ -24,7 +33,7 @@ export default function SettingsScreen({ navigation }: Props) {
 
       <CustomButton
         text="Logout"
-        onPress={() => navigation.replace("Login")}
+        onPress={handleLogout}
         bgColor="bg-yellow"
         textColor="text-black"
       />
