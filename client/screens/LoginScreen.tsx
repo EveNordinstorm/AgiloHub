@@ -1,40 +1,106 @@
-import { View, Text, Button } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AgiloHubLogo } from "../components/AgiloHubLogo";
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
+  Text,
+  Platform,
+} from "react-native";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAppDispatch } from "common/src/hooks/hooks";
+import { loginUser } from "common/src/redux/slices/authSlice";
+import { LoginSchema, LoginFormValues } from "common/src/validation/auth";
+import { FormInput } from "../components/FormInput";
 import { CustomButton } from "../components/CustomButton";
+import { FontAwesome } from "@expo/vector-icons";
 
-type Props = NativeStackScreenProps<any>;
+export default function LoginScreen({ navigation }: any) {
+  const dispatch = useAppDispatch();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    // @ts-expect-error Zod 4 + RHF v7 type mismatch
+    resolver: zodResolver(LoginSchema),
+    defaultValues: { email: "", password: "" },
+  });
 
-export default function LoginScreen({ navigation }: Props) {
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      await dispatch(loginUser(data)).unwrap();
+      navigation.replace("MainTabs");
+    } catch (err) {
+      console.error("Login failed", err);
+    }
+  };
+
   return (
-    <LinearGradient
-      colors={["#726DB3", "#0047AB", "#171623"]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 1 }}
-      className="flex justify-center h-full w-full px-10"
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#171623" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
     >
-      <View className="h-20 mb-5">
-        <AgiloHubLogo fill="#fff" />
-      </View>
+      <ScrollView
+        contentContainerStyle={{ paddingVertical: 56, paddingHorizontal: 20 }}
+        keyboardShouldPersistTaps="handled"
+        className="flex-1 bg-primaryBlue"
+      >
+        <View className="flex-row items-center mb-10">
+          <FontAwesome name="arrow-circle-left" size={24} color="#fff" />
+          <Text
+            onPress={() => navigation.goBack()}
+            className="font-montserrat-semibold text-white text-xl px-3 py-5"
+          >
+            Return to Register
+          </Text>
+        </View>
 
-      <Text className="text-2xl font-montserrat-semibold text-center text-white mb-20">
-        The No.1 hub{"\n"}for agile teams
-      </Text>
+        <Text className="text-3xl text-center mb-6 text-white font-montserrat-bold">
+          Login
+        </Text>
 
-      <View className="gap-5">
-        <CustomButton
-          text="Login"
-          onPress={() => navigation.replace("MainTabs")}
-          bgColor="bg-yellow"
-          textColor="text-black"
+        {/* Email */}
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, value } }) => (
+            <FormInput
+              label="Email"
+              placeholder="Enter your email"
+              value={value}
+              onChangeText={onChange}
+              error={errors.email?.message}
+            />
+          )}
         />
-        <CustomButton
-          text="Create Account"
-          onPress={() => navigation.navigate("Register")}
-          bgColor="bg-darkBlue"
+
+        {/* Password */}
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, value } }) => (
+            <FormInput
+              label="Password"
+              placeholder="Enter your password"
+              secure
+              autoCapitalize="none"
+              value={value}
+              onChangeText={onChange}
+              error={errors.password?.message}
+            />
+          )}
         />
-      </View>
-    </LinearGradient>
+
+        <View className="mt-6">
+          <CustomButton
+            text="Login"
+            onPress={handleSubmit(onSubmit)}
+            bgColor="bg-yellow"
+            textColor="text-black"
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

@@ -1,4 +1,4 @@
-import { View, Image, ImageBackground } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AgiloHubLogo } from "../components/AgiloHubLogo";
@@ -10,7 +10,7 @@ const splashBg = require("../assets/stars-bg.jpg");
 export default function SplashScreen({ navigation }: Props) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace("Login");
+      navigation.replace("Welcome");
     }, 3000);
     return () => clearTimeout(timer);
   }, []);

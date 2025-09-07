@@ -9,6 +9,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import PointsDisplay from "./components/PointsDisplay";
 import SettingsButton from "./components/SettingsButton";
 import SplashScreen from "./screens/Splashscreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import DashboardScreen from "./screens/DashboardScreen";
@@ -22,6 +23,7 @@ import MembersScreen from "./screens/Members";
 
 export type RootStackParamList = {
   Splash: undefined;
+  Welcome: undefined;
   Login: undefined;
   Register: undefined;
   MainTabs: undefined;
@@ -155,6 +157,7 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="MainTabs" component={MainTabs} />
