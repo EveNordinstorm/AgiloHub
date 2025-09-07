@@ -12,12 +12,12 @@ import {
 import { LoginSchema, LoginFormValues } from "common/src/validation/auth";
 import { loginUser } from "common/src/redux/slices/authSlice";
 import { useAppDispatch } from "common/src/hooks/hooks";
-import { toast } from "sonner";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
   const form = useForm<LoginFormValues>({
@@ -30,17 +30,19 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
+      setServerError(null);
       await dispatch(loginUser(data)).unwrap();
-      toast.success("Logged in successfully!");
-      onSuccess?.(); // close dialog
-    } catch (err) {
+      onSuccess?.();
+    } catch (err: unknown) {
+      let message = "Login failed";
       if (typeof err === "string") {
-        toast.error(err);
+        message = err;
       } else if (err instanceof Error) {
-        toast.error(err.message);
-      } else {
-        toast.error("Login failed");
+        message = err.message;
+      } else if (typeof err === "object" && err !== null && "error" in err) {
+        message = (err as { error: string }).error;
       }
+      setServerError(message);
     }
   };
 
@@ -51,6 +53,12 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
         className="w-full space-y-4 mt-5 text-white placeholder:text-white focus-visible:ring-yellow"
         id="login"
       >
+        {serverError && (
+          <p className="bg-red-600 text-white font-semibold text-center rounded-sm py-0.5">
+            {serverError}!
+          </p>
+        )}
+
         <FormField
           control={form.control}
           name="email"

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -16,6 +17,8 @@ import { FontAwesome } from "@expo/vector-icons";
 
 export default function LoginScreen({ navigation }: any) {
   const dispatch = useAppDispatch();
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const {
     control,
     handleSubmit,
@@ -28,10 +31,15 @@ export default function LoginScreen({ navigation }: any) {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
+      setServerError(null);
       await dispatch(loginUser(data)).unwrap();
       navigation.replace("MainTabs");
-    } catch (err) {
-      console.error("Login failed", err);
+    } catch (err: any) {
+      const message =
+        typeof err === "string"
+          ? err
+          : err?.message || err?.error || "Login failed";
+      setServerError(message);
     }
   };
 
@@ -59,6 +67,12 @@ export default function LoginScreen({ navigation }: any) {
         <Text className="text-3xl text-center mb-6 text-white font-montserrat-bold">
           Login
         </Text>
+
+        {serverError && (
+          <Text className="bg-red-600 text-white font-semibold text-lg text-center rounded py-1 mb-4">
+            {serverError}!
+          </Text>
+        )}
 
         {/* Email */}
         <Controller

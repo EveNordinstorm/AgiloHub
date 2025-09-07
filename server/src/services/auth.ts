@@ -30,10 +30,10 @@ export class AuthService {
 
   static async loginUser(email: string, password: string) {
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) throw new Error("Invalid credentials");
+    if (!user) throw new Error("Email not recognised");
 
     const valid = await bcrypt.compare(password, user.password);
-    if (!valid) throw new Error("Invalid credentials");
+    if (!valid) throw new Error("Incorrect password");
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: "1h",
