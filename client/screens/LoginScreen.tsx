@@ -82,8 +82,9 @@ export default function LoginScreen({ navigation }: any) {
             <FormInput
               label="Email"
               placeholder="Enter your email"
+              autoCapitalize="none"
               value={value}
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase())}
               error={errors.email?.message}
             />
           )}

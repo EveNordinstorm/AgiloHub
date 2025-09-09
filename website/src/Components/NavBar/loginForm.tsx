@@ -66,7 +66,11 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+                <Input
+                  placeholder="Enter your email"
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.value.toLowerCase())}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

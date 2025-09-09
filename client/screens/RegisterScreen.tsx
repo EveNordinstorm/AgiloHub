@@ -107,7 +107,7 @@ export default function RegisterScreen({ navigation }: any) {
               keyboardType="email-address"
               autoCapitalize="none"
               value={value}
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase())}
               error={errors.email?.message}
             />
           )}

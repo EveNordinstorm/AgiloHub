@@ -92,7 +92,13 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
               <FormItem>
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter email" {...field} />
+                  <Input
+                    placeholder="Enter email"
+                    {...field}
+                    onChange={(e) =>
+                      field.onChange(e.target.value.toLowerCase())
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

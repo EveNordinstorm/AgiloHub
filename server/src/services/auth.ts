@@ -13,13 +13,19 @@ export class AuthService {
     firstName: string,
     lastName: string
   ) {
+    const normalisedEmail = email.toLowerCase();
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) throw new Error("Email already registered");
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword, firstName, lastName },
+      data: {
+        email: normalisedEmail,
+        password: hashedPassword,
+        firstName,
+        lastName,
+      },
     });
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
@@ -29,7 +35,10 @@ export class AuthService {
   }
 
   static async loginUser(email: string, password: string) {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const normalisedEmail = email.toLowerCase();
+    const user = await prisma.user.findUnique({
+      where: { email: normalisedEmail },
+    });
     if (!user) throw new Error("Email not recognised");
 
     const valid = await bcrypt.compare(password, user.password);
