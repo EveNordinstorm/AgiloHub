@@ -1,9 +1,16 @@
 import { PrismaClient } from "../../generated/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET in environment variables");
+}
+const JWT_SECRET = process.env.JWT_SECRET;
 const SALT_ROUNDS = 10;
 
 export class AuthService {
