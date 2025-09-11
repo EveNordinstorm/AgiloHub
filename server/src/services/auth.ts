@@ -15,6 +15,25 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const SALT_ROUNDS = 10;
 
 export class AuthService {
+  private static async issueRefreshToken(userId: string) {
+    const refreshToken = randomBytes(64).toString("hex");
+    const refreshExpiry = new Date();
+    refreshExpiry.setDate(refreshExpiry.getDate() + 30); // 30 days
+
+    // delete old refresh tokens
+    await prisma.refreshToken.deleteMany({ where: { userId } });
+
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId,
+        expiresAt: refreshExpiry,
+      },
+    });
+
+    return refreshToken;
+  }
+
   static async registerUser(
     email: string,
     password: string,
@@ -22,7 +41,9 @@ export class AuthService {
     lastName: string
   ) {
     const normalisedEmail = email.toLowerCase();
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const existing = await prisma.user.findUnique({
+      where: { email: normalisedEmail },
+    });
     if (existing) throw new Error("Email already registered");
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -36,10 +57,13 @@ export class AuthService {
       },
     });
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: "1h",
+    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      expiresIn: "15m",
     });
-    return { user, token };
+
+    const refreshToken = await this.issueRefreshToken(user.id);
+
+    return { user, accessToken, refreshToken };
   }
 
   static async loginUser(email: string, password: string) {
@@ -57,18 +81,7 @@ export class AuthService {
       expiresIn: "15m",
     });
 
-    // Refresh token (create random string)
-    const refreshToken = randomBytes(64).toString("hex");
-    const refreshExpiry = new Date();
-    refreshExpiry.setDate(refreshExpiry.getDate() + 30); // 30 days
-
-    await prisma.refreshToken.create({
-      data: {
-        token: refreshToken,
-        userId: user.id,
-        expiresAt: refreshExpiry,
-      },
-    });
+    const refreshToken = await this.issueRefreshToken(user.id);
 
     return { user, accessToken, refreshToken };
   }
@@ -83,11 +96,18 @@ export class AuthService {
       throw new Error("Invalid or expired refresh token");
     }
 
+    // rotate refresh token
+    const newRefreshToken = await this.issueRefreshToken(stored.userId);
+
     const newAccessToken = jwt.sign({ userId: stored.userId }, JWT_SECRET, {
       expiresIn: "15m",
     });
 
-    return { accessToken: newAccessToken };
+    return {
+      user: stored.user,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
   }
 
   static async getUserById(userId: string) {

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setAccessToken, logout } from "common/redux/slices/authSlice";
+import { setAccessToken, logout, setUser } from "common/redux/slices/authSlice";
 import api from "common/utils/api";
 
 export default function AuthBootstrapper() {
@@ -11,15 +11,13 @@ export default function AuthBootstrapper() {
   useEffect(() => {
     const bootstrap = async () => {
       try {
-        // Only attempt refresh if refresh cookie exists
-        if (document.cookie.includes("refreshToken")) {
-          const { data } = await api.post(
-            "/auth/refresh",
-            {},
-            { withCredentials: true }
-          );
-          dispatch(setAccessToken(data.accessToken));
-        }
+        const { data } = await api.post(
+          "/auth/refresh",
+          {},
+          { withCredentials: true }
+        );
+        dispatch(setAccessToken(data.accessToken));
+        dispatch(setUser(data.user));
       } catch {
         dispatch(logout());
       }

@@ -5,7 +5,7 @@ import {
   setAccessToken,
 } from "../redux/slices/authSlice";
 
-// Use a store reference setter
+// store reference setter
 let storeRef: any = null;
 export function setStore(s: any) {
   storeRef = s;
@@ -17,7 +17,7 @@ export function setRefreshTokenGetter(fn: () => Promise<string | null>) {
 }
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || process.env.API_URL,
+  baseURL: "http://localhost:5000",
   withCredentials: true,
 });
 
@@ -32,26 +32,19 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    const hasRefreshToken =
-      refreshTokenGetter || document.cookie.includes("refreshToken");
-
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      hasRefreshToken
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // Mobile: get refresh token from secure store if set
-        let refreshToken: string | null = null;
+        // mobile can still supply refresh token in body
+        let refreshToken: string | undefined;
         if (refreshTokenGetter) {
-          refreshToken = await refreshTokenGetter();
+          const token = await refreshTokenGetter();
+          if (token) refreshToken = token;
         }
 
-        // call thunk
         const result = await storeRef
-          .dispatch(refreshAccessToken(refreshToken || undefined))
+          .dispatch(refreshAccessToken(refreshToken))
           .unwrap();
 
         storeRef.dispatch(setAccessToken(result.accessToken));
@@ -67,4 +60,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 export default api;

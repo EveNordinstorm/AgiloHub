@@ -15,7 +15,23 @@ export class AuthController {
         firstName,
         lastName
       );
-      res.json(result);
+
+      // set refresh cookie for web
+      if (result.refreshToken) {
+        res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, {
+          httpOnly: true,
+          secure: false, // dev
+          sameSite: "lax",
+          maxAge: REFRESH_COOKIE_AGE,
+          path: "/",
+        });
+      }
+
+      // send back only what client needs
+      res.json({
+        user: result.user,
+        accessToken: result.accessToken,
+      });
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
@@ -29,14 +45,17 @@ export class AuthController {
       if (result.refreshToken) {
         res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+          secure: false, // dev
+          sameSite: "lax",
           maxAge: REFRESH_COOKIE_AGE,
           path: "/",
         });
       }
 
-      res.json(result);
+      res.json({
+        user: result.user,
+        accessToken: result.accessToken,
+      });
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
@@ -48,23 +67,31 @@ export class AuthController {
       const bodyToken = req.body?.refreshToken;
       const refreshToken = cookieToken || bodyToken;
 
+      if (!cookieToken) {
+        return res.json({ accessToken: null });
+      }
+
       if (!refreshToken) {
         return res.status(400).json({ error: "No refresh token provided" });
       }
 
       const result = await AuthService.refreshToken(refreshToken);
 
-      if ("refreshToken" in result && result.refreshToken) {
+      // set new cookie (rotated refresh token)
+      if (result.refreshToken) {
         res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+          secure: false, // dev
+          sameSite: "lax",
           maxAge: REFRESH_COOKIE_AGE,
           path: "/",
         });
       }
 
-      res.json(result);
+      res.json({
+        user: result.user,
+        accessToken: result.accessToken,
+      });
     } catch (err: any) {
       res.status(401).json({ error: err.message });
     }
@@ -74,8 +101,8 @@ export class AuthController {
     // clear refresh cookie
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: false, // dev
+      sameSite: "lax",
     });
     res.status(200).json({ message: "Logged out" });
   }

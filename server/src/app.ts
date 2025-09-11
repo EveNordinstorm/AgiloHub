@@ -17,14 +17,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/auth", authRoutes);
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
-    credentials: true,
-  })
-);
+app.use("/auth", authRoutes);
 
 export default app;
