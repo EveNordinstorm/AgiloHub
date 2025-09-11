@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/auth";
 import { AuthRequest } from "../middleware/auth";
 
+const REFRESH_COOKIE_NAME = "refreshToken";
+const REFRESH_COOKIE_AGE = 30 * 24 * 60 * 60 * 1000; // 30 days
+
 export class AuthController {
   static async register(req: Request, res: Response) {
     try {
@@ -22,10 +25,59 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const result = await AuthService.loginUser(email, password);
+
+      if (result.refreshToken) {
+        res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+          maxAge: REFRESH_COOKIE_AGE,
+          path: "/",
+        });
+      }
+
       res.json(result);
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
+  }
+
+  static async refresh(req: Request, res: Response) {
+    try {
+      const cookieToken = (req as any).cookies?.[REFRESH_COOKIE_NAME];
+      const bodyToken = req.body?.refreshToken;
+      const refreshToken = cookieToken || bodyToken;
+
+      if (!refreshToken) {
+        return res.status(400).json({ error: "No refresh token provided" });
+      }
+
+      const result = await AuthService.refreshToken(refreshToken);
+
+      if ("refreshToken" in result && result.refreshToken) {
+        res.cookie(REFRESH_COOKIE_NAME, result.refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+          maxAge: REFRESH_COOKIE_AGE,
+          path: "/",
+        });
+      }
+
+      res.json(result);
+    } catch (err: any) {
+      res.status(401).json({ error: err.message });
+    }
+  }
+
+  static async logout(req: Request, res: Response) {
+    // clear refresh cookie
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.status(200).json({ message: "Logged out" });
   }
 
   static async profile(req: AuthRequest, res: Response) {

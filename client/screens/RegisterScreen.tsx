@@ -1,3 +1,4 @@
+import { setRefreshToken } from "../secureStore";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -34,7 +35,12 @@ export default function RegisterScreen({ navigation }: any) {
 
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-      await dispatch(registerUser(data)).unwrap();
+      const result = await dispatch(registerUser(data)).unwrap();
+
+      if (result.refreshToken) {
+        await setRefreshToken(result.refreshToken);
+      }
+
       navigation.replace("MainTabs");
     } catch (err) {
       console.error("Registration failed", err);

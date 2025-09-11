@@ -4,14 +4,14 @@ import type { IUser } from "../../types/interfaces/user";
 
 export interface AuthState {
   user: IUser | null;
-  token: string | null;
+  accessToken: string | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
-  token: null,
+  accessToken: null,
   loading: false,
   error: null,
 };
@@ -51,6 +51,22 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// mobile uses token param
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refresh",
+  async (refreshToken?: string) => {
+    if (refreshToken) {
+      // mobile: send token explicitly
+      const res = await api.post("/auth/refresh", { refreshToken });
+      return res.data;
+    } else {
+      // web: cookie automatically sent
+      const res = await api.post("/auth/refresh");
+      return res.data;
+    }
+  }
+);
+
 // Slice
 export const authSlice = createSlice({
   name: "auth",
@@ -58,8 +74,11 @@ export const authSlice = createSlice({
   reducers: {
     logout(state) {
       state.user = null;
-      state.token = null;
+      state.accessToken = null;
       state.error = null;
+    },
+    setAccessToken(state, action) {
+      state.accessToken = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -71,7 +90,7 @@ export const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.accessToken = action.payload.token;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -84,7 +103,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.accessToken = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -93,5 +112,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setAccessToken } = authSlice.actions;
 export default authSlice.reducer;

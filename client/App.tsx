@@ -1,4 +1,6 @@
 import { Providers } from "./providers";
+import { setRefreshTokenGetter } from "common/src/utils/api";
+import { getRefreshToken } from "./secureStore";
 import "./global.css";
 import { useFonts } from "expo-font";
 import { Text as RNText, TextProps, TextStyle } from "react-native";
@@ -20,6 +22,8 @@ import ChatsScreen from "./screens/ChatsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import AgileGuideScreen from "./screens/AgileGuide";
 import MembersScreen from "./screens/Members";
+
+setRefreshTokenGetter(getRefreshToken);
 
 export type RootStackParamList = {
   Splash: undefined;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
+import AuthBootstrapper from "./authBootstrapper";
 import { Montserrat_Alternates } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "@/components/NavBar/navBar";
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en" className={`${montserratAlternates.variable} antialiased`}>
       <body className="font-sans">
         <Providers>
+          <AuthBootstrapper />
           <NavBar />
           <main className="pt-16">{children}</main>
         </Providers>

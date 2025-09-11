@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -17,5 +18,13 @@ app.use(
 
 app.use(express.json());
 app.use("/auth", authRoutes);
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 export default app;

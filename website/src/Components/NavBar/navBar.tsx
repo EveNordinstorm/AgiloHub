@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "common/utils/api";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -93,9 +94,17 @@ export function NavBar() {
                   {user && (
                     <NavigationMenuLink asChild>
                       <button
-                        onClick={() => {
-                          dispatch(logout());
-                          router.push("/");
+                        onClick={async () => {
+                          try {
+                            // tclear the cookie
+                            await api.post("/auth/logout");
+                          } catch (e) {
+                            console.error("Failed to log out on server", e);
+                          } finally {
+                            // clear Redux state locally
+                            dispatch(logout());
+                            router.push("/");
+                          }
                         }}
                         className="bg-black text-white hover:bg-black/70 px-3 py-1 rounded"
                       >
@@ -155,9 +164,17 @@ export function NavBar() {
                     {user && (
                       <NavigationMenuLink asChild>
                         <button
-                          onClick={() => {
-                            dispatch(logout());
-                            router.push("/");
+                          onClick={async () => {
+                            try {
+                              // tclear the cookie
+                              await api.post("/auth/logout");
+                            } catch (e) {
+                              console.error("Failed to log out on server", e);
+                            } finally {
+                              // clear Redux state locally
+                              dispatch(logout());
+                              router.push("/");
+                            }
                           }}
                           className="bg-black text-white hover:bg-black/70 px-3 py-1 rounded"
                         >

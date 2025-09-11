@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { setRefreshToken } from "../secureStore";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -32,13 +33,21 @@ export default function LoginScreen({ navigation }: any) {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       setServerError(null);
-      await dispatch(loginUser(data)).unwrap();
+
+      const result = await dispatch(loginUser(data)).unwrap();
+
+      if (result.refreshToken) {
+        await setRefreshToken(result.refreshToken);
+      }
+
       navigation.replace("MainTabs");
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message =
         typeof err === "string"
           ? err
-          : err?.message || err?.error || "Login failed";
+          : (err as { message?: string; error?: string })?.message ||
+            (err as { error?: string })?.error ||
+            "Login failed";
       setServerError(message);
     }
   };

@@ -2,6 +2,7 @@ import { PrismaClient } from "../../generated/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { randomBytes } from "crypto";
 
 dotenv.config();
 
@@ -51,10 +52,42 @@ export class AuthService {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) throw new Error("Incorrect password");
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: "1h",
+    // Access token
+    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      expiresIn: "15m",
     });
-    return { user, token };
+
+    // Refresh token (create random string)
+    const refreshToken = randomBytes(64).toString("hex");
+    const refreshExpiry = new Date();
+    refreshExpiry.setDate(refreshExpiry.getDate() + 30); // 30 days
+
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: user.id,
+        expiresAt: refreshExpiry,
+      },
+    });
+
+    return { user, accessToken, refreshToken };
+  }
+
+  static async refreshToken(token: string) {
+    const stored = await prisma.refreshToken.findUnique({
+      where: { token },
+      include: { user: true },
+    });
+
+    if (!stored || stored.expiresAt < new Date()) {
+      throw new Error("Invalid or expired refresh token");
+    }
+
+    const newAccessToken = jwt.sign({ userId: stored.userId }, JWT_SECRET, {
+      expiresIn: "15m",
+    });
+
+    return { accessToken: newAccessToken };
   }
 
   static async getUserById(userId: string) {

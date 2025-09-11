@@ -1,3 +1,4 @@
+import { deleteRefreshToken } from "../secureStore";
 import { View, Text } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
@@ -13,6 +14,7 @@ export default function SettingsScreen({ navigation }: Props) {
   const handleLogout = () => {
     dispatch(logout());
     navigation.replace("Welcome");
+    deleteRefreshToken();
   };
 
   return (
