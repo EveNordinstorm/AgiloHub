@@ -1,3 +1,6 @@
+import { Providers } from "./providers";
+import { setRefreshTokenGetter } from "common/src/utils/api";
+import { getRefreshToken } from "./secureStore";
 import "./global.css";
 import { useFonts } from "expo-font";
 import { Text as RNText, TextProps, TextStyle } from "react-native";
@@ -8,6 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import PointsDisplay from "./components/PointsDisplay";
 import SettingsButton from "./components/SettingsButton";
 import SplashScreen from "./screens/Splashscreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import DashboardScreen from "./screens/DashboardScreen";
@@ -19,8 +23,11 @@ import SettingsScreen from "./screens/SettingsScreen";
 import AgileGuideScreen from "./screens/AgileGuide";
 import MembersScreen from "./screens/Members";
 
+setRefreshTokenGetter(getRefreshToken);
+
 export type RootStackParamList = {
   Splash: undefined;
+  Welcome: undefined;
   Login: undefined;
   Register: undefined;
   MainTabs: undefined;
@@ -145,22 +152,28 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: "#171623" },
-        }}
-      >
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="MainTabs" component={MainTabs} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
-        <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
-        <Stack.Screen name="Members" component={MembersScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Providers>
+      <NavigationContainer theme={MyTheme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: "#171623" },
+          }}
+        >
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="MainTabs" component={MainTabs} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen
+            name="ProjectDetails"
+            component={ProjectDetailsScreen}
+          />
+          <Stack.Screen name="AgileGuide" component={AgileGuideScreen} />
+          <Stack.Screen name="Members" component={MembersScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Providers>
   );
 }
