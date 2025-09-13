@@ -55,6 +55,7 @@ export class AuthController {
       res.json({
         user: result.user,
         accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
       });
     } catch (err: any) {
       res.status(400).json({ error: err.message });
