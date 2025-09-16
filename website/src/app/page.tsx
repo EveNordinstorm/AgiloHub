@@ -21,11 +21,11 @@ export default function Home() {
     <>
       <main>
         <Hero />
-        <section className="py-16 bg-dark-blue px-8 md:px-14 lg:px-20">
+        <section className="bg-dark-blue py-16 lg:py-26 px-8 md:px-14 lg:px-20 xl:px-26">
           <h2 className="text-lg md:text-2xl text-white font-bold text-center mb-12">
             {`Don't just listen to us, here's what our clients say:`}
           </h2>
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-5 md:gap-10 md:grid-cols-3">
             {testimonials.map((t, index) => (
               <TestimonialCard
                 key={index}
