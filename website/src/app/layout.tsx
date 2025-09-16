@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "Organise projects, tasks, and teams with our agile gamified project management tool. Built with React Native & Next.js.",
   openGraph: {
     type: "website",
-    url: "https://evenordinstorm.com",
+    url: "https://agilohub.com",
     title: "Agile Project Management App",
     description:
       "Manage projects, tasks, timelines in a gamified experience, including team collaboration with chat.",

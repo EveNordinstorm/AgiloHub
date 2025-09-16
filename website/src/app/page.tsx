@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "Home | AgiloHub",
     description:
       "Gamified agile project management with points, collaboration, and productivity tools.",
-    url: "https://evenordinstorm.com",
+    url: "https://agilohub.com",
     images: ["/AgiloHub-mobile-mockup.png"],
   },
 };
