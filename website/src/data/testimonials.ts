@@ -2,18 +2,21 @@ import { TestimonialCardProps } from "@/components/Testimonials/testimonialCard"
 
 export const testimonials: TestimonialCardProps[] = [
   {
-    quote: "This product transformed our workflow and boosted productivity!",
-    name: "Jane Doe",
-    title: "Product Manager",
-  },
-  {
-    quote: "I can't imagine working without this tool. It's amazing.",
+    quote:
+      "AgiloHub has become vital to my team’s organisation and productivity.",
     name: "John Smith",
-    title: "Software Engineer",
+    title: "Chief Technology Officer",
   },
   {
-    quote: "Exceptional service and support. Highly recommend.",
-    name: "Alice Johnson",
-    title: "UX Designer",
+    quote:
+      "This has become a game changer, quite literally, to my motivation. I look forward to earning points, not dreading tasks.",
+    name: "Amy Lee",
+    title: "Senior Frontend Developer",
+  },
+  {
+    quote:
+      "I’ve seen how well this app gets everyone engaged on shared goals. I wouldn’t start a project without it - it’s the new way to be agile.",
+    name: "Adam Robinson",
+    title: "Data Engineer",
   },
 ];
