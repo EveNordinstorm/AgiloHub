@@ -1,13 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { AgiloHubLogo } from "@/components/Logos/AgiloHubLogo";
 import { motion } from "motion/react";
 
 export function Hero() {
+  const router = useRouter();
+
   return (
     <div>
-      <div className="relative bg-dark-blue h-[400px] sm:h-[500px] md:h-[600px] xl:h-[700px] -z-20 overflow-hidden">
+      <div className="relative h-[500px] sm:h-[600px] md:h-[600px] xl:h-[700px] overflow-hidden">
         <motion.div
           className="absolute inset-0 -z-10"
           initial={{ opacity: 0 }}
@@ -24,7 +27,7 @@ export function Hero() {
           />
         </motion.div>
 
-        <section className="container mx-auto px-6 md:px-28 xl:px-32 py-12 h-[400px] sm:h-[500px] md:h-[600px] xl:h-[700px] flex flex-col md:flex-row items-center md:justify-between">
+        <section className="container mx-auto px-6 md:px-28 xl:px-32 py-12 flex flex-col md:flex-row items-center md:justify-between h-full">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -35,6 +38,15 @@ export function Hero() {
             <h1 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-3xl">
               The No.1 hub for Agile teams
             </h1>
+            <p className="text-white font-bold lg:text-lg">
+              Get the free gamified app
+            </p>
+            <button
+              onClick={() => router.push("/store")}
+              className="bg-yellow hover:bg-primary-blue hover:text-white transition-colors duration-150 ease-in hover:cursor-pointer font-bold text-base lg:text-lg rounded px-4 py-1.5"
+            >
+              Try Now
+            </button>
           </motion.div>
 
           <motion.div
