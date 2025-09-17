@@ -4,6 +4,7 @@ import AuthBootstrapper from "./authBootstrapper";
 import { Montserrat_Alternates } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "@/components/NavBar/navBar";
+import { Footer } from "@/components/Footer/footer";
 
 const montserratAlternates = Montserrat_Alternates({
   variable: "--font-sans",
@@ -58,6 +59,7 @@ export default function RootLayout({
           <AuthBootstrapper />
           <NavBar />
           <main className="pt-16">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>
