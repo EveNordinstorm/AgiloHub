@@ -17,6 +17,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   refreshTokens RefreshToken[]
+  subscriptionTier   SubscriptionTier? @relation(fields: [subscriptionTierId], references: [id])
+  subscriptionTierId String?
 }
 
 model RefreshToken {
@@ -26,4 +28,16 @@ model RefreshToken {
   userId    String
   createdAt DateTime @default(now())
   expiresAt DateTime
+}
+
+model SubscriptionTier {
+  id          String   @id @default(uuid())
+  tier        String   @unique
+  strapline   String?
+  features    String[]
+  description String?
+  buttonText  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[] // inverse relation
 }
