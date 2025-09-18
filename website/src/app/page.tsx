@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/Hero/hero";
 import { TestimonialCard } from "@/components/Testimonials/testimonialCard";
 import { testimonials } from "@/data/testimonials";
+import Image from "next/image";
+import FullTierCards from "@/components/SubscriptionTiers/fullTierCards";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -83,6 +85,19 @@ export default function Home() {
             </div>
           </section>
         </div>
+
+        <section className="relative h-[500px] sm:h-[600px] md:h-[600px] xl:h-[700px] overflow-hidde">
+          <div className="absolute inset-0 -z-10">
+            <Image
+              src="/stars-bg-01.svg"
+              alt="Background of stars in space"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+          <FullTierCards />
+        </section>
       </main>
     </>
   );
