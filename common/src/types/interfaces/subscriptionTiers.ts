@@ -5,4 +5,6 @@ export interface ISubscriptionTier {
   features: string[];
   description?: string;
   buttonText: string;
+  createdAt: string;
+  updatedAt: string;
 }

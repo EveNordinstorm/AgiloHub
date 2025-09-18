@@ -48,12 +48,25 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
+    const freeTier = await prisma.subscriptionTier.findUnique({
+      where: { tier: "Free" },
+    });
+    if (!freeTier) {
+      throw new Error(
+        "Free subscription tier not found. Ensure it exists in the database."
+      );
+    }
+
     const user = await prisma.user.create({
       data: {
         email: normalisedEmail,
         password: hashedPassword,
         firstName,
         lastName,
+        subscriptionTierId: freeTier.id, // assign free tier by default
+      },
+      include: {
+        subscriptionTier: true,
       },
     });
 
