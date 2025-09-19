@@ -124,7 +124,12 @@ export class AuthService {
   }
 
   static async getUserById(userId: string) {
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        subscriptionTier: true,
+      },
+    });
     if (!user) throw new Error("User not found");
     return user;
   }

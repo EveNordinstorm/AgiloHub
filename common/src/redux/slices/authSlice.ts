@@ -67,6 +67,20 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
+export const fetchProfile = createAsyncThunk(
+  "auth/fetchProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get("/auth/profile");
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data?.error || "Failed to fetch profile"
+      );
+    }
+  }
+);
+
 // Slice
 export const authSlice = createSlice({
   name: "auth",
@@ -115,6 +129,18 @@ export const authSlice = createSlice({
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;
         state.user = action.payload.user;
+      })
+      .addCase(fetchProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
