@@ -1,8 +1,8 @@
-interface FreeStarProps {
+interface EnterpriseStarProps {
   className?: string;
 }
 
-export const FreeStar = ({ className }: FreeStarProps) => (
+export const EnterpriseStar = ({ className }: EnterpriseStarProps) => (
   <svg
     className={className ?? "h-20"}
     aria-hidden="true"

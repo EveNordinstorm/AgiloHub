@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "common/hooks/hooks";
 import { fetchSubscriptionTiers } from "common/redux/slices/subscriptionSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FreeStar } from "../TierStars/FreeStar";
 import { ProStar } from "../TierStars/ProStar";
 import { EnterpriseStar } from "../TierStars/EnterpriseStar";
@@ -15,7 +13,7 @@ const starMap: Record<string, React.ReactNode> = {
   Enterprise: <EnterpriseStar className="fill-yellow h-20" />,
 };
 
-export default function FullTierCards() {
+export default function BriefTierCards() {
   const dispatch = useAppDispatch();
   const { tiers, loading, error } = useAppSelector(
     (state) => state.subscription
@@ -42,18 +40,16 @@ export default function FullTierCards() {
             {starMap[tier.tier] ?? null}
           </div>
 
-          <p className="text-center text-lg md:text-xl lg:text-2xl font-semibold text-primary-blue">
-            {tier.strapline}
-          </p>
-          <ul className="mt-2 lg:px-10 font-semibold text-primary-blue">
+          <ul className="mt-2 flex-col justify-items-center font-semibold text-white">
             {tier.features.map((f, i) => (
-              <li key={i}>
-                <FontAwesomeIcon icon={faCheckCircle} className="text-2xl" />{" "}
-                {f}
-              </li>
+              <div
+                key={i}
+                className="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+              >
+                <li>{f}</li>
+              </div>
             ))}
           </ul>
-          <p className="text-sm lg:text-lg mt-5">{tier.description}</p>
           <div className="flex-grow" />
           <button className="mt-4 px-4 py-2 w-full rounded-full bg-primary-blue hover:bg-dark-blue hover:cursor-pointer transition-colors ease-in text-white font-bold">
             {tier.buttonText}

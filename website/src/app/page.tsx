@@ -3,7 +3,7 @@ import { Hero } from "@/components/Hero/hero";
 import { TestimonialCard } from "@/components/Testimonials/testimonialCard";
 import { testimonials } from "@/data/testimonials";
 import Image from "next/image";
-import FullTierCards from "@/components/SubscriptionTiers/fullTierCards";
+import BriefTierCards from "@/components/SubscriptionTiers/briefTierCards";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -86,7 +86,7 @@ export default function Home() {
           </section>
         </div>
 
-        <section className="relative h-[500px] sm:h-[600px] md:h-[600px] xl:h-[700px] overflow-hidde">
+        <section className="relative h-[1350px] md:h-[550px] overflow-hidden">
           <div className="absolute inset-0 -z-10">
             <Image
               src="/stars-bg-01.svg"
@@ -96,7 +96,7 @@ export default function Home() {
               priority
             />
           </div>
-          <FullTierCards />
+          <BriefTierCards />
         </section>
       </main>
     </>
