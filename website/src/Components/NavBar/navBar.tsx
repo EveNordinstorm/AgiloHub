@@ -69,10 +69,7 @@ export function NavBar() {
                     <Link href="/store">Subscription Tiers</Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
-                    <Link href="/store">Products</Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link href="/store">Customer Service</Link>
+                    <Link href="/store#customer-service">Customer Service</Link>
                   </NavigationMenuLink>
                 </div>
               </NavigationMenuContent>
@@ -139,10 +136,9 @@ export function NavBar() {
                       <Link href="/store">Subscription Tiers</Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="/store">Products</Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/store">Customer Service</Link>
+                      <Link href="/store#customer-service">
+                        Customer Service
+                      </Link>
                     </NavigationMenuLink>
                   </div>
                 </NavigationMenuContent>

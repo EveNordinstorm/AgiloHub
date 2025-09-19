@@ -22,7 +22,7 @@ export default function StorePage() {
         </div>
         <FullTierCards />
       </section>
-      <section>
+      <section id="customer-service">
         <div className="bg-black text-white p-10 md:px-32 md:py-24 md:flex gap-6">
           <FontAwesomeIcon
             icon={faHeadset}
