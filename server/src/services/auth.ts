@@ -48,12 +48,25 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
+    const freeTier = await prisma.subscriptionTier.findUnique({
+      where: { tier: "Free" },
+    });
+    if (!freeTier) {
+      throw new Error(
+        "Free subscription tier not found. Ensure it exists in the database."
+      );
+    }
+
     const user = await prisma.user.create({
       data: {
         email: normalisedEmail,
         password: hashedPassword,
         firstName,
         lastName,
+        subscriptionTierId: freeTier.id, // assign free tier by default
+      },
+      include: {
+        subscriptionTier: true,
       },
     });
 
@@ -111,7 +124,12 @@ export class AuthService {
   }
 
   static async getUserById(userId: string) {
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        subscriptionTier: true,
+      },
+    });
     if (!user) throw new Error("User not found");
     return user;
   }

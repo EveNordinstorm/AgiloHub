@@ -67,6 +67,46 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
+export const fetchProfile = createAsyncThunk(
+  "auth/profile",
+  async (_, { rejectWithValue, dispatch, getState }) => {
+    const state: any = getState();
+    const token = state.auth.accessToken;
+
+    // If there is no access token, skip
+    if (!token) {
+      return rejectWithValue("No access token");
+    }
+
+    try {
+      const res = await api.get("/auth/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (err: any) {
+      // Handle expired token case
+      if (err.response?.status === 401) {
+        try {
+          const refreshed = await dispatch(
+            refreshAccessToken(undefined)
+          ).unwrap();
+          // retry profile fetch after refresh
+          const retryRes = await api.get("/auth/profile", {
+            headers: { Authorization: `Bearer ${refreshed.accessToken}` },
+          });
+          return retryRes.data;
+        } catch {
+          return rejectWithValue("Session expired. Please log in again.");
+        }
+      }
+
+      return rejectWithValue(
+        err.response?.data?.error || "Failed to fetch profile"
+      );
+    }
+  }
+);
+
 // Slice
 export const authSlice = createSlice({
   name: "auth",
@@ -115,6 +155,18 @@ export const authSlice = createSlice({
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;
         state.user = action.payload.user;
+      })
+      .addCase(fetchProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

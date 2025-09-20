@@ -69,10 +69,7 @@ export function NavBar() {
                     <Link href="/store">Subscription Tiers</Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
-                    <Link href="/store">Products</Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link href="/store">Customer Service</Link>
+                    <Link href="/store#customer-service">Customer Service</Link>
                   </NavigationMenuLink>
                 </div>
               </NavigationMenuContent>
@@ -86,17 +83,17 @@ export function NavBar() {
                     <Link href="/account">Account</Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
-                    <Link href="/account">Projects</Link>
+                    <Link href="/account#project-section">Projects</Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
-                    <Link href="/account">Tasks</Link>
+                    <Link href="/account#task-section">Tasks</Link>
                   </NavigationMenuLink>
                   {user && (
                     <NavigationMenuLink asChild>
                       <button
                         onClick={async () => {
                           try {
-                            // tclear the cookie
+                            // clear the cookie
                             await api.post("/auth/logout");
                           } catch (e) {
                             console.error("Failed to log out on server", e);
@@ -139,10 +136,9 @@ export function NavBar() {
                       <Link href="/store">Subscription Tiers</Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="/store">Products</Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/store">Customer Service</Link>
+                      <Link href="/store#customer-service">
+                        Customer Service
+                      </Link>
                     </NavigationMenuLink>
                   </div>
                 </NavigationMenuContent>
@@ -156,10 +152,10 @@ export function NavBar() {
                       <Link href="/account">Account</Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="/account">Projects</Link>
+                      <Link href="/account#project-section">Projects</Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="/account">Tasks</Link>
+                      <Link href="/account#task-section">Tasks</Link>
                     </NavigationMenuLink>
                     {user && (
                       <NavigationMenuLink asChild>

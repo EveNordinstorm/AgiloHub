@@ -1,70 +1,104 @@
-"use client";
-
+import type { Metadata } from "next";
+import { Hero } from "@/components/Hero/hero";
+import { TestimonialCard } from "@/components/Testimonials/testimonialCard";
+import { testimonials } from "@/data/testimonials";
 import Image from "next/image";
-import { AgiloHubLogo } from "@/components/Logos/AgiloHubLogo";
-import { motion } from "motion/react";
+import BriefTierCards from "@/components/SubscriptionTiers/briefTierCards";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Welcome to AgiloHub – the gamified agile project management tool to organise projects, tasks, and teams.",
+  openGraph: {
+    title: "Home | AgiloHub",
+    description:
+      "Gamified agile project management with points, collaboration, and productivity tools.",
+    url: "https://agilohub.com",
+    images: ["/AgiloHub-mobile-mockup.png"],
+  },
+};
 
 export default function Home() {
   return (
-    <div className="">
-      <div className="relative bg-dark-blue h-[400px] sm:h-[500px] md:h-[600px] xl:h-[700px] -z-20 overflow-hidden">
-        <motion.div
-          className="absolute inset-0 -z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          style={{ transformOrigin: "top" }}
-        >
-          <Image
-            src="/stars-bg-01.svg"
-            alt="Background of stars in space"
-            fill
-            className="object-cover"
-            priority
-          />
-        </motion.div>
+    <>
+      <main>
+        <Hero />
+        <section className="bg-dark-blue py-16 lg:py-26 px-8 md:px-14 lg:px-20 xl:px-26">
+          <h2 className="text-lg md:text-2xl text-white font-bold text-center mb-12">
+            {`Don't just listen to us, here's what our clients say:`}
+          </h2>
+          <div className="grid gap-5 md:gap-10 md:grid-cols-3">
+            {testimonials.map((t, index) => (
+              <TestimonialCard
+                key={index}
+                quote={t.quote}
+                name={t.name}
+                title={t.title}
+              />
+            ))}
+          </div>
+        </section>
 
-        <section className="container mx-auto px-6 md:px-28 xl:px-32 py-12 h-[400px] sm:h-[500px] md:h-[600px] xl:h-[700px] flex flex-col md:flex-row items-center md:justify-between">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="flex flex-col items-center md:items-start space-y-5 text-center md:text-left"
-          >
-            <AgiloHubLogo className="text-white w-48 md:w-72 lg:w-96" />
-            <h1 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-3xl">
-              The No.1 hub for Agile teams
-            </h1>
-          </motion.div>
+        {/* JSON-LD for testimonial SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Review",
+              itemReviewed: {
+                "@type": "Organization",
+                name: "AgiloHub",
+              },
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: "5",
+                bestRating: "5",
+              },
+              author: testimonials.map((t) => ({
+                "@type": "Person",
+                name: t.name,
+                jobTitle: t.title,
+                reviewBody: t.quote,
+              })),
+            }),
+          }}
+        />
 
-          <motion.div
-            className="hidden md:block h-96 w-0.5 bg-white mx-8"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            style={{ transformOrigin: "top" }}
-          ></motion.div>
+        <div className="bg-dark-blue">
+          <section className="bg-primary-blue py-16 lg:py-26 px-8 md:px-14 lg:px-20 xl:px-26 [clip-path:polygon(0%_0%,100%_10%,100%_100%,0%_100%)]">
+            <h2 className="text-lg md:text-2xl text-white font-bold text-center mt-8 mb-5 md:mb-12">
+              {`Gamify your tasks so your agile projects become motivational for your whole team`}
+            </h2>
+            <div className="md:flex justify-between items-center">
+              <ul className="list-disc text-white font-semibold text-lg md:text-xl lg:text-2xl mx-5 md:mx-10">
+                <li>Team projects</li>
+                <li>Member connections</li>
+                <li>Includes all Agile Methodologies</li>
+                <li>Work and personal projects</li>
+                <li>Mobile and desktop access</li>
+                <li>Rewarding productivity</li>
+              </ul>
+              <div className="bg-gray-100 w-full h-60 mt-10">
+                <p className="p-5 font-bold">Placeholder for images</p>
+              </div>
+            </div>
+          </section>
+        </div>
 
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="mt-8 md:mt-0"
-          >
+        <section className="relative h-[1350px] md:h-[550px] overflow-hidden">
+          <div className="absolute inset-0 -z-10">
             <Image
-              src="/AgiloHub-mobile-mockup.png"
-              alt="Mobile mock up of the AgiloHub app"
-              width={450}
-              height={450}
-              className="w-40 sm:w-60 md:w-72 lg:w-[350px] h-auto"
+              src="/stars-bg-01.svg"
+              alt="Background of stars in space"
+              fill
+              className="object-cover"
               priority
             />
-          </motion.div>
+          </div>
+          <BriefTierCards />
         </section>
-      </div>
-      <main className="bg-dark-blue">
-        <p className="text-white p-10">Additional content here</p>
       </main>
-    </div>
+    </>
   );
 }
