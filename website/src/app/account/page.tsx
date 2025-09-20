@@ -84,8 +84,12 @@ export default function AccountPage() {
       </div>
 
       <section className="py-8 space-y-4 md:space-y-8">
-        <ProjectContainer />
-        <TasksContainer />
+        <div id="project-section">
+          <ProjectContainer />
+        </div>
+        <div id="task-section">
+          <TasksContainer />
+        </div>
       </section>
     </div>
   );
