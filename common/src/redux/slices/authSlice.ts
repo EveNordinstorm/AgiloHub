@@ -70,25 +70,33 @@ export const refreshAccessToken = createAsyncThunk(
 export const fetchProfile = createAsyncThunk(
   "auth/profile",
   async (_, { rejectWithValue, dispatch, getState }) => {
+    const state: any = getState();
+    const token = state.auth.accessToken;
+
+    // If there is no access token, skip
+    if (!token) {
+      return rejectWithValue("No access token");
+    }
+
     try {
-      const res = await api.get("/auth/profile");
+      const res = await api.get("/auth/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return res.data;
     } catch (err: any) {
+      // Handle expired token case
       if (err.response?.status === 401) {
-        const state: any = getState();
-        const refreshToken = state.auth.refreshToken;
-
-        if (refreshToken) {
-          try {
-            const refreshed = await dispatch(
-              refreshAccessToken(refreshToken)
-            ).unwrap();
-            // retry profile fetch after refresh
-            const retryRes = await api.get("/auth/profile");
-            return retryRes.data;
-          } catch {
-            return rejectWithValue("Session expired. Please log in again.");
-          }
+        try {
+          const refreshed = await dispatch(
+            refreshAccessToken(undefined)
+          ).unwrap();
+          // retry profile fetch after refresh
+          const retryRes = await api.get("/auth/profile", {
+            headers: { Authorization: `Bearer ${refreshed.accessToken}` },
+          });
+          return retryRes.data;
+        } catch {
+          return rejectWithValue("Session expired. Please log in again.");
         }
       }
 
