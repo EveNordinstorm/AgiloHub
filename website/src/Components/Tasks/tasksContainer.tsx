@@ -1,13 +1,13 @@
-import { ProjectCard } from "./projectCard";
+import { TaskCard } from "./taskCard";
 
-export function ProjectContainer() {
+export function TasksContainer() {
   return (
     <div className="px-5 md:px-10">
       <div className="bg-black p-6 md:p-8">
         <h2 className="text-white font-bold text-xl md:text-2xl mb-4">
-          My Projects
+          My Tasks
         </h2>
-        <ProjectCard />
+        <TaskCard />
       </div>
     </div>
   );

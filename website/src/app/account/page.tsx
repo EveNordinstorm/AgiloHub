@@ -8,6 +8,7 @@ import { EnterpriseStar } from "@/components/TierStars/EnterpriseStar";
 import { useAppDispatch, useAppSelector } from "common/hooks/hooks";
 import { fetchProfile } from "common/redux/slices/authSlice";
 import { ProjectContainer } from "@/components/Projects/projectsContainer";
+import { TasksContainer } from "@/components/Tasks/tasksContainer";
 
 const starMap: Record<string, React.ReactNode> = {
   Free: <FreeStar className="fill-yellow h-8 md:h-10" />,
@@ -82,7 +83,10 @@ export default function AccountPage() {
         </section>
       </div>
 
-      <ProjectContainer />
+      <section className="py-8 space-y-4 md:space-y-8">
+        <ProjectContainer />
+        <TasksContainer />
+      </section>
     </div>
   );
 }
