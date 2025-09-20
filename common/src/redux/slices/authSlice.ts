@@ -68,12 +68,30 @@ export const refreshAccessToken = createAsyncThunk(
 );
 
 export const fetchProfile = createAsyncThunk(
-  "auth/fetchProfile",
-  async (_, { rejectWithValue }) => {
+  "auth/profile",
+  async (_, { rejectWithValue, dispatch, getState }) => {
     try {
       const res = await api.get("/auth/profile");
       return res.data;
     } catch (err: any) {
+      if (err.response?.status === 401) {
+        const state: any = getState();
+        const refreshToken = state.auth.refreshToken;
+
+        if (refreshToken) {
+          try {
+            const refreshed = await dispatch(
+              refreshAccessToken(refreshToken)
+            ).unwrap();
+            // retry profile fetch after refresh
+            const retryRes = await api.get("/auth/profile");
+            return retryRes.data;
+          } catch {
+            return rejectWithValue("Session expired. Please log in again.");
+          }
+        }
+      }
+
       return rejectWithValue(
         err.response?.data?.error || "Failed to fetch profile"
       );

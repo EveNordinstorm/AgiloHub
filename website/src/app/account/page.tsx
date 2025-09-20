@@ -16,15 +16,29 @@ const starMap: Record<string, React.ReactNode> = {
 
 export default function AccountPage() {
   const dispatch = useAppDispatch();
-  const { user, loading, error } = useAppSelector((state) => state.auth);
+  const { user, loading, error, accessToken } = useAppSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
-    dispatch(fetchProfile());
-  }, [dispatch]);
+    if (accessToken) {
+      dispatch(fetchProfile());
+    }
+  }, [dispatch, accessToken]);
 
   if (loading) return <p className="text-white">Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!user) return <p className="text-white">No user data</p>;
+  if (!user) {
+    return (
+      <div className="bg-dark-blue flex justify-center items-center text-center min-h-screen">
+        <p className="text-white text-lg md:text-xl">
+          Please <span className="font-bold">log in</span> or{" "}
+          <span className="font-bold">sign up</span> to view your account
+          details.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-dark-blue flex justify-center">
@@ -44,7 +58,7 @@ export default function AccountPage() {
           <div className="flex gap-2 items-center">
             {starMap[user.subscriptionTier?.tier ?? "Free"]}
             <p className="text-white font-semibold md:text-lg">
-              {user.subscriptionTier?.tier} plan
+              {user.subscriptionTier?.tier ?? "Free"} plan
             </p>
           </div>
         </div>
