@@ -7,6 +7,7 @@ import { TechnologyStack } from "./technologyStack";
 import { Methodology } from "./methodology";
 import { Timeline } from "./timeline";
 import TaskCards from "../../Tasks/taskCards";
+import { PointsToEarn } from "./pointsToEarn";
 
 type Section = {
   title: string;
@@ -78,7 +79,7 @@ const SECTIONS: Section[] = [
   {
     title: "Points to earn!",
     icon: <FontAwesome name="star" color="yellow" size={24} />,
-    content: "Section to go here.",
+    content: <PointsToEarn totalPoints={4000} />,
   },
 ];
 
