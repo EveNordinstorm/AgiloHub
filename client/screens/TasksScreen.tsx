@@ -24,7 +24,7 @@ export default function TasksScreen({ navigation }: Props) {
         />
       </View>
 
-      <View className="bg-primaryPurple flex-1 rounded-t-full mx-8 pt-5 pb-10">
+      <View className="bg-primaryPurple h-full rounded-t-full mx-8 pt-5 pb-10">
         <View className="w-full px-6 flex-1">
           <Text className="font-montserrat-semibold text-white text-center text-lg mb-2">
             Complete all{"\n"}tasks to earn:
