@@ -38,7 +38,7 @@ export default function DashboardScreen() {
       <View className="flex-row items-center justify-center gap-2 mt-4 mb-8">
         <View className="w-8 h-8">{tierStar}</View>
         <Text className="text-white font-montserrat-semibold text-xl">
-          {tier} Plan
+          {tier} plan
         </Text>
       </View>
 
