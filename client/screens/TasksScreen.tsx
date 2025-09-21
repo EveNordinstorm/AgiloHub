@@ -2,12 +2,13 @@ import { ScrollView, View, Text, Pressable } from "react-native";
 import { CustomButton } from "../components/CustomButton";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
+import TaskCards from "../components/Tasks/taskCards";
 
 type Props = NativeStackScreenProps<any>;
 
 export default function TasksScreen({ navigation }: Props) {
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <View style={{ flex: 1 }}>
       <View className="flex-row justify-center">
         <Text className="font-montserrat-bold text-white text-3xl mb-3">
           Tasks
@@ -23,8 +24,8 @@ export default function TasksScreen({ navigation }: Props) {
         />
       </View>
 
-      <View className="bg-primaryPurple h-full rounded-t-full mx-8 pt-5 pb-10">
-        <View className="w-full px-6">
+      <View className="bg-primaryPurple flex-1 rounded-t-full mx-8 pt-5 pb-10">
+        <View className="w-full px-6 flex-1">
           <Text className="font-montserrat-semibold text-white text-center text-lg mb-2">
             Complete all{"\n"}tasks to earn:
           </Text>
@@ -54,12 +55,20 @@ export default function TasksScreen({ navigation }: Props) {
 
             <Pressable className="flex-1 items-center justify-center bg-white py-2">
               <Text className="font-montserrat-bold text-xl text-darkBlue">
-                Tasks
+                Personal
               </Text>
             </Pressable>
           </View>
+
+          <ScrollView
+            style={{ flex: 1, marginTop: 16 }}
+            contentContainerStyle={{ paddingBottom: 80 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <TaskCards />
+          </ScrollView>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }
