@@ -24,9 +24,9 @@ export default function TasksScreen({ navigation }: Props) {
         />
       </View>
 
-      <View className="bg-primaryPurple h-full rounded-t-full mx-8 pt-5 pb-10">
+      <View className="bg-primaryPurple h-full rounded-t-full mx-8 pt-8 pb-10">
         <View className="w-full px-6 flex-1">
-          <Text className="font-montserrat-semibold text-white text-center text-lg mb-2">
+          <Text className="font-montserrat-semibold text-white text-center text-lg/6 mb-2">
             Complete all{"\n"}tasks to earn:
           </Text>
 
@@ -46,15 +46,15 @@ export default function TasksScreen({ navigation }: Props) {
             Filter by:
           </Text>
 
-          <View className="flex-row mt-2 w-full">
-            <Pressable className="flex-1 items-center justify-center bg-darkBlue py-2">
+          <View className="flex-row w-full">
+            <Pressable className="flex-1 items-center justify-center bg-darkPurple py-2">
               <Text className="font-montserrat-bold text-xl text-white">
                 Projects
               </Text>
             </Pressable>
 
             <Pressable className="flex-1 items-center justify-center bg-white py-2">
-              <Text className="font-montserrat-bold text-xl text-darkBlue">
+              <Text className="font-montserrat-bold text-xl text-darkPurple">
                 Personal
               </Text>
             </Pressable>

@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Text, View, LayoutAnimation } from "react-native";
+import { Text, ScrollView, View, LayoutAnimation } from "react-native";
 import { FontAwesome5, FontAwesome, Feather } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
 import { ProjectOverview } from "./projectOverview";
 import { TechnologyStack } from "./technologyStack";
 import { Methodology } from "./methodology";
 import { Timeline } from "./timeline";
+import TaskCards from "../../Tasks/taskCards";
 
 type Section = {
   title: string;
@@ -63,7 +64,13 @@ const SECTIONS: Section[] = [
   {
     title: "Tasks",
     icon: <FontAwesome5 name="list" color="white" size={20} />,
-    content: "Section to go here.",
+    content: (
+      <View className="h-48">
+        <ScrollView>
+          <TaskCards />
+        </ScrollView>
+      </View>
+    ),
   },
   {
     title: "Points to earn!",

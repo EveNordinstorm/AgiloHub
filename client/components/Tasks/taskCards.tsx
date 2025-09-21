@@ -61,7 +61,7 @@ export function TaskCardItem({
         onPressOut={handlePressOut}
       >
         <Animated.View style={{ transform: [{ scale }] }}>
-          <View className="bg-darkPurple p-5">
+          <View className="bg-darkBlue p-5">
             <View className="flex-row justify-between">
               <Text
                 className="text-white font-montserrat-bold text-xl mb-2 flex-1 flex-shrink"

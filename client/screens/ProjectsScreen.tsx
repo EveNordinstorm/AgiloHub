@@ -13,7 +13,7 @@ export default function ProjectsScreen({ navigation }: Props) {
           Projects
         </Text>
       </View>
-      <View className="mx-10 mb-7">
+      <View className="mx-5 mb-7">
         <CustomButton
           text="Create New Project"
           bgColor="bg-yellow"
