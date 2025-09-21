@@ -50,9 +50,12 @@ const SECTIONS: Section[] = [
     icon: <FontAwesome5 name="clock" color="white" size={20} />,
     content: (
       <Timeline
+        pointsEarned={830}
+        totalPoints={4000}
         stage={1}
         stageDescription="Planning content and solidifying technology stack."
-        icon={<FontAwesome name="arrow-circle-right" size={24} color="#fff" />}
+        icon={<FontAwesome name="arrow-circle-down" size={24} color="#fff" />}
+        date={new Date("2025-09-21T15:30:00")}
       />
     ),
   },
