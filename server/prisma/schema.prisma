@@ -19,6 +19,8 @@ model User {
   refreshTokens RefreshToken[]
   subscriptionTier   SubscriptionTier? @relation(fields: [subscriptionTierId], references: [id])
   subscriptionTierId String?
+  projectsCreated Project[] @relation("ProjectCreator")
+  projectsMember Project[] @relation("ProjectMembers")
 }
 
 model RefreshToken {
@@ -40,4 +42,38 @@ model SubscriptionTier {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   users       User[] // inverse relation
+}
+
+model Methodology {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  definition  String
+  projects    Project[]
+}
+
+model ProjectStage {
+  id              String   @id @default(uuid())
+  description     String
+  pointsEarned    Int
+  totalPoints     Int
+  date            DateTime
+  project         Project  @relation(fields: [projectId], references: [id])
+  projectId       String
+  stageNumber     Int
+}
+
+model Project {
+  id              String   @id @default(uuid())
+  title           String
+  description     String?
+  techStack       String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  context         String?
+  methodology     Methodology? @relation(fields: [methodologyId], references: [id])
+  methodologyId   String?
+  creator         User     @relation("ProjectCreator", fields: [creatorId], references: [id])
+  creatorId       String
+  members         User[]   @relation("ProjectMembers")
+  stages          ProjectStage[]
 }
