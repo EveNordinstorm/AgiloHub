@@ -6,6 +6,7 @@ import { ProjectOverview } from "./projectOverview";
 import { TechnologyStack } from "./technologyStack";
 import { Methodology } from "./methodology";
 import { Timeline } from "./timeline";
+import { Members } from "./members";
 import TaskCards from "../../Tasks/taskCards";
 import { PointsToEarn } from "./pointsToEarn";
 
@@ -63,7 +64,7 @@ const SECTIONS: Section[] = [
   {
     title: "Members",
     icon: <FontAwesome5 name="users" color="white" size={20} />,
-    content: "Section to go here.",
+    content: <Members name={"Eve Nordinstorm"} />,
   },
   {
     title: "Tasks",
