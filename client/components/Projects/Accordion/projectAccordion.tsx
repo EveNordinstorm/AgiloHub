@@ -64,7 +64,13 @@ const SECTIONS: Section[] = [
   {
     title: "Members",
     icon: <FontAwesome5 name="users" color="white" size={20} />,
-    content: <Members name={"Eve Nordinstorm"} />,
+    content: (
+      <View className="h-36">
+        <ScrollView>
+          <Members name={"Eve Nordinstorm"} role={"Project Manager"} />
+        </ScrollView>
+      </View>
+    ),
   },
   {
     title: "Tasks",
