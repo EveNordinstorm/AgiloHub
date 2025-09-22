@@ -8,19 +8,15 @@ export class ProjectController {
       const { title, description, techStack, context, methodologyId, members } =
         req.body;
       const creatorId = req.userId!;
-      const techStackArr = techStack.split(",").map((t: string) => t.trim());
-      const memberEmails = members
-        .split(",")
-        .map((e: string) => e.trim().toLowerCase());
 
       const project = await ProjectService.createProject({
         title,
         description,
-        techStack: techStackArr,
+        techStack,
         context,
         methodologyId,
         creatorId,
-        memberEmails,
+        memberEmails: members,
       });
 
       res.json(project);
