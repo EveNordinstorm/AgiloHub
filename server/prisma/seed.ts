@@ -3,6 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 const prisma = new PrismaClient();
 
 async function main() {
+  // --- Subscription tiers ---
   await prisma.subscriptionTier.upsert({
     where: { tier: "Free" },
     update: {},
@@ -42,14 +43,52 @@ async function main() {
       buttonText: "Sign Up",
     },
   });
+
+  // --- Methodologies ---
+  const methodologies = [
+    {
+      id: "44444444-4444-4444-4444-444444444444",
+      name: "Scrum",
+      definition: "An iterative agile methodology with sprints and ceremonies.",
+    },
+    {
+      id: "55555555-5555-5555-5555-555555555555",
+      name: "Kanban",
+      definition: "A visual agile method focused on flow and limiting WIP.",
+    },
+    {
+      id: "66666666-6666-6666-6666-666666666666",
+      name: "Lean",
+      definition: "Eliminating waste and optimising efficiency.",
+    },
+    {
+      id: "77777777-7777-7777-7777-777777777777",
+      name: "Scrumban",
+      definition: "A hybrid of Scrum and Kanban practices.",
+    },
+    {
+      id: "88888888-8888-8888-8888-888888888888",
+      name: "Extreme Programming",
+      definition:
+        "Agile method focused on high quality through engineering practices.",
+    },
+  ];
+
+  for (const m of methodologies) {
+    await prisma.methodology.upsert({
+      where: { name: m.name },
+      update: { definition: m.definition },
+      create: m,
+    });
+  }
 }
 
 main()
   .then(() => {
-    console.log("Subscription tiers seeded");
+    console.log("✅ Seeding complete: subscriptions + methodologies");
   })
   .catch((e) => {
-    console.error("Seeding error:", e);
+    console.error("❌ Seeding error:", e);
     process.exit(1);
   })
   .finally(async () => {
