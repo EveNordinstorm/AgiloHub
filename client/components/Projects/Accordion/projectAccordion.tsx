@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAppSelector } from "common/src/hooks/hooks";
 import { Text, ScrollView, View, LayoutAnimation } from "react-native";
 import { FontAwesome5, FontAwesome, Feather } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
@@ -22,6 +23,17 @@ type Props = {
 };
 
 export default function ProjectAccordion({ project }: Props) {
+  const { items: methodologies } = useAppSelector((state) => state.methodology);
+
+  // Find the full methodology info for this project
+  const projectMethodology = methodologies.find(
+    (m) => m.id === project.methodology?.id
+  );
+
+  const definition =
+    projectMethodology?.definition ?? "No definition available";
+  const methodologyName = project.methodology?.name ?? "Unknown";
+
   const [activeSections, setActiveSections] = useState<number[]>([]);
 
   const SECTIONS: Section[] = [
@@ -38,20 +50,16 @@ export default function ProjectAccordion({ project }: Props) {
     {
       title: "Technology Stack",
       icon: <FontAwesome5 name="buffer" color="white" size={20} />,
-      content: (
-        <TechnologyStack
-          techStack={["React Native", "TypeScript", "Node.js", "PostgreSQL"]}
-        />
-      ),
+      content: <TechnologyStack techStack={project.techStack} />,
     },
     {
       title: "Methodology",
       icon: <FontAwesome5 name="chess-board" color="white" size={20} />,
       content: (
         <Methodology
-          methodology="LEAN"
-          definition="A principles-based approach focused on maximizing value and eliminating waste — build only what’s needed, validate quickly, improve continuously."
-          context="We are going with this methodology as the project requires a quick turnaround to meet funding. Additionally, our team is compact so focus is a priority."
+          methodology={methodologyName}
+          definition={definition}
+          context={project.context ?? ""}
         />
       ),
     },
@@ -73,9 +81,15 @@ export default function ProjectAccordion({ project }: Props) {
       title: "Members",
       icon: <FontAwesome5 name="users" color="white" size={20} />,
       content: (
-        <View className="h-36">
+        <View className="w-full h-36">
           <ScrollView>
-            <Members name={"Eve Nordinstorm"} role={"Project Manager"} />
+            {project.members.map((member) => (
+              <Members
+                key={member.id}
+                name={member.name}
+                email={member.email}
+              />
+            ))}
           </ScrollView>
         </View>
       ),
