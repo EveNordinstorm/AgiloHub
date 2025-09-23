@@ -106,7 +106,7 @@ export default function ProjectsScreen() {
 
   return (
     <View>
-      <View className="mx-5 mb-[110px]">
+      <View className="mx-5 mb-[220px]">
         <View className="flex-row justify-center">
           <Text className="font-montserrat-bold text-white text-3xl mb-3">
             Projects
