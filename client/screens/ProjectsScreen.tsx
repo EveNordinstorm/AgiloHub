@@ -36,6 +36,8 @@ export default function ProjectsScreen() {
   } = useForm<ProjectFormValues>({
     // @ts-expect-error Zod 4 + RHF v7 type mismatch
     resolver: zodResolver(ProjectSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       title: "",
       description: "",
@@ -248,15 +250,9 @@ export default function ProjectsScreen() {
                   )}
                 />
               </ScrollView>
-              <Text style={{ color: "yellow", textAlign: "center" }}>
-                {Object.values(errors)
-                  .map((e) => e?.message)
-                  .join(", ")}
-              </Text>
+
               <Pressable
-                onPress={() => {
-                  handleSubmit(onSubmit)();
-                }}
+                onPress={handleSubmit(onSubmit)}
                 className="bg-green-500 mt-4 rounded"
               >
                 <View className="flex-row items-center justify-center">
