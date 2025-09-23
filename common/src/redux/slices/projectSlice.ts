@@ -1,37 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "../../utils/apiCore";
-
-export type Member = {
-  id: string;
-  name: string;
-  role: string;
-};
-
-export type ProjectStage = {
-  stageNumber: number;
-  description: string;
-  pointsEarned: number;
-  totalPoints: number;
-  date: string;
-};
-
-export type Project = {
-  id: string;
-  title: string;
-  description?: string;
-  techStack: string[];
-  context?: string;
-  methodology?: {
-    id: string;
-    name: string;
-    definition: string;
-  };
-  creator: Member;
-  members: Member[];
-  stages: ProjectStage[];
-  createdAt: string;
-  updatedAt: string;
-};
+import { Project } from "../../types/interfaces/project";
 
 type ProjectsState = {
   projects: Project[];

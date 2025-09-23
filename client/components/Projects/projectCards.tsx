@@ -1,11 +1,17 @@
 import { View, Text, Pressable, Animated } from "react-native";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "common/src/hooks/hooks";
+import { Project } from "common/src/redux/slices/projectSlice";
+import { fetchProjects } from "common/src/redux/slices/projectSlice";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ProjectDetails"
+>;
 
 type CardItemProps = {
   title: string;
@@ -80,39 +86,43 @@ export function ProjectCardItem({
 
 export default function ProjectCards() {
   const navigation = useNavigation<NavigationProp>();
+  const dispatch = useAppDispatch();
 
-  const cards: CardItemProps[] = [
-    {
-      title: "SaaS Website",
-      methodology: "LEAN",
-      techStack: ["React", "TypeScript", "Next.js", "Node.js", "PostgreSQL"],
-      onPress: () => navigation.navigate("ProjectDetails"),
-    },
-    {
-      title: "React Native App",
-      methodology: "Scrum",
-      techStack: ["React Native", "TypeScript", "Node.js", "PostgreSQL"],
-      onPress: () => navigation.navigate("ProjectDetails"),
-    },
-    {
-      title: "eCommerce Store",
-      methodology: "Kanban",
-      techStack: ["Angular", "Express", "Node.js", "MongoDB"],
-      onPress: () => navigation.navigate("ProjectDetails"),
-    },
-    {
-      title: "Social Media Site",
-      methodology: "Scrumban",
-      techStack: ["Vue", ".NET Core", "Express", "SQL"],
-      onPress: () => navigation.navigate("ProjectDetails"),
-    },
-  ];
+  const { projects, loading, error } = useAppSelector((state) => state.project);
 
+  useEffect(() => {
+    if (projects.length === 0) {
+      dispatch(fetchProjects());
+    }
+  }, [dispatch, projects.length]);
+
+  if (loading) {
+    return (
+      <View>
+        <Text className="text-white">Loading projects...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text className="text-red-500">{error}</Text>
+      </View>
+    );
+  }
   return (
     <View className="flex-row flex-wrap justify-between">
-      {cards.map((item, index) => (
-        <View key={index} className="w-full mb-5">
-          <ProjectCardItem {...item} />
+      {projects.map((proj: Project) => (
+        <View key={proj.id} className="w-full mb-5">
+          <ProjectCardItem
+            title={proj.title}
+            methodology={proj.methodology?.name ?? "Unknown"}
+            techStack={proj.techStack}
+            onPress={() =>
+              navigation.navigate("ProjectDetails", { projectId: proj.id })
+            }
+          />
         </View>
       ))}
     </View>

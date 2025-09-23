@@ -34,7 +34,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Dashboard: undefined;
   Projects: undefined;
-  ProjectDetails: undefined;
+  ProjectDetails: { projectId: string };
   Tasks: undefined;
   Chats: undefined;
   AgileGuide: undefined;
