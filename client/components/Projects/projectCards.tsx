@@ -1,7 +1,7 @@
 import { View, Text, Pressable, Animated } from "react-native";
 import { useRef, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "common/src/hooks/hooks";
-import { Project } from "common/src/redux/slices/projectSlice";
+import { Project } from "common/src/types/interfaces/project";
 import { fetchProjects } from "common/src/redux/slices/projectSlice";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
