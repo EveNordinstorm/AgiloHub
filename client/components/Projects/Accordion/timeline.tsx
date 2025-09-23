@@ -4,13 +4,22 @@ import { FontAwesome } from "@expo/vector-icons";
 import { CustomButton } from "../../CustomButton";
 
 type TimelineProps = {
+  pointsEarned: number;
+  totalPoints: number;
   stage: number;
   stageDescription: string;
   icon: React.ReactNode;
-  date?: string; // TODO - Implement date tracking
+  date: Date;
 };
 
-export function Timeline({ stage, stageDescription, date }: TimelineProps) {
+export function Timeline({
+  pointsEarned,
+  totalPoints,
+  stage,
+  stageDescription,
+  icon,
+  date,
+}: TimelineProps) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
@@ -49,15 +58,40 @@ export function Timeline({ stage, stageDescription, date }: TimelineProps) {
         onRequestClose={closeModal}
       >
         <View className="flex-1 bg-black/50 justify-end">
-          <View className="bg-darkPurple rounded-t-lg min-h-[80%] w-[95%] mx-auto p-8">
+          <View className="bg-darkPurple rounded-t-lg h-[80%] w-[95%] mx-auto p-8">
             <ScrollView>
               <Text className="font-montserrat-bold text-2xl text-center text-white mb-4">
                 Project Timeline
               </Text>
-              <Text className="font-montserrat-semibold text-white">
-                {stageDescription}
-              </Text>
+
+              <View className="mx-auto mb-5">
+                <View className="flex-row items-center px-4 py-1 rounded-full bg-primaryBlue self-start">
+                  <FontAwesome name="star" size={22} color="#F8E23B" />
+                  <Text className="text-yellow font-montserrat-bold text-lg ml-2">
+                    {pointsEarned}/{totalPoints}
+                  </Text>
+                </View>
+              </View>
+
+              <View className="flex-row gap-3">
+                <View className="flex items-center">
+                  <View>{icon}</View>
+                  <View className="w-[2px] h-5 bg-white"></View>
+                </View>
+
+                <Text className="font-montserrat-semibold text-white">
+                  {stageDescription}
+                </Text>
+              </View>
             </ScrollView>
+
+            <Text className="text-white font-montserrat-semibold text-right">
+              {date.toLocaleString(undefined, {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </Text>
 
             <Pressable
               onPress={closeModal}
