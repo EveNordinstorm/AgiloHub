@@ -70,8 +70,16 @@ export default function Home() {
             <h2 className="text-lg md:text-2xl text-white font-bold text-center mt-8 mb-5 md:mb-12">
               {`Gamify your tasks so your agile projects become motivational for your whole team`}
             </h2>
-            <div className="md:flex justify-between items-center">
-              <ul className="list-disc text-white font-semibold text-lg md:text-xl lg:text-2xl mx-5 md:mx-10">
+            <div className="md:flex items-center">
+              <Image
+                src="/agilohub-mobile-crop.png"
+                alt="Mobile mock up of the AgiloHub app"
+                width={1000}
+                height={1000}
+                className="w-60 md:w-72 lg:w-[450px] h-auto"
+                priority
+              />
+              <ul className="list-disc text-white font-semibold text-lg md:text-xl lg:text-2xl">
                 <li>Team projects</li>
                 <li>Member connections</li>
                 <li>Includes all Agile Methodologies</li>
@@ -79,9 +87,6 @@ export default function Home() {
                 <li>Mobile and desktop access</li>
                 <li>Rewarding productivity</li>
               </ul>
-              <div className="bg-gray-100 w-full h-60 mt-10">
-                <p className="p-5 font-bold">Placeholder for images</p>
-              </div>
             </div>
           </section>
         </div>
