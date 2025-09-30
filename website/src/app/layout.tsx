@@ -15,35 +15,28 @@ const montserratAlternates = Montserrat_Alternates({
 
 export const metadata: Metadata = {
   title: {
-    default: "Agile Project Management App",
-    template: "Home | AgiloHub",
+    default: "AgiloHub – Agile Project Management App",
+    template: "%s | AgiloHub",
   },
   description:
-    "Organise projects, tasks, and teams with our agile gamified project management tool. Built with React Native & Next.js.",
-  openGraph: {
-    type: "website",
-    url: "https://agilohub.com",
-    title: "Agile Project Management App",
-    description:
-      "Manage projects, tasks, timelines in a gamified experience, including team collaboration with chat.",
-    images: [
-      {
-        url: "/AgiloHub-mobile-mockup.png",
-        width: 450,
-        height: 450,
-        alt: "AgiloHub mobile app mockup",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Agile Project Management App",
-    description:
-      "Organise projects, tasks, and teams with our agile gamified project management tool.",
-    images: ["/AgiloHub-mobile-mockup.png"],
-  },
+    "AgiloHub helps you organise projects, tasks, and teams in a gamified agile workspace. Built for collaboration and productivity.",
+  keywords: [
+    "Agile project management",
+    "SaaS project tool",
+    "team collaboration",
+    "task management",
+    "React Native app",
+  ],
+  applicationName: "AgiloHub",
+  authors: [{ name: "AgiloHub Team" }],
+  generator: "Next.js",
+  referrer: "origin-when-cross-origin",
+  manifest: "/site.webmanifest",
   icons: {
     icon: "/favicon.ico",
+  },
+  alternates: {
+    canonical: "https://agilohub.com",
   },
 };
 
