@@ -31,7 +31,6 @@ export const metadata: Metadata = {
   authors: [{ name: "AgiloHub Team" }],
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
-  manifest: "/site.webmanifest",
   icons: {
     icon: "/favicon.ico",
   },
