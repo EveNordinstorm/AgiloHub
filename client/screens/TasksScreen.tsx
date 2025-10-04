@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ScrollView,
   View,
@@ -7,13 +7,15 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
-  Button,
 } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { FormInput } from "../components/FormInput";
+import { Picker } from "@react-native-picker/picker";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskSchema, TaskFormValues } from "common/src/validation/task";
+import { useAppDispatch, useAppSelector } from "common/src/hooks/hooks";
+import { fetchProjects } from "common/src/redux/slices/projectSlice";
 import { CustomButton } from "../components/CustomButton";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -21,6 +23,12 @@ import TaskCards from "../components/Tasks/taskCards";
 
 export default function TasksScreen() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [taskType, setTaskType] = useState<"project" | "personal" | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null
+  );
+  const dispatch = useAppDispatch();
+  const { projects } = useAppSelector((state) => state.project);
 
   const {
     control,
@@ -48,6 +56,12 @@ export default function TasksScreen() {
   const closeModal = () => {
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    if (projects.length === 0) {
+      dispatch(fetchProjects());
+    }
+  }, [dispatch, projects.length]);
 
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -91,7 +105,7 @@ export default function TasksScreen() {
 
         <View className="bg-primaryPurple h-full rounded-t-full mx-8 pt-8 pb-10">
           <View className="w-full px-6 flex-1">
-            <Text className="font-montserrat-semibold text-white text-center text-lg/6 mb-2">
+            {/* <Text className="font-montserrat-semibold text-white text-center text-lg/6 mb-2">
               Complete all{"\n"}tasks to earn:
             </Text>
 
@@ -102,12 +116,12 @@ export default function TasksScreen() {
                   520
                 </Text>
               </View>
-            </View>
+            </View> */}
 
-            <Text className="font-montserrat-bold text-2xl text-white text-center mt-2">
+            <Text className="font-montserrat-bold text-2xl text-white text-center mt-1">
               My Tasks
             </Text>
-            <Text className="font-montserrat-semibold text-white text-center text-lg mb-2">
+            <Text className="font-montserrat-semibold text-white text-center text-lg mb-2 mt-4">
               Filter by:
             </Text>
 
@@ -127,7 +141,7 @@ export default function TasksScreen() {
 
             <ScrollView
               style={{ flex: 1, marginTop: 16 }}
-              contentContainerStyle={{ paddingBottom: 80 }}
+              contentContainerStyle={{ paddingBottom: 190 }}
               showsVerticalScrollIndicator={false}
             >
               <TaskCards />
@@ -247,7 +261,7 @@ export default function TasksScreen() {
                         </Text>
                         <Pressable
                           onPress={showDateTimePicker}
-                          className="bg-primaryBlue rounded-full"
+                          className="bg-primaryBlue rounded-full mb-3"
                         >
                           <View className="flex-row items-center justify-center">
                             <Feather name="clock" size={24} color="#fff" />
@@ -273,11 +287,92 @@ export default function TasksScreen() {
                     );
                   }}
                 />
+                {/* Project or Personal Task */}
+                <View>
+                  <Text className="text-white text-lg ml-4 font-montserrat-semibold mb-2">
+                    Task Type:
+                  </Text>
+
+                  <View className="flex-row gap-3">
+                    {/* Project Button */}
+                    <Pressable
+                      onPress={() => setTaskType("project")}
+                      className={`rounded-full flex-1 ${
+                        taskType === "project"
+                          ? "bg-primaryBlue"
+                          : "bg-darkPurple"
+                      }`}
+                    >
+                      <View className="flex-row items-center justify-center py-3">
+                        <FontAwesome name="link" size={24} color="#fff" />
+                        <Text className="font-montserrat-semibold text-white text-xl px-2">
+                          Project
+                        </Text>
+                      </View>
+                    </Pressable>
+
+                    {/* Personal Button */}
+                    <Pressable
+                      onPress={() => setTaskType("personal")}
+                      className={`rounded-full flex-1 ${
+                        taskType === "personal"
+                          ? "bg-primaryBlue"
+                          : "bg-darkPurple"
+                      }`}
+                    >
+                      <View className="flex-row items-center justify-center py-3">
+                        <FontAwesome name="user" size={24} color="#fff" />
+                        <Text className="font-montserrat-semibold text-white text-xl px-2">
+                          Personal
+                        </Text>
+                      </View>
+                    </Pressable>
+                  </View>
+
+                  {/* Project Dropdown */}
+                  {taskType === "project" && (
+                    <View className="mt-4">
+                      <Text className="text-white text-lg ml-4 font-montserrat-semibold mb-2">
+                        Link Project:
+                      </Text>
+                      <Picker
+                        selectedValue={selectedProjectId}
+                        onValueChange={(itemValue) =>
+                          setSelectedProjectId(itemValue)
+                        }
+                        style={{
+                          color: "black",
+                          backgroundColor: "#fff",
+                        }}
+                      >
+                        <Picker.Item
+                          label="Select a project..."
+                          value={null}
+                          style={{
+                            color: "black",
+                            backgroundColor: "#E2E2E2",
+                          }}
+                        />
+                        {projects.map((proj) => (
+                          <Picker.Item
+                            key={proj.id}
+                            label={proj.title}
+                            value={proj.id}
+                            style={{
+                              color: "black",
+                              backgroundColor: "#fff",
+                            }}
+                          />
+                        ))}
+                      </Picker>
+                    </View>
+                  )}
+                </View>
               </ScrollView>
 
               <Pressable
                 onPress={handleSubmit(onSubmit)}
-                className="bg-green-500 mt-4 rounded"
+                className="bg-green-600 mt-4 rounded"
               >
                 <View className="flex-row items-center justify-center">
                   <FontAwesome name="check-circle" size={24} color="#fff" />

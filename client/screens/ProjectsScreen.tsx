@@ -253,7 +253,7 @@ export default function ProjectsScreen() {
 
               <Pressable
                 onPress={handleSubmit(onSubmit)}
-                className="bg-green-500 mt-4 rounded"
+                className="bg-green-600 mt-4 rounded"
               >
                 <View className="flex-row items-center justify-center">
                   <FontAwesome name="check-circle" size={24} color="#fff" />

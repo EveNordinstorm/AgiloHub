@@ -15,6 +15,9 @@ type CardItemProps = {
   points: number;
   description: string;
   deadline: Date;
+  projectTitle?: string;
+  personal?: boolean;
+  complete?: boolean;
 };
 
 export function TaskCardItem({
@@ -22,6 +25,9 @@ export function TaskCardItem({
   points,
   description,
   deadline,
+  projectTitle,
+  personal,
+  complete,
 }: CardItemProps) {
   const scale = useRef(new Animated.Value(1)).current;
 
@@ -122,6 +128,16 @@ export function TaskCardItem({
               </Text>
 
               <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-8">
+                Project:
+              </Text>
+              <View className="flex-row items-center gap-2 mt-3 ml-2">
+                {/* TODO - Import associated project title or mark as a personal task */}
+                <Text className="text-white font-montserrat-semibold text-lg">
+                  {projectTitle}
+                </Text>
+              </View>
+
+              <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-6">
                 Task Deadline:
               </Text>
               <View className="flex-row items-center gap-2 mt-3 ml-2">
@@ -140,7 +156,7 @@ export function TaskCardItem({
               <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-6">
                 Complete for:
               </Text>
-              <View className="flex-row items-center px-4 py-1 rounded-full bg-primaryBlue mt-3 ml-2 self-start">
+              <View className="flex-row items-center px-4 py-1 rounded-full bg-primaryBlue my-3 ml-2 self-start">
                 <FontAwesome name="star" size={22} color="#F8E23B" />
                 <Text className="text-yellow font-montserrat-bold text-xl ml-2">
                   {points}
@@ -148,22 +164,25 @@ export function TaskCardItem({
               </View>
             </ScrollView>
 
-            <Pressable onPress={closeModal} className="bg-red-500 mt-4 rounded">
+            <Pressable
+              onPress={closeModal}
+              className="bg-primaryBlue mt-3 rounded"
+            >
               <View className="flex-row items-center justify-center">
-                <FontAwesome name="times-circle" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
-                  Delete Task
+                <FontAwesome name="pencil-square" size={24} color="#fff" />
+                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
+                  Edit Task
                 </Text>
               </View>
             </Pressable>
 
             <Pressable
               onPress={closeModal}
-              className="bg-green-500 mt-4 rounded"
+              className="bg-green-600 mt-3 rounded"
             >
               <View className="flex-row items-center justify-center">
                 <FontAwesome name="check-circle" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
+                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
                   Mark Complete
                 </Text>
               </View>
@@ -171,11 +190,11 @@ export function TaskCardItem({
 
             <Pressable
               onPress={closeModal}
-              className="bg-primaryPurple mt-4 rounded"
+              className="bg-darkBlue mt-3 rounded"
             >
               <View className="flex-row items-center justify-center">
                 <FontAwesome name="times-circle" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
+                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
                   Close Task Details
                 </Text>
               </View>
@@ -195,15 +214,17 @@ export default function TaskCards() {
       description:
         "Use Shadcn menu component, then style with Tailwind to AgiloHub branding. Refer to brand guidelines document.",
       deadline: new Date("2025-09-21T15:30:00"),
+      projectTitle: "SaaS Website",
     },
     {
       title: "Task two",
       points: 50,
       description: "Use Shadcn menu component, then style with Tailwind to...",
       deadline: new Date("2025-09-21T15:30:00"),
+      personal: true,
     },
     {
-      title: " Another task",
+      title: "Another task",
       points: 50,
       description: "Use Shadcn menu component, then style with Tailwind to...",
       deadline: new Date("2025-09-21T15:30:00"),
