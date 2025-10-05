@@ -14,19 +14,19 @@ const initialState: ProjectsState = {
   error: undefined,
 };
 
-export const createProject = createAsyncThunk(
-  "projects/createProject",
-  async (data: any, { rejectWithValue }) => {
-    try {
-      const res = await api.post("/projects", data);
-      return res.data;
-    } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.error || "Project creation failed"
-      );
-    }
+export const createProject = createAsyncThunk<
+  Project,
+  Omit<Project, "id" | "createdAt" | "updatedAt">
+>("projects/createProject", async (data, { rejectWithValue }) => {
+  try {
+    const res = await api.post("/projects", data);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Project creation failed"
+    );
   }
-);
+});
 
 export const fetchProjects = createAsyncThunk(
   "projects/fetchProjects",
