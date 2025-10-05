@@ -83,4 +83,19 @@ export class TaskService {
       },
     });
   }
+
+  static async getTasksByProject(projectId: string) {
+    return prisma.task.findMany({
+      where: { projectId },
+      orderBy: { createdAt: "desc" },
+      include: {
+        creator: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
+        project: {
+          select: { id: true, title: true },
+        },
+      },
+    });
+  }
 }

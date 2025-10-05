@@ -49,4 +49,21 @@ export class TaskController {
       res.status(400).json({ error: err.message });
     }
   }
+
+  static async getByProject(req: AuthRequest, res: Response) {
+    try {
+      const { projectId } = req.params;
+
+      if (!projectId) {
+        return res.status(400).json({ error: "projectId is required" });
+      }
+
+      const tasks = await TaskService.getTasksByProject(projectId);
+
+      res.json(tasks);
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
 }
