@@ -8,6 +8,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TaskType {
+  project
+  personal
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -21,6 +26,7 @@ model User {
   subscriptionTierId String?
   projectsCreated Project[] @relation("ProjectCreator")
   projectsMember Project[] @relation("ProjectMembers")
+  tasksCreated Task[] @relation("TaskCreator")
 }
 
 model RefreshToken {
@@ -76,4 +82,21 @@ model Project {
   creatorId       String
   members         User[]   @relation("ProjectMembers")
   stages          ProjectStage[]
+  tasks           Task[]
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  points      Int
+  deadline    DateTime?
+  type        TaskType
+  complete    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  project     Project? @relation(fields: [projectId], references: [id])
+  projectId   String?
+  creator     User   @relation("TaskCreator", fields: [creatorId], references: [id])
+  creatorId   String
 }
