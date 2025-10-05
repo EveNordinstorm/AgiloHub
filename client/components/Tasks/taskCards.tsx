@@ -9,21 +9,53 @@ import {
 import { useRef, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { Task } from "common/src/types/interfaces/task";
+import { Project } from "common/src/types/interfaces/project";
 
-type CardItemProps = {
-  title: string;
-  points: number;
-  description: string;
-  deadline: Date;
+type TaskCardsProps = {
+  tasks: Task[];
+  projects: Project[];
 };
+
+type CardItemProps = Task & {
+  projectTitle?: string;
+};
+
+export default function TaskCards({ tasks, projects }: TaskCardsProps) {
+  if (tasks.length === 0) {
+    return (
+      <Text className="text-white text-lg/6 font-montserrat-semibold">
+        No tasks found. {"\n"}Create one in the tasks screen to start earning
+        points!
+      </Text>
+    );
+  }
+
+  return (
+    <View className="flex-row flex-wrap justify-between">
+      {tasks.map((task) => {
+        const projectTitle =
+          task.projectId &&
+          projects.find((p) => p.id === task.projectId)?.title;
+        return (
+          <View key={task.id} className="w-full mb-5">
+            <TaskCardItem {...task} projectTitle={projectTitle} />
+          </View>
+        );
+      })}
+    </View>
+  );
+}
 
 export function TaskCardItem({
   title,
   points,
   description,
   deadline,
+  projectTitle,
 }: CardItemProps) {
   const scale = useRef(new Animated.Value(1)).current;
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handlePressIn = () => {
     Animated.spring(scale, {
@@ -42,8 +74,6 @@ export function TaskCardItem({
       tension: 100,
     }).start();
   };
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
     setModalVisible(true);
@@ -88,7 +118,7 @@ export function TaskCardItem({
 
             <View className="flex-row justify-end items-center gap-2 mt-2">
               <Text className="text-white font-montserrat-semibold text-right">
-                {deadline.toLocaleString(undefined, {
+                {new Date(deadline).toLocaleString(undefined, {
                   day: "2-digit",
                   month: "2-digit",
                   year: "2-digit",
@@ -121,13 +151,24 @@ export function TaskCardItem({
                 {description}
               </Text>
 
-              <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-8">
+              {projectTitle && (
+                <>
+                  <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-8">
+                    Project:
+                  </Text>
+                  <Text className="text-white font-montserrat-semibold text-lg mt-2 ml-2">
+                    {projectTitle}
+                  </Text>
+                </>
+              )}
+
+              <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-6">
                 Task Deadline:
               </Text>
               <View className="flex-row items-center gap-2 mt-3 ml-2">
                 <Feather name="clock" color="white" size={24} />
                 <Text className="text-white font-montserrat-semibold text-lg">
-                  {deadline.toLocaleString(undefined, {
+                  {new Date(deadline).toLocaleString(undefined, {
                     day: "2-digit",
                     month: "2-digit",
                     year: "2-digit",
@@ -140,7 +181,7 @@ export function TaskCardItem({
               <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-6">
                 Complete for:
               </Text>
-              <View className="flex-row items-center px-4 py-1 rounded-full bg-primaryBlue mt-3 ml-2 self-start">
+              <View className="flex-row items-center px-4 py-1 rounded-full bg-primaryBlue my-3 ml-2 self-start">
                 <FontAwesome name="star" size={22} color="#F8E23B" />
                 <Text className="text-yellow font-montserrat-bold text-xl ml-2">
                   {points}
@@ -148,22 +189,25 @@ export function TaskCardItem({
               </View>
             </ScrollView>
 
-            <Pressable onPress={closeModal} className="bg-red-500 mt-4 rounded">
+            <Pressable
+              onPress={closeModal}
+              className="bg-primaryBlue mt-3 rounded"
+            >
               <View className="flex-row items-center justify-center">
-                <FontAwesome name="times-circle" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
-                  Delete Task
+                <FontAwesome name="pencil-square" size={24} color="#fff" />
+                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
+                  Edit Task
                 </Text>
               </View>
             </Pressable>
 
             <Pressable
               onPress={closeModal}
-              className="bg-green-500 mt-4 rounded"
+              className="bg-green-600 mt-3 rounded"
             >
               <View className="flex-row items-center justify-center">
                 <FontAwesome name="check-circle" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
+                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
                   Mark Complete
                 </Text>
               </View>
@@ -171,11 +215,11 @@ export function TaskCardItem({
 
             <Pressable
               onPress={closeModal}
-              className="bg-primaryPurple mt-4 rounded"
+              className="bg-darkBlue mt-3 rounded"
             >
               <View className="flex-row items-center justify-center">
                 <FontAwesome name="times-circle" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
+                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
                   Close Task Details
                 </Text>
               </View>
@@ -183,46 +227,6 @@ export function TaskCardItem({
           </View>
         </View>
       </Modal>
-    </View>
-  );
-}
-
-export default function TaskCards() {
-  const cards: CardItemProps[] = [
-    {
-      title: "Build nav bar component",
-      points: 50,
-      description:
-        "Use Shadcn menu component, then style with Tailwind to AgiloHub branding. Refer to brand guidelines document.",
-      deadline: new Date("2025-09-21T15:30:00"),
-    },
-    {
-      title: "Task two",
-      points: 50,
-      description: "Use Shadcn menu component, then style with Tailwind to...",
-      deadline: new Date("2025-09-21T15:30:00"),
-    },
-    {
-      title: " Another task",
-      points: 50,
-      description: "Use Shadcn menu component, then style with Tailwind to...",
-      deadline: new Date("2025-09-21T15:30:00"),
-    },
-    {
-      title: "Yet another task",
-      points: 50,
-      description: "Use Shadcn menu component, then style with Tailwind to...",
-      deadline: new Date("2025-09-21T15:30:00"),
-    },
-  ];
-
-  return (
-    <View className="flex-row flex-wrap justify-between">
-      {cards.map((item, index) => (
-        <View key={index} className="w-full mb-5">
-          <TaskCardItem {...item} />
-        </View>
-      ))}
     </View>
   );
 }

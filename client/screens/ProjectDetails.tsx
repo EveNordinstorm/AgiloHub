@@ -16,7 +16,9 @@ export default function ProjectDetailsScreen({ navigation, route }: Props) {
   if (!project) {
     return (
       <View className="flex-1 justify-center items-center">
-        <Text className="text-white text-lg">Project not found</Text>
+        <Text className="text-white text-lg font-montserrat-semibold">
+          Project not found
+        </Text>
       </View>
     );
   }
