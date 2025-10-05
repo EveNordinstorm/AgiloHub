@@ -16,6 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskSchema, TaskFormValues } from "common/src/validation/task";
 import { useAppDispatch, useAppSelector } from "common/src/hooks/hooks";
 import { fetchProjects } from "common/src/redux/slices/projectSlice";
+import { createTask } from "common/src/redux/slices/taskSlice";
+import { TaskType } from "common/src/types/enums/taskType";
 import { CustomButton } from "../components/CustomButton";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -23,10 +25,10 @@ import TaskCards from "../components/Tasks/taskCards";
 
 export default function TasksScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [taskType, setTaskType] = useState<"project" | "personal" | null>(null);
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    null
-  );
+  const [taskType, setTaskType] = useState<TaskType | undefined>();
+  const [selectedProjectId, setSelectedProjectId] = useState<
+    string | undefined
+  >();
   const dispatch = useAppDispatch();
   const { projects } = useAppSelector((state) => state.project);
 
@@ -46,6 +48,7 @@ export default function TasksScreen() {
       description: "",
       points: 0,
       deadline: new Date(),
+      type: TaskType.personal,
     },
   });
 
@@ -70,16 +73,18 @@ export default function TasksScreen() {
     try {
       const payload = {
         ...data,
+        type: taskType!,
+        projectId: taskType === "project" ? selectedProjectId : undefined,
       };
 
-      // const result = await dispatch(createTask(payload)).unwrap();
+      const result = await dispatch(createTask(payload)).unwrap();
 
-      // if (result && result.id) {
-      //   reset();
-      //   closeModal();
-      // } else {
-      //   setSubmitError("Task creation failed. Please try again.");
-      // }
+      if (result && result.id) {
+        reset();
+        closeModal();
+      } else {
+        setSubmitError("Task creation failed. Please try again.");
+      }
     } catch (err: any) {
       setSubmitError(err?.message || "Task creation failed.");
     }
@@ -296,7 +301,7 @@ export default function TasksScreen() {
                   <View className="flex-row gap-3">
                     {/* Project Button */}
                     <Pressable
-                      onPress={() => setTaskType("project")}
+                      onPress={() => setTaskType(TaskType.project)}
                       className={`rounded-full flex-1 ${
                         taskType === "project"
                           ? "bg-primaryBlue"
@@ -313,7 +318,7 @@ export default function TasksScreen() {
 
                     {/* Personal Button */}
                     <Pressable
-                      onPress={() => setTaskType("personal")}
+                      onPress={() => setTaskType(TaskType.personal)}
                       className={`rounded-full flex-1 ${
                         taskType === "personal"
                           ? "bg-primaryBlue"

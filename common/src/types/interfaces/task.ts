@@ -1,4 +1,4 @@
-export type TaskType = "project" | "personal";
+import { TaskType } from "../enums/taskType";
 
 export type Task = {
   id: string;
