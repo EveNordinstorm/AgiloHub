@@ -9,15 +9,16 @@ import {
 import { useRef, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { Task } from "common/src/types/interfaces/task";
+import { Project } from "common/src/types/interfaces/project";
 
-type CardItemProps = {
-  title: string;
-  points: number;
-  description: string;
-  deadline: Date;
+type TaskCardsProps = {
+  tasks: Task[];
+  projects: Project[];
+};
+
+type CardItemProps = Task & {
   projectTitle?: string;
-  personal?: boolean;
-  complete?: boolean;
 };
 
 export function TaskCardItem({
@@ -26,10 +27,9 @@ export function TaskCardItem({
   description,
   deadline,
   projectTitle,
-  personal,
-  complete,
 }: CardItemProps) {
   const scale = useRef(new Animated.Value(1)).current;
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handlePressIn = () => {
     Animated.spring(scale, {
@@ -48,8 +48,6 @@ export function TaskCardItem({
       tension: 100,
     }).start();
   };
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
     setModalVisible(true);
@@ -94,7 +92,7 @@ export function TaskCardItem({
 
             <View className="flex-row justify-end items-center gap-2 mt-2">
               <Text className="text-white font-montserrat-semibold text-right">
-                {deadline.toLocaleString(undefined, {
+                {new Date(deadline).toLocaleString(undefined, {
                   day: "2-digit",
                   month: "2-digit",
                   year: "2-digit",
@@ -127,15 +125,16 @@ export function TaskCardItem({
                 {description}
               </Text>
 
-              <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-8">
-                Project:
-              </Text>
-              <View className="flex-row items-center gap-2 mt-3 ml-2">
-                {/* TODO - Import associated project title or mark as a personal task */}
-                <Text className="text-white font-montserrat-semibold text-lg">
-                  {projectTitle}
-                </Text>
-              </View>
+              {projectTitle && (
+                <>
+                  <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-8">
+                    Project:
+                  </Text>
+                  <Text className="text-white font-montserrat-semibold text-lg mt-2 ml-2">
+                    {projectTitle}
+                  </Text>
+                </>
+              )}
 
               <Text className="font-montserrat-semibold text-lg text-white bg-darkBlue px-2 py-1 mt-6">
                 Task Deadline:
@@ -143,7 +142,7 @@ export function TaskCardItem({
               <View className="flex-row items-center gap-2 mt-3 ml-2">
                 <Feather name="clock" color="white" size={24} />
                 <Text className="text-white font-montserrat-semibold text-lg">
-                  {deadline.toLocaleString(undefined, {
+                  {new Date(deadline).toLocaleString(undefined, {
                     day: "2-digit",
                     month: "2-digit",
                     year: "2-digit",
@@ -206,44 +205,19 @@ export function TaskCardItem({
   );
 }
 
-export default function TaskCards() {
-  const cards: CardItemProps[] = [
-    {
-      title: "Build nav bar component",
-      points: 50,
-      description:
-        "Use Shadcn menu component, then style with Tailwind to AgiloHub branding. Refer to brand guidelines document.",
-      deadline: new Date("2025-09-21T15:30:00"),
-      projectTitle: "SaaS Website",
-    },
-    {
-      title: "Task two",
-      points: 50,
-      description: "Use Shadcn menu component, then style with Tailwind to...",
-      deadline: new Date("2025-09-21T15:30:00"),
-      personal: true,
-    },
-    {
-      title: "Another task",
-      points: 50,
-      description: "Use Shadcn menu component, then style with Tailwind to...",
-      deadline: new Date("2025-09-21T15:30:00"),
-    },
-    {
-      title: "Yet another task",
-      points: 50,
-      description: "Use Shadcn menu component, then style with Tailwind to...",
-      deadline: new Date("2025-09-21T15:30:00"),
-    },
-  ];
-
+export default function TaskCards({ tasks, projects }: TaskCardsProps) {
   return (
     <View className="flex-row flex-wrap justify-between">
-      {cards.map((item, index) => (
-        <View key={index} className="w-full mb-5">
-          <TaskCardItem {...item} />
-        </View>
-      ))}
+      {tasks.map((task) => {
+        const projectTitle =
+          task.projectId &&
+          projects.find((p) => p.id === task.projectId)?.title;
+        return (
+          <View key={task.id} className="w-full mb-5">
+            <TaskCardItem {...task} projectTitle={projectTitle} />
+          </View>
+        );
+      })}
     </View>
   );
 }

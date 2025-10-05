@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskSchema, TaskFormValues } from "common/src/validation/task";
 import { useAppDispatch, useAppSelector } from "common/src/hooks/hooks";
 import { fetchProjects } from "common/src/redux/slices/projectSlice";
+import { fetchTasks } from "common/src/redux/slices/taskSlice";
 import { createTask } from "common/src/redux/slices/taskSlice";
 import { TaskType } from "common/src/types/enums/taskType";
 import { CustomButton } from "../components/CustomButton";
@@ -25,12 +26,14 @@ import TaskCards from "../components/Tasks/taskCards";
 
 export default function TasksScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [taskType, setTaskType] = useState<TaskType | undefined>();
+  const [taskType, setTaskType] = useState<TaskType>(TaskType.project);
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined
   >();
+
   const dispatch = useAppDispatch();
   const { projects } = useAppSelector((state) => state.project);
+  const { tasks } = useAppSelector((state) => state.task);
 
   const {
     control,
@@ -61,10 +64,9 @@ export default function TasksScreen() {
   };
 
   useEffect(() => {
-    if (projects.length === 0) {
-      dispatch(fetchProjects());
-    }
-  }, [dispatch, projects.length]);
+    dispatch(fetchProjects());
+    dispatch(fetchTasks());
+  }, [dispatch]);
 
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -82,6 +84,7 @@ export default function TasksScreen() {
       if (result && result.id) {
         reset();
         closeModal();
+        dispatch(fetchTasks()); // refersh after creation
       } else {
         setSubmitError("Task creation failed. Please try again.");
       }
@@ -89,6 +92,8 @@ export default function TasksScreen() {
       setSubmitError(err?.message || "Task creation failed.");
     }
   };
+
+  const filteredTasks = tasks.filter((task) => task.type === taskType);
 
   return (
     <View style={{ flex: 1 }}>
@@ -130,15 +135,38 @@ export default function TasksScreen() {
               Filter by:
             </Text>
 
+            {/* FILTER */}
             <View className="flex-row w-full">
-              <Pressable className="flex-1 items-center justify-center bg-darkPurple py-2">
-                <Text className="font-montserrat-bold text-xl text-white">
+              <Pressable
+                className={`flex-1 items-center justify-center py-2 ${
+                  taskType === TaskType.project ? "bg-white" : "bg-darkPurple"
+                }`}
+                onPress={() => setTaskType(TaskType.project)}
+              >
+                <Text
+                  className={`font-montserrat-bold text-xl ${
+                    taskType === TaskType.project
+                      ? "text-darkPurple"
+                      : "text-white"
+                  }`}
+                >
                   Projects
                 </Text>
               </Pressable>
 
-              <Pressable className="flex-1 items-center justify-center bg-white py-2">
-                <Text className="font-montserrat-bold text-xl text-darkPurple">
+              <Pressable
+                className={`flex-1 items-center justify-center py-2 ${
+                  taskType === TaskType.personal ? "bg-white" : "bg-darkPurple"
+                }`}
+                onPress={() => setTaskType(TaskType.personal)}
+              >
+                <Text
+                  className={`font-montserrat-bold text-xl ${
+                    taskType === TaskType.personal
+                      ? "text-darkPurple"
+                      : "text-white"
+                  }`}
+                >
                   Personal
                 </Text>
               </Pressable>
@@ -149,7 +177,7 @@ export default function TasksScreen() {
               contentContainerStyle={{ paddingBottom: 190 }}
               showsVerticalScrollIndicator={false}
             >
-              <TaskCards />
+              <TaskCards tasks={filteredTasks} projects={projects} />
             </ScrollView>
           </View>
         </View>
