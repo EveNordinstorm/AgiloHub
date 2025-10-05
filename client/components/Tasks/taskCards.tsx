@@ -21,6 +21,32 @@ type CardItemProps = Task & {
   projectTitle?: string;
 };
 
+export default function TaskCards({ tasks, projects }: TaskCardsProps) {
+  if (tasks.length === 0) {
+    return (
+      <Text className="text-white text-lg/6 font-montserrat-semibold">
+        No tasks found. {"\n"}Create one in the tasks screen to start earning
+        points!
+      </Text>
+    );
+  }
+
+  return (
+    <View className="flex-row flex-wrap justify-between">
+      {tasks.map((task) => {
+        const projectTitle =
+          task.projectId &&
+          projects.find((p) => p.id === task.projectId)?.title;
+        return (
+          <View key={task.id} className="w-full mb-5">
+            <TaskCardItem {...task} projectTitle={projectTitle} />
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 export function TaskCardItem({
   title,
   points,
@@ -201,23 +227,6 @@ export function TaskCardItem({
           </View>
         </View>
       </Modal>
-    </View>
-  );
-}
-
-export default function TaskCards({ tasks, projects }: TaskCardsProps) {
-  return (
-    <View className="flex-row flex-wrap justify-between">
-      {tasks.map((task) => {
-        const projectTitle =
-          task.projectId &&
-          projects.find((p) => p.id === task.projectId)?.title;
-        return (
-          <View key={task.id} className="w-full mb-5">
-            <TaskCardItem {...task} projectTitle={projectTitle} />
-          </View>
-        );
-      })}
     </View>
   );
 }

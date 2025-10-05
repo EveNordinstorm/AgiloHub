@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useAppSelector } from "common/src/hooks/hooks";
+import { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "common/src/hooks/hooks";
+import { fetchTasksByProject } from "common/src/redux/slices/taskSlice";
 import { Text, ScrollView, View, LayoutAnimation } from "react-native";
 import { FontAwesome5, FontAwesome, Feather } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
@@ -23,6 +24,16 @@ type Props = {
 };
 
 export default function ProjectAccordion({ project }: Props) {
+  const dispatch = useAppDispatch();
+  const { tasks } = useAppSelector((state) => state.task);
+  const { projects } = useAppSelector((state) => state.project);
+
+  useEffect(() => {
+    if (project.id) {
+      dispatch(fetchTasksByProject(project.id));
+    }
+  }, [project.id]);
+
   const { items: methodologies } = useAppSelector((state) => state.methodology);
 
   // Find the full methodology info for this project
@@ -100,7 +111,7 @@ export default function ProjectAccordion({ project }: Props) {
       content: (
         <View className="h-48">
           <ScrollView>
-            <TaskCards />
+            <TaskCards tasks={tasks} projects={projects} />
           </ScrollView>
         </View>
       ),
