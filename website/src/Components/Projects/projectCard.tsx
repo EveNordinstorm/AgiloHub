@@ -7,7 +7,7 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="bg-dark-purple md:w-[500px] p-3">
+    <div className="bg-dark-purple p-3">
       <div className="bg-primary-blue p-3 md:p-5">
         <p className="text-white font-bold text-lg md:text-2xl mb-2">
           {project.title}

@@ -9,7 +9,7 @@ type TaskCardProps = {
 
 export function TaskCard({ task }: TaskCardProps) {
   return (
-    <div className="bg-dark-purple text-white md:w-[500px] p-5">
+    <div className="bg-dark-purple text-white p-5">
       <div className="flex justify-between">
         <p className="font-bold text-lg mb-2">{task.title}</p>
         <div className="flex items-center px-4 py-1 rounded-full bg-primary-blue my-3">

@@ -22,7 +22,7 @@ export function TasksContainer() {
         <h2 className="text-white font-bold text-xl md:text-2xl mb-4">
           My Tasks
         </h2>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-3">
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
