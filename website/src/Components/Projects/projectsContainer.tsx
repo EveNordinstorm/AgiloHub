@@ -11,7 +11,7 @@ export function ProjectContainer() {
     if (!projects.length && !loading) {
       dispatch(fetchProjects());
     }
-  }, [dispatch]);
+  }, [dispatch, loading, projects]);
 
   if (loading) return <p className="text-white">Loading projects...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
