@@ -13,6 +13,13 @@ enum TaskType {
   personal
 }
 
+enum PointsType {
+  TASK_COMPLETION
+  PROJECT_STAGE_COMPLETION
+  LOGIN_STREAK
+  OTHER
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -27,6 +34,8 @@ model User {
   projectsCreated Project[] @relation("ProjectCreator")
   projectsMember Project[] @relation("ProjectMembers")
   tasksCreated Task[] @relation("TaskCreator")
+  points          Int      @default(0)
+  pointsHistory   PointsTransaction[]
 }
 
 model RefreshToken {
@@ -66,6 +75,7 @@ model ProjectStage {
   project         Project  @relation(fields: [projectId], references: [id])
   projectId       String
   stageNumber     Int
+  pointsTransactions PointsTransaction[]
 }
 
 model Project {
@@ -99,4 +109,19 @@ model Task {
   projectId   String?
   creator     User   @relation("TaskCreator", fields: [creatorId], references: [id])
   creatorId   String
+  pointsTransactions PointsTransaction[]
+}
+
+model PointsTransaction {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  type        PointsType
+  amount      Int
+  description String?
+  createdAt   DateTime  @default(now())
+  task        Task?     @relation(fields: [taskId], references: [id])
+  taskId      String?
+  projectStage ProjectStage? @relation(fields: [projectStageId], references: [id])
+  projectStageId String?
 }
