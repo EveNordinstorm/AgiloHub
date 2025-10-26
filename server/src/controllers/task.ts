@@ -66,4 +66,16 @@ export class TaskController {
       res.status(400).json({ error: err.message });
     }
   }
+
+  static async complete(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+      const task = await TaskService.completeTask(id, userId);
+      res.json({ message: "Task completed successfully", task });
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
 }

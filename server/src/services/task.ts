@@ -98,4 +98,36 @@ export class TaskService {
       },
     });
   }
+
+  static async completeTask(taskId: string, userId: string) {
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+    if (!task) throw new Error("Task not found");
+    if (task.complete) throw new Error("Task already completed");
+
+    const updatedTask = await prisma.$transaction(async (tx) => {
+      const completedTask = await tx.task.update({
+        where: { id: taskId },
+        data: { complete: true },
+      });
+
+      await tx.pointsTransaction.create({
+        data: {
+          userId,
+          type: "TASK_COMPLETION",
+          amount: completedTask.points,
+          description: `Completed task: ${completedTask.title}`,
+          taskId: completedTask.id,
+        },
+      });
+
+      await tx.user.update({
+        where: { id: userId },
+        data: { points: { increment: completedTask.points } },
+      });
+
+      return completedTask;
+    });
+
+    return updatedTask;
+  }
 }
