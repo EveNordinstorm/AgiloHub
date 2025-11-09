@@ -4,6 +4,7 @@ import subscriptionReducer from "./slices/subscriptionSlice";
 import projectReducer from "./slices/projectSlice";
 import methodologyReducer from "./slices/methodologySlice";
 import taskReducer from "./slices/taskSlice";
+import pointsReducer from "./slices/pointsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     project: projectReducer,
     methodology: methodologyReducer,
     task: taskReducer,
+    points: pointsReducer,
   },
 });
 
