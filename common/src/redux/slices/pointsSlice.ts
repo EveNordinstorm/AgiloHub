@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "../../utils/apiCore";
 import { PointsTransaction } from "../../types/interfaces/pointsTransaction";
+import { PointsType } from "../../types/enums/pointsType";
 
 type PointsState = {
   total: number;
@@ -43,6 +44,43 @@ export const fetchPointsHistory = createAsyncThunk<PointsTransaction[]>(
     }
   }
 );
+
+export const earnPoints = createAsyncThunk<
+  PointsTransaction,
+  { amount: number; type: PointsType; description?: string }
+>("points/earn", async ({ amount, type, description }, { rejectWithValue }) => {
+  try {
+    const res = await api.post("/points/earn", {
+      amount,
+      type,
+      description,
+    });
+
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to earn points"
+    );
+  }
+});
+
+export const spendPoints = createAsyncThunk<
+  PointsTransaction,
+  { amount: number; description?: string }
+>("points/spend", async ({ amount, description }, { rejectWithValue }) => {
+  try {
+    const res = await api.post("/points/spend", {
+      amount,
+      description,
+    });
+
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to spend points"
+    );
+  }
+});
 
 const pointsSlice = createSlice({
   name: "points",
@@ -89,6 +127,16 @@ const pointsSlice = createSlice({
       .addCase(fetchPointsHistory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+
+      // Earning and spending
+      .addCase(earnPoints.fulfilled, (state, action) => {
+        state.history.unshift(action.payload);
+        state.total += action.payload.amount; // positive
+      })
+      .addCase(spendPoints.fulfilled, (state, action) => {
+        state.history.unshift(action.payload);
+        state.total += action.payload.amount; // negative
       });
   },
 });
