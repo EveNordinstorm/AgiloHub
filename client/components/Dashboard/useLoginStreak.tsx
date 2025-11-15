@@ -4,7 +4,7 @@ import {
   markDayChecked,
   resetWeek,
 } from "common/src/redux/slices/loginStreakSlice";
-import { addTransaction } from "common/src/redux/slices/pointsSlice";
+import { earnPoints } from "common/src/redux/slices/pointsSlice";
 import { PointsType } from "common/src/types/enums/pointsType";
 import { Weekday } from "common/src/redux/slices/loginStreakSlice";
 
@@ -47,11 +47,10 @@ export const useLoginStreak = () => {
       const pointsAwarded = (dayIndex + 1) * 10;
 
       dispatch(
-        addTransaction({
+        earnPoints({
+          amount: pointsAwarded,
           type: PointsType.LOGIN_STREAK,
           description: `Login streak for ${todayName}`,
-          amount: pointsAwarded,
-          date: new Date().toISOString(),
         })
       );
     }
