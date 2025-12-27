@@ -11,6 +11,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Task } from "common/src/types/interfaces/task";
 import { Project } from "common/src/types/interfaces/project";
+import { useAppDispatch } from "common/src/hooks/hooks";
+import { completeTask } from "common/src/redux/slices/taskSlice";
 
 type TaskCardsProps = {
   tasks: Task[];
@@ -48,12 +50,20 @@ export default function TaskCards({ tasks, projects }: TaskCardsProps) {
 }
 
 export function TaskCardItem({
+  id,
   title,
   points,
   description,
   deadline,
   projectTitle,
 }: CardItemProps) {
+  const dispatch = useAppDispatch();
+
+  const handleComplete = () => {
+    dispatch(completeTask(id));
+    closeModal();
+  };
+
   const scale = useRef(new Animated.Value(1)).current;
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -202,7 +212,7 @@ export function TaskCardItem({
             </Pressable>
 
             <Pressable
-              onPress={closeModal}
+              onPress={handleComplete}
               className="bg-green-600 mt-3 rounded"
             >
               <View className="flex-row items-center justify-center">
