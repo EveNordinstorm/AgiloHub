@@ -55,6 +55,21 @@ export const fetchTasksByProject = createAsyncThunk<
   }
 });
 
+export const completeTask = createAsyncThunk<
+  Task,
+  string,
+  { rejectValue: string }
+>("tasks/completeTask", async (taskId, { rejectWithValue }) => {
+  try {
+    const res = await api.post(`/tasks/${taskId}/complete`);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to complete task"
+    );
+  }
+});
+
 const taskSlice = createSlice({
   name: "tasks",
   initialState,
@@ -109,6 +124,12 @@ const taskSlice = createSlice({
       .addCase(fetchTasksByProject.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(completeTask.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex((t) => t.id === action.payload.id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
       });
   },
 });
