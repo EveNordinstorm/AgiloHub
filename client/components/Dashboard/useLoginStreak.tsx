@@ -33,7 +33,7 @@ export const useLoginStreak = () => {
     if (
       todayName === "Mon" &&
       lastLogin &&
-      today.getDate() - lastLogin.getDate() > 2
+      today.getTime() - lastLogin.getTime() > 1000 * 60 * 60 * 24 * 2
     ) {
       dispatch(resetWeek());
     }
@@ -42,7 +42,6 @@ export const useLoginStreak = () => {
     if (!isSameDay && !daysChecked.includes(todayName)) {
       dispatch(markDayChecked(todayName));
 
-      // TODO - call backend here
       const dayIndex = weekdayNames.indexOf(todayName);
       const pointsAwarded = (dayIndex + 1) * 10;
 
