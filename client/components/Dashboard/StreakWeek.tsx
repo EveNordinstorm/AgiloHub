@@ -10,7 +10,7 @@ export default function StreakWeek() {
   );
 
   const days: Weekday[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  const checkedCount = daysChecked.length;
+  const checkedCount = daysChecked.length || 1;
 
   return (
     <View className="mx-8">
