@@ -53,5 +53,5 @@ export const useLoginStreak = () => {
         })
       );
     }
-  }, [user, daysChecked, lastLoginDate]);
+  }, [user, lastLoginDate]);
 };

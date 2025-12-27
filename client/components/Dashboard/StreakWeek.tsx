@@ -10,7 +10,11 @@ export default function StreakWeek() {
   );
 
   const days: Weekday[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  const checkedCount = daysChecked.length || 1;
+  const checkedCount = daysChecked.length;
+
+  const today = new Date();
+  const isWeekend = today.getDay() === 0 || today.getDay() === 6;
+  const hasWeekdayLogins = daysChecked.length > 0;
 
   return (
     <View className="mx-8">
@@ -23,20 +27,26 @@ export default function StreakWeek() {
         ))}
       </View>
 
-      <View className="flex-row items-center justify-between mt-2">
-        <View className="bg-primaryBlue px-3 rounded-full">
-          <Text className="text-white font-montserrat-bold text-lg">
-            {checkedCount} day{checkedCount !== 1 ? "s" : ""}
-          </Text>
-        </View>
+      {isWeekend && !hasWeekdayLogins ? (
+        <Text className="text-white font-montserrat mt-2">
+          Log in next week to earn points!
+        </Text>
+      ) : (
+        <View className="flex-row items-center justify-between mt-2">
+          <View className="bg-primaryBlue px-3 rounded-full">
+            <Text className="text-white font-montserrat-bold text-lg">
+              {checkedCount} day{checkedCount !== 1 ? "s" : ""}
+            </Text>
+          </View>
 
-        <View className="flex-row items-center gap-1">
-          <FontAwesome name="star" size={20} color="#F8E23B" />
-          <Text className="text-white font-montserrat-bold text-xl">
-            +{currentPoints}
-          </Text>
+          <View className="flex-row items-center gap-1">
+            <FontAwesome name="star" size={20} color="#F8E23B" />
+            <Text className="text-white font-montserrat-bold text-xl">
+              +{currentPoints}
+            </Text>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 }
