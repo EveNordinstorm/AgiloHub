@@ -1,3 +1,4 @@
+import { PointsType } from "../../../common/src/types/enums/pointsType";
 import { PrismaClient } from "../../generated/prisma";
 const prisma = new PrismaClient();
 
@@ -102,6 +103,9 @@ export class TaskService {
   static async completeTask(taskId: string, userId: string) {
     const task = await prisma.task.findUnique({ where: { id: taskId } });
     if (!task) throw new Error("Task not found");
+    if (task.creatorId !== userId) {
+      throw new Error("Not authorized to complete this task");
+    }
     if (task.complete) throw new Error("Task already completed");
 
     const updatedTask = await prisma.$transaction(async (tx) => {
@@ -113,7 +117,7 @@ export class TaskService {
       await tx.pointsTransaction.create({
         data: {
           userId,
-          type: "TASK_COMPLETION",
+          type: PointsType.TASK_COMPLETION,
           amount: completedTask.points,
           description: `Completed task: ${completedTask.title}`,
           taskId: completedTask.id,
