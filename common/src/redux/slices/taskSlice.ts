@@ -126,10 +126,9 @@ const taskSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(completeTask.fulfilled, (state, action) => {
-        const index = state.tasks.findIndex((t) => t.id === action.payload.id);
-        if (index !== -1) {
-          state.tasks[index] = action.payload;
-        }
+        state.tasks = state.tasks.filter(
+          (task) => task.id !== action.payload.id
+        );
       });
   },
 });
