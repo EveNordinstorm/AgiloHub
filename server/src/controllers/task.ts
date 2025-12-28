@@ -50,7 +50,7 @@ export class TaskController {
     }
   }
 
-  static async getByProject(req: AuthRequest, res: Response) {
+  static async getActiveByProject(req: AuthRequest, res: Response) {
     try {
       const { projectId } = req.params;
 
@@ -73,6 +73,22 @@ export class TaskController {
       const userId = req.userId!;
       const task = await TaskService.completeTask(id, userId);
       res.json({ message: "Task completed successfully", task });
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async listCompleted(req: AuthRequest, res: Response) {
+    try {
+      const { type } = req.query;
+
+      const tasks = await TaskService.getCompletedTasksForUser(
+        req.userId!,
+        type === "project" || type === "personal" ? (type as any) : undefined
+      );
+
+      res.json(tasks);
     } catch (err: any) {
       console.error(err);
       res.status(400).json({ error: err.message });

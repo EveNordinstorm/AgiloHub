@@ -54,7 +54,7 @@ export class TaskService {
   }
 
   static async getTasksForUser(userId: string, type?: "project" | "personal") {
-    const where: any = { creatorId: userId };
+    const where: any = { creatorId: userId, complete: false };
     if (type) where.type = type;
 
     return prisma.task.findMany({
@@ -87,7 +87,7 @@ export class TaskService {
 
   static async getTasksByProject(projectId: string) {
     return prisma.task.findMany({
-      where: { projectId },
+      where: { projectId, complete: false },
       orderBy: { createdAt: "desc" },
       include: {
         creator: {
@@ -133,5 +133,30 @@ export class TaskService {
     });
 
     return updatedTask;
+  }
+
+  static async getCompletedTasksForUser(
+    userId: string,
+    type?: "project" | "personal"
+  ) {
+    const where: any = {
+      creatorId: userId,
+      complete: true,
+    };
+
+    if (type) where.type = type;
+
+    return prisma.task.findMany({
+      where,
+      orderBy: { updatedAt: "desc" },
+      include: {
+        creator: {
+          select: { id: true, firstName: true, lastName: true },
+        },
+        project: {
+          select: { id: true, title: true },
+        },
+      },
+    });
   }
 }
