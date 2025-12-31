@@ -1,10 +1,25 @@
-import { View, Text } from "react-native";
+import { useEffect } from "react";
+import { View, Text, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import TaskCards from "../components/Tasks/taskCards";
+import { useAppDispatch, useAppSelector } from "common/src/hooks/hooks";
+import { fetchCompletedTasks } from "common/src/redux/slices/taskSlice";
 
 type Props = NativeStackScreenProps<any>;
 
 export default function TaskHistoryScreen({ navigation }: Props) {
+  const { projects } = useAppSelector((state) => state.project);
+  const { completedTasks } = useAppSelector((state) => state.task);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCompletedTasks()).then((res) =>
+      console.log("Completed tasks:", res)
+    );
+  }, []);
+
   return (
     <View>
       <View className="flex-row items-center mt-14 mb-5 mx-5">
@@ -21,13 +36,13 @@ export default function TaskHistoryScreen({ navigation }: Props) {
         My Completed Tasks
       </Text>
 
-      <View className="mx-5 mt-3 gap-5">
-        <View className="bg-primaryPurple/25 p-6 rounded-2xl">
-          <Text className="font-montserrat-semibold text-white">
-            Coming Soon...
-          </Text>
-        </View>
-      </View>
+      <ScrollView
+        style={{ flex: 1, marginTop: 16 }}
+        contentContainerStyle={{ paddingBottom: 190 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <TaskCards tasks={completedTasks ?? []} projects={projects} />
+      </ScrollView>
     </View>
   );
 }

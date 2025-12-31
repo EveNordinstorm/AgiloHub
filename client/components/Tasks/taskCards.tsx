@@ -21,6 +21,7 @@ type TaskCardsProps = {
 
 type CardItemProps = Task & {
   projectTitle?: string;
+  completed?: boolean;
 };
 
 export default function TaskCards({ tasks, projects }: TaskCardsProps) {
@@ -56,10 +57,12 @@ export function TaskCardItem({
   description,
   deadline,
   projectTitle,
+  completed,
 }: CardItemProps) {
   const dispatch = useAppDispatch();
 
   const handleComplete = () => {
+    if (completed) return;
     dispatch(completeTask(id));
     closeModal();
   };
