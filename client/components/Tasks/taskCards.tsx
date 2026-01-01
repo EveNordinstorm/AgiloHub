@@ -17,13 +17,15 @@ import { completeTask } from "common/src/redux/slices/taskSlice";
 type TaskCardsProps = {
   tasks: Task[];
   projects: Project[];
+  onEdit?: (task: Task) => void;
 };
 
 type CardItemProps = Task & {
   projectTitle?: string;
+  onEdit?: (task: Task) => void;
 };
 
-export default function TaskCards({ tasks, projects }: TaskCardsProps) {
+export default function TaskCards({ tasks, projects, onEdit }: TaskCardsProps) {
   if (tasks.length === 0) {
     return (
       <Text className="text-white text-lg/6 font-montserrat-semibold">
@@ -41,7 +43,7 @@ export default function TaskCards({ tasks, projects }: TaskCardsProps) {
           projects.find((p) => p.id === task.projectId)?.title;
         return (
           <View key={task.id} className="w-full mb-5">
-            <TaskCardItem {...task} projectTitle={projectTitle} />
+            <TaskCardItem {...task} projectTitle={projectTitle} onEdit={onEdit} />
           </View>
         );
       })}
@@ -57,12 +59,23 @@ export function TaskCardItem({
   deadline,
   projectTitle,
   complete,
+  type,
+  projectId,
+  onEdit,
+  ...rest
 }: CardItemProps) {
   const dispatch = useAppDispatch();
 
   const handleComplete = () => {
     if (complete) return;
     dispatch(completeTask(id));
+    closeModal();
+  };
+
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit({ id, title, points, description, deadline, complete, type, projectId, ...rest } as Task);
+    }
     closeModal();
   };
 
@@ -201,17 +214,19 @@ export function TaskCardItem({
               </View>
             </ScrollView>
 
-            <Pressable
-              onPress={closeModal}
-              className="bg-primaryBlue mt-3 rounded"
-            >
-              <View className="flex-row items-center justify-center">
-                <FontAwesome name="pencil-square" size={24} color="#fff" />
-                <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
-                  Edit Task
-                </Text>
-              </View>
-            </Pressable>
+            {!complete && onEdit && (
+              <Pressable
+                onPress={handleEdit}
+                className="bg-primaryBlue mt-3 rounded"
+              >
+                <View className="flex-row items-center justify-center">
+                  <FontAwesome name="pencil-square" size={24} color="#fff" />
+                  <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
+                    Edit Task
+                  </Text>
+                </View>
+              </Pressable>
+            )}
 
             <Pressable
               onPress={handleComplete}
