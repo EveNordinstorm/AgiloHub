@@ -94,4 +94,39 @@ export class TaskController {
       res.status(400).json({ error: err.message });
     }
   }
+
+  static async update(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+      const { title, description, points, deadline, type, projectId } = req.body;
+
+      const task = await TaskService.updateTask(id, userId, {
+        title,
+        description,
+        points,
+        deadline,
+        type,
+        projectId,
+      });
+
+      res.json(task);
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async delete(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+
+      await TaskService.deleteTask(id, userId);
+      res.json({ message: "Task deleted successfully" });
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
 }

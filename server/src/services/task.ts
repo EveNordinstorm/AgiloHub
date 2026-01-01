@@ -159,4 +159,66 @@ export class TaskService {
       },
     });
   }
+
+  static async updateTask(
+    taskId: string,
+    userId: string,
+    data: {
+      title?: string;
+      description?: string;
+      points?: number;
+      deadline?: Date;
+      type?: "project" | "personal";
+      projectId?: string | null;
+    }
+  ) {
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+    if (!task) throw new Error("Task not found");
+    if (task.creatorId !== userId) {
+      throw new Error("Not authorized to update this task");
+    }
+    if (task.complete) throw new Error("Cannot update a completed task");
+
+    let projectConnect = undefined;
+    if (data.type === "project" && data.projectId) {
+      const projectExists = await prisma.project.findUnique({
+        where: { id: data.projectId },
+      });
+      if (!projectExists) throw new Error("Project not found");
+      projectConnect = { connect: { id: data.projectId } };
+    } else if (data.type === "personal") {
+      projectConnect = { disconnect: true };
+    }
+
+    return prisma.task.update({
+      where: { id: taskId },
+      data: {
+        title: data.title,
+        description: data.description,
+        points: data.points,
+        deadline: data.deadline,
+        type: data.type,
+        project: projectConnect,
+      },
+      include: {
+        creator: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
+        project: {
+          select: { id: true, title: true },
+        },
+      },
+    });
+  }
+
+  static async deleteTask(taskId: string, userId: string) {
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+    if (!task) throw new Error("Task not found");
+    if (task.creatorId !== userId) {
+      throw new Error("Not authorized to delete this task");
+    }
+
+    await prisma.task.delete({ where: { id: taskId } });
+    return { id: taskId };
+  }
 }

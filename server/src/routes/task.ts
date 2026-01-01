@@ -14,5 +14,7 @@ router.get(
   TaskController.getActiveByProject
 );
 router.post("/:id/complete", authMiddleware, TaskController.complete);
+router.put("/:id", authMiddleware, TaskController.update);
+router.delete("/:id", authMiddleware, TaskController.delete);
 
 export default router;
