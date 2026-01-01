@@ -87,6 +87,32 @@ export const fetchCompletedTasks = createAsyncThunk<
   }
 });
 
+export const updateTask = createAsyncThunk<
+  Task,
+  { id: string; data: Partial<Omit<Task, "id" | "createdAt" | "updatedAt">> },
+  { rejectValue: string }
+>("tasks/updateTask", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const res = await api.put(`/tasks/${id}`, data);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data?.error || "Failed to update task");
+  }
+});
+
+export const deleteTask = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("tasks/deleteTask", async (taskId, { rejectWithValue }) => {
+  try {
+    await api.delete(`/tasks/${taskId}`);
+    return taskId;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data?.error || "Failed to delete task");
+  }
+});
+
 const taskSlice = createSlice({
   name: "tasks",
   initialState,
@@ -158,6 +184,15 @@ const taskSlice = createSlice({
       .addCase(fetchCompletedTasks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex((t) => t.id === action.payload.id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter((t) => t.id !== action.payload);
       });
   },
 });
