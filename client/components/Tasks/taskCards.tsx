@@ -21,7 +21,6 @@ type TaskCardsProps = {
 
 type CardItemProps = Task & {
   projectTitle?: string;
-  completed?: boolean;
 };
 
 export default function TaskCards({ tasks, projects }: TaskCardsProps) {
@@ -57,12 +56,12 @@ export function TaskCardItem({
   description,
   deadline,
   projectTitle,
-  completed,
+  complete,
 }: CardItemProps) {
   const dispatch = useAppDispatch();
 
   const handleComplete = () => {
-    if (completed) return;
+    if (complete) return;
     dispatch(completeTask(id));
     closeModal();
   };
@@ -216,12 +215,13 @@ export function TaskCardItem({
 
             <Pressable
               onPress={handleComplete}
-              className="bg-green-600 mt-3 rounded"
+              disabled={complete}
+              className={`mt-3 rounded ${complete ? "bg-gray-500" : "bg-green-600"}`}
             >
               <View className="flex-row items-center justify-center">
                 <FontAwesome name="check-circle" size={24} color="#fff" />
                 <Text className="font-montserrat-semibold text-white text-xl px-3 py-4">
-                  Mark Complete
+                  {complete ? "Completed" : "Mark Complete"}
                 </Text>
               </View>
             </Pressable>
