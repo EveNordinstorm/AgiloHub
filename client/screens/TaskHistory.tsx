@@ -21,7 +21,7 @@ export default function TaskHistoryScreen({ navigation }: Props) {
   }, []);
 
   return (
-    <View>
+    <View className="flex-1">
       <View className="flex-row items-center mt-14 mb-5 mx-5">
         <FontAwesome name="arrow-circle-left" size={24} color="#fff" />
         <Text
