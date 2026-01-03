@@ -1,22 +1,44 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "common/src/hooks/hooks";
 import {
   markDayChecked,
   resetWeek,
+  hydrateStreak,
 } from "common/src/redux/slices/loginStreakSlice";
 import { earnPoints } from "common/src/redux/slices/pointsSlice";
 import { PointsType } from "common/src/types/enums/pointsType";
 import { Weekday } from "common/src/redux/slices/loginStreakSlice";
+import { getStreakData, setStreakData } from "../../secureStore";
 
 export const useLoginStreak = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const { daysChecked, lastLoginDate } = useAppSelector(
-    (state) => state.streak
-  );
+  const streakState = useAppSelector((state) => state.streak);
+  const { daysChecked, lastLoginDate } = streakState;
+  const [isHydrated, setIsHydrated] = useState(false);
+  const hasProcessedToday = useRef(false);
+
+  // Load persisted streak data on mount
+  useEffect(() => {
+    const loadStreakData = async () => {
+      const savedData = await getStreakData();
+      if (savedData) {
+        dispatch(hydrateStreak(savedData));
+      }
+      setIsHydrated(true);
+    };
+    loadStreakData();
+  }, []);
+
+  // Save streak data whenever it changes (after hydration)
+  useEffect(() => {
+    if (isHydrated) {
+      setStreakData(streakState);
+    }
+  }, [streakState, isHydrated]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !isHydrated || hasProcessedToday.current) return;
 
     const today = new Date();
     const weekdayNames: Weekday[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -53,5 +75,7 @@ export const useLoginStreak = () => {
         })
       );
     }
-  }, [user, lastLoginDate]);
+
+    hasProcessedToday.current = true;
+  }, [user, isHydrated, daysChecked, lastLoginDate]);
 };

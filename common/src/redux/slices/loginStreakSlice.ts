@@ -27,6 +27,9 @@ const loginStreakSlice = createSlice({
   initialState,
   reducers: {
     resetWeek: () => initialState,
+    hydrateStreak(state, action: PayloadAction<StreakState>) {
+      return action.payload;
+    },
     markDayChecked(state, action: PayloadAction<Weekday>) {
       const day = action.payload;
       if (!state.daysChecked.includes(day)) {
@@ -38,5 +41,5 @@ const loginStreakSlice = createSlice({
   },
 });
 
-export const { resetWeek, markDayChecked } = loginStreakSlice.actions;
+export const { resetWeek, hydrateStreak, markDayChecked } = loginStreakSlice.actions;
 export default loginStreakSlice.reducer;
