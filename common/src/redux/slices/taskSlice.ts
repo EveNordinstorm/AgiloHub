@@ -169,8 +169,9 @@ const taskSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(completeTask.fulfilled, (state, action) => {
+        const completedTaskId = action.meta.arg;
         state.tasks = state.tasks.filter(
-          (task) => task.id !== action.payload.id
+          (task) => task.id !== completedTaskId
         );
       })
       .addCase(fetchCompletedTasks.pending, (state) => {
