@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "../../utils/apiCore";
 import { Project } from "../../types/interfaces/project";
+import { ProjectStage, ProjectStageInput } from "../../types/interfaces/projectStage";
 
 type ProjectsState = {
   projects: Project[];
@@ -41,6 +42,67 @@ export const fetchProjects = createAsyncThunk(
     }
   }
 );
+
+export const addStage = createAsyncThunk<
+  { projectId: string; stage: ProjectStage },
+  { projectId: string; data: ProjectStageInput },
+  { rejectValue: string }
+>("projects/addStage", async ({ projectId, data }, { rejectWithValue }) => {
+  try {
+    const res = await api.post(`/projects/${projectId}/stages`, data);
+    return { projectId, stage: res.data };
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data?.error || "Failed to add stage");
+  }
+});
+
+export const updateStage = createAsyncThunk<
+  { projectId: string; stage: ProjectStage },
+  { stageId: string; projectId: string; data: Partial<ProjectStageInput> },
+  { rejectValue: string }
+>(
+  "projects/updateStage",
+  async ({ stageId, projectId, data }, { rejectWithValue }) => {
+    try {
+      const res = await api.put(`/projects/stages/${stageId}`, data);
+      return { projectId, stage: res.data };
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data?.error || "Failed to update stage"
+      );
+    }
+  }
+);
+
+export const deleteStage = createAsyncThunk<
+  { projectId: string; stageId: string },
+  { stageId: string; projectId: string },
+  { rejectValue: string }
+>("projects/deleteStage", async ({ stageId, projectId }, { rejectWithValue }) => {
+  try {
+    await api.delete(`/projects/stages/${stageId}`);
+    return { projectId, stageId };
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to delete stage"
+    );
+  }
+});
+
+export const completeStage = createAsyncThunk<
+  { projectId: string; stage: ProjectStage; pointsAwarded: number },
+  { stageId: string; projectId: string },
+  { rejectValue: string }
+>("projects/completeStage", async ({ stageId, projectId }, { rejectWithValue }) => {
+  try {
+    const res = await api.post(`/projects/stages/${stageId}/complete`);
+    return { projectId, stage: res.data.stage, pointsAwarded: res.data.pointsAwarded };
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to complete stage"
+    );
+  }
+});
 
 const projectSlice = createSlice({
   name: "projects",
@@ -84,6 +146,54 @@ const projectSlice = createSlice({
       .addCase(fetchProjects.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(addStage.fulfilled, (state, action) => {
+        const project = state.projects.find(
+          (p) => p.id === action.payload.projectId
+        );
+        if (project) {
+          project.stages.push(action.payload.stage);
+          project.stages.sort((a, b) => a.stageNumber - b.stageNumber);
+        }
+      })
+      .addCase(updateStage.fulfilled, (state, action) => {
+        const project = state.projects.find(
+          (p) => p.id === action.payload.projectId
+        );
+        if (project) {
+          const index = project.stages.findIndex(
+            (s) => s.id === action.payload.stage.id
+          );
+          if (index !== -1) {
+            project.stages[index] = action.payload.stage;
+          }
+        }
+      })
+      .addCase(deleteStage.fulfilled, (state, action) => {
+        const project = state.projects.find(
+          (p) => p.id === action.payload.projectId
+        );
+        if (project) {
+          project.stages = project.stages.filter(
+            (s) => s.id !== action.payload.stageId
+          );
+          project.stages.forEach((s, i) => {
+            s.stageNumber = i + 1;
+          });
+        }
+      })
+      .addCase(completeStage.fulfilled, (state, action) => {
+        const project = state.projects.find(
+          (p) => p.id === action.payload.projectId
+        );
+        if (project) {
+          const index = project.stages.findIndex(
+            (s) => s.id === action.payload.stage.id
+          );
+          if (index !== -1) {
+            project.stages[index] = action.payload.stage;
+          }
+        }
       });
   },
 });
