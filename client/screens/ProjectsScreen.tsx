@@ -19,9 +19,11 @@ import { createProject } from "common/src/redux/slices/projectSlice";
 import { useAppDispatch } from "common/src/hooks/hooks";
 import ProjectCards from "../components/Projects/projectCards";
 import { CustomButton } from "../components/CustomButton";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Feather } from "@expo/vector-icons";
 import { useAppSelector } from "common/src/hooks/hooks";
 import { fetchMethodologies } from "common/src/redux/slices/methodologySlice";
+import { StageInput } from "../components/Projects/StageInput";
+import { StageIcon } from "common/src/types/enums/stageIcon";
 
 export default function ProjectsScreen() {
   const dispatch = useAppDispatch();
@@ -50,6 +52,40 @@ export default function ProjectsScreen() {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [methodology, setMethodology] = useState(methodologies[0]?.id || "");
+  const [stages, setStages] = useState<
+    Array<{
+      description: string;
+      points: string;
+      date: Date;
+      icon: StageIcon;
+    }>
+  >([]);
+
+  const addStage = () => {
+    setStages([
+      ...stages,
+      {
+        description: "",
+        points: "",
+        date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        icon: StageIcon.ARROW_DOWN,
+      },
+    ]);
+  };
+
+  const removeStage = (index: number) => {
+    setStages(stages.filter((_, i) => i !== index));
+  };
+
+  const updateStage = (
+    index: number,
+    field: keyof (typeof stages)[0],
+    value: any
+  ) => {
+    const updated = [...stages];
+    updated[index] = { ...updated[index], [field]: value };
+    setStages(updated);
+  };
 
   useEffect(() => {
     if (methodologies.length === 0) {
@@ -88,6 +124,14 @@ export default function ProjectsScreen() {
           .map((e) => e.trim().toLowerCase())
           .filter(Boolean),
         methodologyId: methodology,
+        stages: stages
+          .filter((s) => s.description && s.points)
+          .map((s) => ({
+            description: s.description,
+            totalPoints: parseInt(s.points, 10) || 0,
+            date: s.date.toISOString(),
+            icon: s.icon,
+          })),
       };
 
       const result = await dispatch(createProject(payload)).unwrap();
@@ -95,6 +139,7 @@ export default function ProjectsScreen() {
       if (result && result.id) {
         reset();
         setMethodology(methodologies[0]?.id || "");
+        setStages([]);
         closeModal();
       } else {
         setSubmitError("Project creation failed. Please try again.");
@@ -249,6 +294,51 @@ export default function ProjectsScreen() {
                     />
                   )}
                 />
+
+                {/* Timeline Stages */}
+                <View>
+                  <View className="mb-3">
+                    <Text className="text-white font-montserrat-bold text-lg ml-4 mb-2">
+                      Timeline Stages (Optional)
+                    </Text>
+                    <Pressable
+                      onPress={addStage}
+                      className="bg-primaryBlue px-3 py-2 rounded-full flex-row items-center"
+                    >
+                      <Feather name="plus" size={24} color="#fff" />
+                      <Text className="text-white font-montserrat-bold text-lg ml-1">
+                        Add Stage
+                      </Text>
+                    </Pressable>
+                  </View>
+
+                  {stages.map((stage, index) => (
+                    <StageInput
+                      key={index}
+                      stageNumber={index + 1}
+                      description={stage.description}
+                      onDescriptionChange={(text) =>
+                        updateStage(index, "description", text)
+                      }
+                      points={stage.points}
+                      onPointsChange={(text) =>
+                        updateStage(index, "points", text)
+                      }
+                      date={stage.date}
+                      onDateChange={(date) => updateStage(index, "date", date)}
+                      icon={stage.icon}
+                      onIconChange={(icon) => updateStage(index, "icon", icon)}
+                      onRemove={() => removeStage(index)}
+                    />
+                  ))}
+
+                  {stages.length === 0 && (
+                    <Text className="text-yellow font-montserrat-semibold text-center py-4">
+                      Add stages to track your project milestones and earn
+                      points!
+                    </Text>
+                  )}
+                </View>
               </ScrollView>
 
               <Pressable

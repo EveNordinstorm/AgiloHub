@@ -77,16 +77,7 @@ export default function ProjectAccordion({ project }: Props) {
     {
       title: "Timeline",
       icon: <FontAwesome5 name="clock" color="white" size={20} />,
-      content: (
-        <Timeline
-          pointsEarned={830}
-          totalPoints={4000}
-          stage={1}
-          stageDescription="Planning content and solidifying technology stack."
-          icon={<FontAwesome name="arrow-circle-down" size={24} color="#fff" />}
-          date={new Date("2025-09-21T15:30:00")}
-        />
-      ),
+      content: <Timeline projectId={project.id} stages={project.stages} />,
     },
     {
       title: "Members",
@@ -119,7 +110,11 @@ export default function ProjectAccordion({ project }: Props) {
     {
       title: "Points to earn!",
       icon: <FontAwesome name="star" color="yellow" size={24} />,
-      content: <PointsToEarn totalPoints={4000} />,
+      content: (
+        <PointsToEarn
+          totalPoints={project.stages.reduce((sum, s) => sum + s.totalPoints, 0)}
+        />
+      ),
     },
   ];
 
