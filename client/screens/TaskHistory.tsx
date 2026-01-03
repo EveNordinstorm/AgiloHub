@@ -15,9 +15,7 @@ export default function TaskHistoryScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchCompletedTasks()).then((res) =>
-      console.log("Completed tasks:", res)
-    );
+    dispatch(fetchCompletedTasks());
   }, []);
 
   return (
