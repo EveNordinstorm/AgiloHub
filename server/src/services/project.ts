@@ -247,4 +247,84 @@ export class ProjectService {
       },
     });
   }
+
+  static async updateProject(
+    projectId: string,
+    userId: string,
+    data: {
+      title?: string;
+      description?: string;
+      techStack?: string[];
+      context?: string;
+      methodologyId?: string;
+      memberEmails?: string[];
+    }
+  ) {
+    // Verify user is project member
+    const project = await prisma.project.findFirst({
+      where: {
+        id: projectId,
+        members: { some: { id: userId } },
+      },
+    });
+
+    if (!project) throw new Error("Project not found or unauthorized");
+
+    // Build update data
+    const updateData: any = {};
+    if (data.title !== undefined) updateData.title = data.title;
+    if (data.description !== undefined)
+      updateData.description = data.description;
+    if (data.techStack !== undefined) updateData.techStack = data.techStack;
+    if (data.context !== undefined) updateData.context = data.context;
+    if (data.methodologyId !== undefined)
+      updateData.methodologyId = data.methodologyId;
+
+    // Handle members update
+    if (data.memberEmails !== undefined) {
+      const members = await prisma.user.findMany({
+        where: { email: { in: data.memberEmails.map((e) => e.toLowerCase()) } },
+      });
+      // Include creator and found members
+      const memberIds = Array.from(
+        new Set([project.creatorId, ...members.map((m) => m.id)])
+      );
+      updateData.members = { set: memberIds.map((id) => ({ id })) };
+    }
+
+    return prisma.project.update({
+      where: { id: projectId },
+      data: updateData,
+      include: {
+        methodology: true,
+        creator: true,
+        members: true,
+        stages: { orderBy: { stageNumber: "asc" } },
+      },
+    });
+  }
+
+  static async deleteProject(projectId: string, userId: string) {
+    // Verify user is project creator
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+    });
+
+    if (!project) throw new Error("Project not found");
+    if (project.creatorId !== userId) {
+      throw new Error("Only the project creator can delete the project");
+    }
+
+    // Delete stages first
+    await prisma.projectStage.deleteMany({
+      where: { projectId },
+    });
+
+    // Delete the project
+    await prisma.project.delete({
+      where: { id: projectId },
+    });
+
+    return { id: projectId };
+  }
 }

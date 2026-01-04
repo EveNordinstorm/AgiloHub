@@ -120,4 +120,38 @@ export class ProjectController {
       res.status(400).json({ error: err.message });
     }
   }
+
+  static async update(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const { title, description, techStack, context, methodologyId, members } =
+        req.body;
+      const userId = req.userId!;
+
+      const project = await ProjectService.updateProject(id, userId, {
+        title,
+        description,
+        techStack,
+        context,
+        methodologyId,
+        memberEmails: members,
+      });
+
+      res.json(project);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async delete(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+
+      await ProjectService.deleteProject(id, userId);
+      res.json({ message: "Project deleted successfully" });
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  }
 }

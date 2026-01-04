@@ -7,6 +7,8 @@ const router = Router();
 router.post("/", authMiddleware, ProjectController.create);
 router.get("/", authMiddleware, ProjectController.list);
 router.get("/:id", authMiddleware, ProjectController.get);
+router.put("/:id", authMiddleware, ProjectController.update);
+router.delete("/:id", authMiddleware, ProjectController.delete);
 
 // Stage routes
 router.get("/:projectId/stages", authMiddleware, ProjectController.getStages);
