@@ -104,6 +104,36 @@ export const completeStage = createAsyncThunk<
   }
 });
 
+export const updateProject = createAsyncThunk<
+  Project,
+  { id: string; data: any },
+  { rejectValue: string }
+>("projects/updateProject", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const res = await api.put(`/projects/${id}`, data);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to update project"
+    );
+  }
+});
+
+export const deleteProject = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("projects/deleteProject", async (id, { rejectWithValue }) => {
+  try {
+    await api.delete(`/projects/${id}`);
+    return id;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to delete project"
+    );
+  }
+});
+
 const projectSlice = createSlice({
   name: "projects",
   initialState,
@@ -194,6 +224,33 @@ const projectSlice = createSlice({
             project.stages[index] = action.payload.stage;
           }
         }
+      })
+      .addCase(updateProject.pending, (state) => {
+        state.loading = true;
+        state.error = undefined;
+      })
+      .addCase(updateProject.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.projects.findIndex((p) => p.id === action.payload.id);
+        if (index !== -1) {
+          state.projects[index] = action.payload;
+        }
+      })
+      .addCase(updateProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteProject.pending, (state) => {
+        state.loading = true;
+        state.error = undefined;
+      })
+      .addCase(deleteProject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.projects = state.projects.filter((p) => p.id !== action.payload);
+      })
+      .addCase(deleteProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
