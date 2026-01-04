@@ -112,7 +112,10 @@ export default function ProjectAccordion({ project }: Props) {
       icon: <FontAwesome name="star" color="yellow" size={24} />,
       content: (
         <PointsToEarn
-          totalPoints={project.stages.reduce((sum, s) => sum + s.totalPoints, 0)}
+          totalPoints={
+            project.stages.reduce((sum, s) => sum + s.totalPoints, 0) +
+            tasks.reduce((sum, t) => sum + (t.points || 0), 0)
+          }
         />
       ),
     },
