@@ -50,7 +50,7 @@ export class TaskController {
     }
   }
 
-  static async getByProject(req: AuthRequest, res: Response) {
+  static async getActiveByProject(req: AuthRequest, res: Response) {
     try {
       const { projectId } = req.params;
 
@@ -61,6 +61,69 @@ export class TaskController {
       const tasks = await TaskService.getTasksByProject(projectId);
 
       res.json(tasks);
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async complete(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+      const task = await TaskService.completeTask(id, userId);
+      res.json({ message: "Task completed successfully", task });
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async listCompleted(req: AuthRequest, res: Response) {
+    try {
+      const { type } = req.query;
+
+      const tasks = await TaskService.getCompletedTasksForUser(
+        req.userId!,
+        type === "project" || type === "personal" ? (type as any) : undefined
+      );
+
+      res.json(tasks);
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async update(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+      const { title, description, points, deadline, type, projectId } = req.body;
+
+      const task = await TaskService.updateTask(id, userId, {
+        title,
+        description,
+        points,
+        deadline,
+        type,
+        projectId,
+      });
+
+      res.json(task);
+    } catch (err: any) {
+      console.error(err);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async delete(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.userId!;
+
+      await TaskService.deleteTask(id, userId);
+      res.json({ message: "Task deleted successfully" });
     } catch (err: any) {
       console.error(err);
       res.status(400).json({ error: err.message });

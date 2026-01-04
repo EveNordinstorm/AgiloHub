@@ -5,6 +5,7 @@ import subscriptionRoutes from "./routes/subscription";
 import projectRoutes from "./routes/project";
 import methodologyRoutes from "./routes/methodology";
 import taskRoutes from "./routes/task";
+import PointsRoutes from "./routes/points";
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -28,5 +29,6 @@ app.use("/subscriptions", subscriptionRoutes);
 app.use("/projects", projectRoutes);
 app.use("/methodologies", methodologyRoutes);
 app.use("/tasks", taskRoutes);
+app.use("/points", PointsRoutes);
 
 export default app;

@@ -5,10 +5,16 @@ import { FontAwesome } from "@expo/vector-icons";
 import { CustomButton } from "../components/CustomButton";
 import { useAppDispatch } from "common/src/hooks/hooks";
 import { logout } from "common/src/redux/slices/authSlice";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<any>;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function SettingsScreen({ navigation }: Props) {
+  const navigationButton = useNavigation<NavigationProp>();
+
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -33,12 +39,21 @@ export default function SettingsScreen({ navigation }: Props) {
         My Settings
       </Text>
 
-      <CustomButton
-        text="Logout"
-        onPress={handleLogout}
-        bgColor="bg-yellow"
-        textColor="text-black"
-      />
+      <View className="gap-5">
+        <CustomButton
+          text="Task History"
+          onPress={() => navigationButton.navigate("TaskHistory")}
+          bgColor="bg-primaryPurple"
+          textColor="text-white"
+        />
+
+        <CustomButton
+          text="Logout"
+          onPress={handleLogout}
+          bgColor="bg-yellow"
+          textColor="text-black"
+        />
+      </View>
     </View>
   );
 }

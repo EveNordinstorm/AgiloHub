@@ -4,12 +4,14 @@ import { Task } from "../../types/interfaces/task";
 
 type TasksState = {
   tasks: Task[];
+  completedTasks: Task[];
   loading: boolean;
   error?: string;
 };
 
 const initialState: TasksState = {
   tasks: [],
+  completedTasks: [],
   loading: false,
   error: undefined,
 };
@@ -52,6 +54,62 @@ export const fetchTasksByProject = createAsyncThunk<
     return rejectWithValue(
       err.response?.data?.error || "Failed to fetch project tasks"
     );
+  }
+});
+
+export const completeTask = createAsyncThunk<
+  Task,
+  string,
+  { rejectValue: string }
+>("tasks/completeTask", async (taskId, { rejectWithValue }) => {
+  try {
+    const res = await api.post(`/tasks/${taskId}/complete`);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to complete task"
+    );
+  }
+});
+
+export const fetchCompletedTasks = createAsyncThunk<
+  Task[],
+  void,
+  { rejectValue: string }
+>("tasks/fetchCompletedTasks", async (_, { rejectWithValue }) => {
+  try {
+    const res = await api.get("/tasks/completed");
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.error || "Failed to fetch completed tasks"
+    );
+  }
+});
+
+export const updateTask = createAsyncThunk<
+  Task,
+  { id: string; data: Partial<Omit<Task, "id" | "createdAt" | "updatedAt">> },
+  { rejectValue: string }
+>("tasks/updateTask", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const res = await api.put(`/tasks/${id}`, data);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data?.error || "Failed to update task");
+  }
+});
+
+export const deleteTask = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("tasks/deleteTask", async (taskId, { rejectWithValue }) => {
+  try {
+    await api.delete(`/tasks/${taskId}`);
+    return taskId;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data?.error || "Failed to delete task");
   }
 });
 
@@ -109,6 +167,33 @@ const taskSlice = createSlice({
       .addCase(fetchTasksByProject.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(completeTask.fulfilled, (state, action) => {
+        const completedTaskId = action.meta.arg;
+        state.tasks = state.tasks.filter(
+          (task) => task.id !== completedTaskId
+        );
+      })
+      .addCase(fetchCompletedTasks.pending, (state) => {
+        state.loading = true;
+        state.error = undefined;
+      })
+      .addCase(fetchCompletedTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.completedTasks = action.payload;
+      })
+      .addCase(fetchCompletedTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex((t) => t.id === action.payload.id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter((t) => t.id !== action.payload);
       });
   },
 });

@@ -16,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskSchema, TaskFormValues } from "common/src/validation/task";
 import { useAppDispatch, useAppSelector } from "common/src/hooks/hooks";
 import { fetchProjects } from "common/src/redux/slices/projectSlice";
-import { fetchTasks } from "common/src/redux/slices/taskSlice";
-import { createTask } from "common/src/redux/slices/taskSlice";
+import { fetchTasks, createTask, updateTask, deleteTask } from "common/src/redux/slices/taskSlice";
+import { Task } from "common/src/types/interfaces/task";
 import { TaskType } from "common/src/types/enums/taskType";
 import { CustomButton } from "../components/CustomButton";
 import { FontAwesome } from "@expo/vector-icons";
@@ -30,6 +30,7 @@ export default function TasksScreen() {
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined
   >();
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const dispatch = useAppDispatch();
   const { projects } = useAppSelector((state) => state.project);
@@ -56,11 +57,46 @@ export default function TasksScreen() {
   });
 
   const openModal = () => {
+    setEditingTask(null);
+    reset({
+      title: "",
+      description: "",
+      points: 0,
+      deadline: new Date(),
+      type: TaskType.personal,
+    });
+    setTaskType(TaskType.project);
+    setSelectedProjectId(undefined);
     setModalVisible(true);
   };
 
   const closeModal = () => {
     setModalVisible(false);
+    setEditingTask(null);
+  };
+
+  const handleEditTask = (task: Task) => {
+    setEditingTask(task);
+    reset({
+      title: task.title,
+      description: task.description,
+      points: task.points,
+      deadline: new Date(task.deadline),
+      type: task.type as TaskType,
+    });
+    setTaskType(task.type as TaskType);
+    setSelectedProjectId(task.projectId ?? undefined);
+    setModalVisible(true);
+  };
+
+  const handleDeleteTask = async () => {
+    if (!editingTask) return;
+    try {
+      await dispatch(deleteTask(editingTask.id)).unwrap();
+      closeModal();
+    } catch (err: any) {
+      setSubmitError(err?.message || "Failed to delete task.");
+    }
   };
 
   useEffect(() => {
@@ -79,17 +115,30 @@ export default function TasksScreen() {
         projectId: taskType === "project" ? selectedProjectId : undefined,
       };
 
-      const result = await dispatch(createTask(payload)).unwrap();
+      if (editingTask) {
+        const result = await dispatch(
+          updateTask({ id: editingTask.id, data: payload })
+        ).unwrap();
 
-      if (result && result.id) {
-        reset();
-        closeModal();
-        dispatch(fetchTasks()); // refersh after creation
+        if (result && result.id) {
+          reset();
+          closeModal();
+        } else {
+          setSubmitError("Task update failed. Please try again.");
+        }
       } else {
-        setSubmitError("Task creation failed. Please try again.");
+        const result = await dispatch(createTask(payload)).unwrap();
+
+        if (result && result.id) {
+          reset();
+          closeModal();
+          dispatch(fetchTasks());
+        } else {
+          setSubmitError("Task creation failed. Please try again.");
+        }
       }
     } catch (err: any) {
-      setSubmitError(err?.message || "Task creation failed.");
+      setSubmitError(err?.message || "Task operation failed.");
     }
   };
 
@@ -177,7 +226,7 @@ export default function TasksScreen() {
               contentContainerStyle={{ paddingBottom: 190 }}
               showsVerticalScrollIndicator={false}
             >
-              <TaskCards tasks={filteredTasks} projects={projects} />
+              <TaskCards tasks={filteredTasks} projects={projects} onEdit={handleEditTask} />
             </ScrollView>
           </View>
         </View>
@@ -205,7 +254,7 @@ export default function TasksScreen() {
                 contentContainerStyle={{ paddingBottom: 32 }}
               >
                 <Text className="font-montserrat-bold text-white text-2xl mb-6">
-                  Create a Task
+                  {editingTask ? "Edit Task" : "Create a Task"}
                 </Text>
                 {/* Title */}
                 <Controller
@@ -403,6 +452,20 @@ export default function TasksScreen() {
                 </View>
               </ScrollView>
 
+              {editingTask && (
+                <Pressable
+                  onPress={handleDeleteTask}
+                  className="bg-red-600 mt-4 rounded"
+                >
+                  <View className="flex-row items-center justify-center">
+                    <FontAwesome name="trash" size={24} color="#fff" />
+                    <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
+                      Delete Task
+                    </Text>
+                  </View>
+                </Pressable>
+              )}
+
               <Pressable
                 onPress={handleSubmit(onSubmit)}
                 className="bg-green-600 mt-4 rounded"
@@ -410,7 +473,7 @@ export default function TasksScreen() {
                 <View className="flex-row items-center justify-center">
                   <FontAwesome name="check-circle" size={24} color="#fff" />
                   <Text className="font-montserrat-semibold text-white text-xl px-3 py-5">
-                    Create Task
+                    {editingTask ? "Update Task" : "Create Task"}
                   </Text>
                 </View>
               </Pressable>

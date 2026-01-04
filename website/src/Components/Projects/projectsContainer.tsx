@@ -11,7 +11,7 @@ export function ProjectContainer() {
     if (!projects.length && !loading) {
       dispatch(fetchProjects());
     }
-  }, [dispatch]);
+  }, [dispatch, loading, projects]);
 
   if (loading) return <p className="text-white">Loading projects...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -22,7 +22,7 @@ export function ProjectContainer() {
         <h2 className="text-white font-bold text-xl md:text-2xl mb-4">
           My Projects
         </h2>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-3">
           {projects.map((proj) => (
             <ProjectCard key={proj.id} project={proj} />
           ))}

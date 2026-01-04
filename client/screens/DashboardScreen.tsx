@@ -7,6 +7,7 @@ import StreakWeek from "../components/Dashboard/StreakWeek";
 import YourMonth from "../components/Dashboard/YourMonth";
 import ShortCutCards from "../components/Dashboard/ShortCutCards";
 import { useAppSelector } from "common/src/hooks/hooks";
+import { useLoginStreak } from "../components/Dashboard/useLoginStreak";
 
 const starMap: Record<string, React.ReactNode> = {
   Free: <FreeStar fill="#F8E23B" />,
@@ -15,6 +16,8 @@ const starMap: Record<string, React.ReactNode> = {
 };
 
 export default function DashboardScreen() {
+  useLoginStreak();
+
   const user = useAppSelector((state) => state.auth.user);
 
   const firstName = user?.firstName ?? "Forename";
