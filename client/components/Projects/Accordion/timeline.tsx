@@ -34,7 +34,10 @@ export function Timeline({ projectId, stages }: TimelineProps) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const totalPointsEarned = stages.reduce((sum, s) => sum + s.pointsEarned, 0);
-  const totalPointsAvailable = stages.reduce((sum, s) => sum + s.totalPoints, 0);
+  const totalPointsAvailable = stages.reduce(
+    (sum, s) => sum + s.totalPoints,
+    0
+  );
 
   const currentStage =
     stages.find((s) => !s.completed) || stages[stages.length - 1];
@@ -86,7 +89,7 @@ export function Timeline({ projectId, stages }: TimelineProps) {
   }
 
   return (
-    <View>
+    <View className="w-full">
       <View className="bg-darkBlue w-full">
         <View className="bg-primaryPurple py-3 px-5">
           <Text className="font-montserrat-bold text-white text-xl">
@@ -129,7 +132,7 @@ export function Timeline({ projectId, stages }: TimelineProps) {
               </View>
 
               {stages.map((stage, index) => (
-                <View key={stage.id} className="flex-row gap-3 mb-4">
+                <View key={stage.id} className="flex-row gap-3">
                   <View className="flex items-center">
                     <View
                       className={`p-2 rounded-full ${
@@ -140,7 +143,7 @@ export function Timeline({ projectId, stages }: TimelineProps) {
                     </View>
                     {index < stages.length - 1 && (
                       <View
-                        className={`w-[2px] h-10 ${
+                        className={`w-[3px] h-20 ${
                           stage.completed ? "bg-green-500" : "bg-white"
                         }`}
                       />
@@ -151,13 +154,13 @@ export function Timeline({ projectId, stages }: TimelineProps) {
                     <Text className="font-montserrat-bold text-white">
                       Stage {stage.stageNumber}: {stage.description}
                     </Text>
-                    <Text className="text-gray-400 font-montserrat text-sm">
+                    <Text className="text-gray-300 font-montserrat-semibold text-sm">
                       Deadline: {new Date(stage.date).toLocaleDateString()}
                     </Text>
                     <Text className="text-yellow font-montserrat-semibold">
                       {stage.completed
-                        ? `${stage.pointsEarned} pts earned`
-                        : `${stage.totalPoints} pts available`}
+                        ? `${stage.pointsEarned} points earned`
+                        : `${stage.totalPoints} points available`}
                     </Text>
 
                     {!stage.completed && (
@@ -178,7 +181,7 @@ export function Timeline({ projectId, stages }: TimelineProps) {
                           size={16}
                           color="#22c55e"
                         />
-                        <Text className="text-green-500 font-montserrat ml-1">
+                        <Text className="text-green-500 font-montserrat-semibold ml-1">
                           Completed{" "}
                           {stage.completedAt
                             ? new Date(stage.completedAt).toLocaleDateString()

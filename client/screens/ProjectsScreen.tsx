@@ -22,7 +22,7 @@ import { CustomButton } from "../components/CustomButton";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import { useAppSelector } from "common/src/hooks/hooks";
 import { fetchMethodologies } from "common/src/redux/slices/methodologySlice";
-import { StageInput } from "../components/Projects/StageInput";
+import { StageInput } from "../components/Projects/Accordion/StageInput";
 import { StageIcon } from "common/src/types/enums/stageIcon";
 
 export default function ProjectsScreen() {
@@ -298,18 +298,9 @@ export default function ProjectsScreen() {
                 {/* Timeline Stages */}
                 <View>
                   <View className="mb-3">
-                    <Text className="text-white font-montserrat-bold text-lg ml-4 mb-2">
-                      Timeline Stages (Optional)
+                    <Text className="text-white font-montserrat-bold text-lg ml-4">
+                      Timeline Stages
                     </Text>
-                    <Pressable
-                      onPress={addStage}
-                      className="bg-primaryBlue px-3 py-2 rounded-full flex-row items-center"
-                    >
-                      <Feather name="plus" size={24} color="#fff" />
-                      <Text className="text-white font-montserrat-bold text-lg ml-1">
-                        Add Stage
-                      </Text>
-                    </Pressable>
                   </View>
 
                   {stages.map((stage, index) => (
@@ -333,11 +324,21 @@ export default function ProjectsScreen() {
                   ))}
 
                   {stages.length === 0 && (
-                    <Text className="text-yellow font-montserrat-semibold text-center py-4">
-                      Add stages to track your project milestones and earn
-                      points!
+                    <Text className="text-yellow font-montserrat-semibold text-center pb-4">
+                      Add timeline stages to track your project milestones and
+                      earn points!
                     </Text>
                   )}
+
+                  <Pressable
+                    onPress={addStage}
+                    className="bg-yellow px-3 py-2 rounded-full flex-row items-center"
+                  >
+                    <Feather name="plus" size={24} color="#000" />
+                    <Text className="text-black font-montserrat-bold text-lg ml-1">
+                      Add Stage
+                    </Text>
+                  </Pressable>
                 </View>
               </ScrollView>
 

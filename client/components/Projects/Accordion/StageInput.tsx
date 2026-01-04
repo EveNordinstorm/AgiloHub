@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, Platform } from "react-native";
-import { FormInput } from "../FormInput";
+import { FormInput } from "../../FormInput";
 import { Feather } from "@expo/vector-icons";
 import { StageIcon } from "common/src/types/enums/stageIcon";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -61,7 +61,7 @@ export function StageInput({
         </Text>
         {showRemove && onRemove && (
           <Pressable onPress={onRemove}>
-            <Feather name="trash-2" size={20} color="#ef4444" />
+            <Feather name="trash-2" size={22} color="#f87171" />
           </Pressable>
         )}
       </View>
@@ -83,7 +83,9 @@ export function StageInput({
         error={errors?.points}
       />
 
-      <Text className="text-white font-montserrat-semibold mb-2 ml-4">Icon</Text>
+      <Text className="text-white font-montserrat-semibold mb-2 ml-4">
+        Icon
+      </Text>
       <View className="flex-row gap-4 mb-4 ml-4">
         {ICONS.map((ic) => (
           <Pressable
