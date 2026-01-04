@@ -34,7 +34,7 @@ export type RootStackParamList = {
   MainTabs: undefined;
   Settings: undefined;
   Dashboard: undefined;
-  Projects: undefined;
+  Projects: { editProjectId?: string } | undefined;
   ProjectDetails: { projectId: string };
   Tasks: undefined;
   TaskHistory: undefined;
