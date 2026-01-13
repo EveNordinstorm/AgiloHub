@@ -13,7 +13,7 @@ describe("User login flow", () => {
     cy.get('input[placeholder="Enter your email"]').type("johndoe@mail.com");
     cy.get('input[placeholder="Enter password"]').type("Password123!");
 
-    // Intercept API call for invalid credentials
+    // Intercept API call for the happy path
     cy.intercept("POST", "**/auth/login", {
       statusCode: 200,
       body: {
