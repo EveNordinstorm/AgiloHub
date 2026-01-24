@@ -9,9 +9,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { LoginSchema, LoginFormValues } from "common/src/validation/auth";
-import { loginUser } from "common/src/redux/slices/authSlice";
-import { useAppDispatch } from "common/src/hooks/hooks";
+import { LoginSchema, LoginFormValues } from "common/validation/auth";
+import { loginUser } from "common/redux/slices/authSlice";
+import { useAppDispatch } from "common/hooks/hooks";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
