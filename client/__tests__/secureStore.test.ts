@@ -251,9 +251,9 @@ describe("SecureStore Helper Functions", () => {
 
         await setStreakData(streakWithDate);
 
-        // Assert: Date should be preserved in JSON
         const savedData = JSON.parse(
-          (mockedSecureStore.setItemAsync as jest.Mock).mock.calls[0][1]
+          (mockedSecureStore.setItemAsync as jest.Mock).mock
+            .calls[0][1] as string
         );
         expect(savedData.lastLoginDate).toBe("2026-01-22T14:35:22.123Z");
       });
