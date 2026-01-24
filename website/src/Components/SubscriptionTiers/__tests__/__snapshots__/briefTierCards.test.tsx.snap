@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`BriefTierCards Component error state should match snapshot with error state 1`] = `
+<div>
+  <p>
+    Loading...
+  </p>
+</div>
+`;
+
+exports[`BriefTierCards Component loading state should match snapshot while loading 1`] = `
+<div>
+  <p>
+    Loading...
+  </p>
+</div>
+`;
+
+exports[`BriefTierCards Component snapshot testing should match snapshot with all tiers 1`] = `
+<div>
+  <p>
+    Loading...
+  </p>
+</div>
+`;
+
+exports[`BriefTierCards Component snapshot testing should match snapshot with empty tiers 1`] = `
+<div>
+  <p>
+    Loading...
+  </p>
+</div>
+`;
+
+exports[`BriefTierCards Component snapshot testing should match snapshot with single tier 1`] = `
+<div>
+  <p>
+    Loading...
+  </p>
+</div>
+`;
