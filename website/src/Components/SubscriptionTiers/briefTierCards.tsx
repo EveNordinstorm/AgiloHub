@@ -16,7 +16,7 @@ const starMap: Record<string, React.ReactNode> = {
 export default function BriefTierCards() {
   const dispatch = useAppDispatch();
   const { tiers, loading, error } = useAppSelector(
-    (state) => state.subscription
+    (state) => state.subscription,
   );
 
   useEffect(() => {
