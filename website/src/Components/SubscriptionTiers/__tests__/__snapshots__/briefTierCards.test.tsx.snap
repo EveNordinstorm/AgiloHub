@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`BriefTierCards Component error state should match snapshot with error state 1`] = `
+<div>
+  <p>
+    Error: 
+    Test error message
+  </p>
+</div>
+`;
+
+exports[`BriefTierCards Component loading state should match snapshot while loading 1`] = `
+<div>
+  <p>
+    Loading...
+  </p>
+</div>
+`;
+
+exports[`BriefTierCards Component snapshot testing should match snapshot with all tiers 1`] = `
+<div>
+  <div
+    class="grid gap-6 xl:gap-14 md:grid-cols-3 py-16 px-10 md:px-16"
+  >
+    <div
+      class="bg-white px-6 pb-6 pt-10 rounded-t-full flex flex-col"
+    >
+      <h2
+        class="text-2xl md:text-3xl text-primary-blue font-bold text-center mb-2"
+      >
+        Free
+      </h2>
+      <div
+        class="flex justify-center my-3"
+      >
+        <div
+          class="fill-yellow h-20"
+          data-testid="free-star"
+        >
+          FreeStar
+        </div>
+      </div>
+      <ul
+        class="mt-2 flex-col justify-items-center font-semibold text-white"
+      >
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            5 Projects
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Basic Support
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Community Access
+          </li>
+        </div>
+      </ul>
+      <div
+        class="flex-grow"
+      />
+      <button
+        class="mt-4 px-4 py-2 w-full rounded-full bg-primary-blue hover:bg-dark-blue hover:cursor-pointer transition-colors ease-in text-white font-bold"
+      >
+        Get Started
+      </button>
+    </div>
+    <div
+      class="bg-white px-6 pb-6 pt-10 rounded-t-full flex flex-col"
+    >
+      <h2
+        class="text-2xl md:text-3xl text-primary-blue font-bold text-center mb-2"
+      >
+        Pro
+      </h2>
+      <div
+        class="flex justify-center my-3"
+      >
+        <div
+          class="fill-yellow h-20"
+          data-testid="pro-star"
+        >
+          ProStar
+        </div>
+      </div>
+      <ul
+        class="mt-2 flex-col justify-items-center font-semibold text-white"
+      >
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Unlimited Projects
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Priority Support
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Advanced Analytics
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Custom Integrations
+          </li>
+        </div>
+      </ul>
+      <div
+        class="flex-grow"
+      />
+      <button
+        class="mt-4 px-4 py-2 w-full rounded-full bg-primary-blue hover:bg-dark-blue hover:cursor-pointer transition-colors ease-in text-white font-bold"
+      >
+        Upgrade to Pro
+      </button>
+    </div>
+    <div
+      class="bg-white px-6 pb-6 pt-10 rounded-t-full flex flex-col"
+    >
+      <h2
+        class="text-2xl md:text-3xl text-primary-blue font-bold text-center mb-2"
+      >
+        Enterprise
+      </h2>
+      <div
+        class="flex justify-center my-3"
+      >
+        <div
+          class="fill-yellow h-20"
+          data-testid="enterprise-star"
+        >
+          EnterpriseStar
+        </div>
+      </div>
+      <ul
+        class="mt-2 flex-col justify-items-center font-semibold text-white"
+      >
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Everything in Pro
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Custom Integrations
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Dedicated Support
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            SLA Guarantee
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Training & Onboarding
+          </li>
+        </div>
+      </ul>
+      <div
+        class="flex-grow"
+      />
+      <button
+        class="mt-4 px-4 py-2 w-full rounded-full bg-primary-blue hover:bg-dark-blue hover:cursor-pointer transition-colors ease-in text-white font-bold"
+      >
+        Contact Sales
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BriefTierCards Component snapshot testing should match snapshot with empty tiers 1`] = `
+<div>
+  <div
+    class="grid gap-6 xl:gap-14 md:grid-cols-3 py-16 px-10 md:px-16"
+  />
+</div>
+`;
+
+exports[`BriefTierCards Component snapshot testing should match snapshot with single tier 1`] = `
+<div>
+  <div
+    class="grid gap-6 xl:gap-14 md:grid-cols-3 py-16 px-10 md:px-16"
+  >
+    <div
+      class="bg-white px-6 pb-6 pt-10 rounded-t-full flex flex-col"
+    >
+      <h2
+        class="text-2xl md:text-3xl text-primary-blue font-bold text-center mb-2"
+      >
+        Free
+      </h2>
+      <div
+        class="flex justify-center my-3"
+      >
+        <div
+          class="fill-yellow h-20"
+          data-testid="free-star"
+        >
+          FreeStar
+        </div>
+      </div>
+      <ul
+        class="mt-2 flex-col justify-items-center font-semibold text-white"
+      >
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            5 Projects
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Basic Support
+          </li>
+        </div>
+        <div
+          class="bg-dark-blue rounded-full py-1 px-4 mb-1.5 text-center"
+        >
+          <li>
+            Community Access
+          </li>
+        </div>
+      </ul>
+      <div
+        class="flex-grow"
+      />
+      <button
+        class="mt-4 px-4 py-2 w-full rounded-full bg-primary-blue hover:bg-dark-blue hover:cursor-pointer transition-colors ease-in text-white font-bold"
+      >
+        Get Started
+      </button>
+    </div>
+  </div>
+</div>
+`;

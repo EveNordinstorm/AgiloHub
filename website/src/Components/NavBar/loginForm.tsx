@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@/lib/zodResolver";
 import {
   Form,
   FormControl,
@@ -9,9 +9,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { LoginSchema, LoginFormValues } from "common/src/validation/auth";
-import { loginUser } from "common/src/redux/slices/authSlice";
-import { useAppDispatch } from "common/src/hooks/hooks";
+import { LoginSchema, LoginFormValues } from "common/validation/auth";
+import { loginUser } from "common/redux/slices/authSlice";
+import { useAppDispatch } from "common/hooks/hooks";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -21,7 +21,6 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const dispatch = useAppDispatch();
 
   const form = useForm<LoginFormValues>({
-    // @ts-expect-error Zod 4 + RHF v7 type mismatch
     resolver: zodResolver(LoginSchema),
     defaultValues: { email: "", password: "" },
   });
@@ -82,22 +81,22 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
-              <FormControl className="relative">
-                <div>
+              <div className="relative">
+                <FormControl>
                   <Input
                     placeholder="Enter password"
                     {...field}
                     type={showPassword ? "text" : "password"}
                   />
-                  <button
-                    type="button"
-                    onClick={togglePassword}
-                    className="absolute right-2 top-1/2 -translate-y-1/2"
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </FormControl>
+                </FormControl>
+                <button
+                  type="button"
+                  onClick={togglePassword}
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
               <FormMessage />
             </FormItem>
           )}
