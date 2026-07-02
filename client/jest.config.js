@@ -19,6 +19,12 @@ module.exports = {
     '^common/(.*)$': '<rootDir>/../common/src/$1',
     // Mock environment variables
     '^@env$': '<rootDir>/__mocks__/@env.js',
+    // Mock react-native-css-interop to prevent native module initialization errors
+    '^react-native-css-interop$': '<rootDir>/__mocks__/react-native-css-interop.js',
+    // Force a single React instance across all packages (prevents hook context errors
+    // when react-redux in common/node_modules uses a different React than the test renderer)
+    '^react$': '<rootDir>/node_modules/react',
+    '^react-native$': '<rootDir>/node_modules/react-native',
   },
 
   // Collect coverage from these files

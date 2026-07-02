@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -107,7 +107,9 @@ describe("LoginForm Component", () => {
 
       expect(passwordInput.type).toBe("password");
 
-      const toggleButtons = screen.getAllByRole("button");
+      const toggleButtons = screen.getAllByRole(
+        "button"
+      ) as HTMLButtonElement[];
       const toggleButton = toggleButtons.find((btn) => btn.type === "button");
 
       if (toggleButton) {

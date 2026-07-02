@@ -5,7 +5,9 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["src"]
 }

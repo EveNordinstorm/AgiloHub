@@ -4,21 +4,16 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import BriefTierCards from "../briefTierCards";
-import subscriptionReducer, {
-  fetchSubscriptionTiers,
-} from "common/redux/slices/subscriptionSlice";
+import subscriptionReducer from "common/redux/slices/subscriptionSlice";
 
 jest.mock("common/redux/slices/subscriptionSlice", () => {
   const actual = jest.requireActual(
-    "common/redux/slices/subscriptionSlice"
+    "common/redux/slices/subscriptionSlice",
   ) as typeof import("common/redux/slices/subscriptionSlice");
   return {
     __esModule: true,
     ...actual,
-    fetchSubscriptionTiers: jest.fn(() => ({
-      type: "subscription/fetchTiers/fulfilled",
-      payload: [],
-    })),
+    fetchSubscriptionTiers: jest.fn(() => () => {}),
   };
 });
 
@@ -100,7 +95,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -112,7 +107,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(container).toMatchSnapshot();
@@ -126,11 +121,11 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(
-        screen.getByText(/error: failed to load tiers/i)
+        screen.getByText(/error: failed to load tiers/i),
       ).toBeInTheDocument();
     });
 
@@ -147,7 +142,7 @@ describe("BriefTierCards Component", () => {
         const { unmount } = render(
           <Provider store={store}>
             <BriefTierCards />
-          </Provider>
+          </Provider>,
         );
 
         expect(screen.getByText(new RegExp(errorMsg, "i"))).toBeInTheDocument();
@@ -162,7 +157,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(container).toMatchSnapshot();
@@ -176,7 +171,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText("Free")).toBeInTheDocument();
@@ -190,7 +185,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText("5 Projects")).toBeInTheDocument();
@@ -205,7 +200,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText("Get Started")).toBeInTheDocument();
@@ -219,7 +214,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByTestId("free-star")).toBeInTheDocument();
@@ -233,7 +228,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       const listItems = container.querySelectorAll("li");
@@ -249,7 +244,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(container).toMatchSnapshot();
@@ -261,7 +256,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(container).toMatchSnapshot();
@@ -273,7 +268,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(container).toMatchSnapshot();
@@ -287,7 +282,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       const grid = container.querySelector(".grid");
@@ -310,7 +305,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText("Basic")).toBeInTheDocument();
@@ -332,7 +327,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       for (let i = 1; i <= 10; i++) {
@@ -355,7 +350,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText("UnknownTier")).toBeInTheDocument();
@@ -370,7 +365,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       const grid = container.querySelector(".grid");
@@ -383,7 +378,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       const buttons = screen.getAllByRole("button");
@@ -396,7 +391,7 @@ describe("BriefTierCards Component", () => {
       const { container } = render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(container.querySelector(".bg-white")).toBeInTheDocument();
@@ -420,7 +415,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText("Custom Tier")).toBeInTheDocument();
@@ -437,7 +432,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -453,7 +448,7 @@ describe("BriefTierCards Component", () => {
       render(
         <Provider store={store}>
           <BriefTierCards />
-        </Provider>
+        </Provider>,
       );
 
       expect(screen.getByText(/error: critical error/i)).toBeInTheDocument();
